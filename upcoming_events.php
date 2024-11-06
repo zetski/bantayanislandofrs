@@ -33,7 +33,7 @@
         }
         .event-item img {
             width: 100%;
-            height: 30%;
+            height: 60%;
             object-fit: cover;
         }
         .event-details {
