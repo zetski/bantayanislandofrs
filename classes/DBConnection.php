@@ -5,16 +5,16 @@ if(!defined('DB_SERVER')){
 class DBConnection{
 
     // LIVE SERVER
-    // private $host = "127.0.0.1:3306";
-    // private $username = "u510162695_ofrs_db";
-    // private $password = "1Bantayan_bfp";
-    // private $database = "u510162695_ofrs_db";
+    private $host = "127.0.0.1:3306";
+    private $username = "u510162695_ofrs_db";
+    private $password = "1Bantayan_bfp";
+    private $database = "u510162695_ofrs_db";
 
     // LOCALHOST
-    private $host = DB_SERVER;
-    private $username = DB_USERNAME;
-    private $password = DB_PASSWORD;
-    private $database = DB_NAME;
+    // private $host = DB_SERVER;
+    // private $username = DB_USERNAME;
+    // private $password = DB_PASSWORD;
+    // private $database = DB_NAME;
     
     public $conn;
     
