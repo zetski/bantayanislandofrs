@@ -1,6 +1,4 @@
 <?php
-require_once('../config.php');
-
 // Secure Headers
 header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self';");
 header("X-Content-Type-Options: nosniff");
