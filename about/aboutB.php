@@ -235,9 +235,9 @@
     <div class="container">
         <!-- Header with Back Button -->
         <header class="header">
-            <a href="/ofrs/index.php" class="back-button">
+            <!-- <a href="/ofrs/index.php" class="back-button">
                 <i class="fas fa-arrow-left"></i> 
-            </a>
+            </a> -->
             <h1>Online Fire Reporting System</h1>
         </header>
 

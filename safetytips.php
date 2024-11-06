@@ -146,10 +146,10 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    <!-- <div class="header">
         <a href="javascript:history.back()" class="back-button">&larr;</a>
         <h1>Safety Tips</h1>
-    </div>
+    </div> -->
 
     <div class="content">
         <?php
