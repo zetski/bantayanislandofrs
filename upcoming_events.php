@@ -52,7 +52,7 @@
             margin-top: 10px;
         }
         .event-details .event-location {
-            margin-bottom: 100%;
+            margin-bottom: 50%;
         }
         .carousel-dots {
             position: absolute;
