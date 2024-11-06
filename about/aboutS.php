@@ -254,39 +254,16 @@
                 <button class="carousel-btn prev-btn" onclick="prevSlide()">&#10094;</button>
                 <div class="carousel" id="carousel">
                     <div class="officer">
-                        <img src="../officerimg/mel.jpg" alt="Officer 1">
-                        <h3>F01 Meljan Niño Salmasan</h3>
-                        <h6>FSES Clerk / Shift A Crew / Nozzleman</h>
+                        <img src="../officerimg/aspin.jpg" alt="Officer 1">
+                        <h3>Officer 1</h3>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/lor.jpg" alt="Officer 2">
-                        <h3>F01 Loreto G Villacin Jr</h3>
-                        <h6>Admin Clerk / FSI / Shift B Crew / Nozzleman</h6>
+                        <img src="../officerimg/dlaw.jpg" alt="Officer 2">
+                        <h3>Officer 2</h3>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/rex.jpg" alt="Officer 3">
-                        <h3>F01 Rex I Egnora</h3>
-                        <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ed.jpg" alt="Officer 2">
-                        <h3>F02 JR Ed E Villacampa</h3>
-                        <h6 style="font-size: 8px">C, Admin / Supply NCO / Investigator / Survivorship NCO / FSI</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ter.jpg" alt="Officer 2">
-                        <h3>F03 Teresito M Chavez Jr</h3>
-                        <h6>Chief / Operation / Chief, IIS</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/gwen.jpg" alt="Officer 2">
-                        <h3>SF01 Gwendolyn P Placencia</h3>
-                        <h6>Chief, FSES / Collecting Agent</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ren.jpg" alt="Officer 2">
-                        <h3>SF03 Renato C Veliganio</h3>
-                        <h6>OIC, Municipal Fire Marshal</h6>
+                        <img src="../officerimg/gear5.jpg" alt="Officer 3">
+                        <h3>Officer 3</h3>
                     </div>
                 </div>
                 <button class="carousel-btn next-btn" onclick="nextSlide()">&#10095;</button>
@@ -301,7 +278,7 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-envelope"></i>
-                <a href="mailto:bfpsantafe@gmail.com">bantayancentral@gmail.com</a>
+                <a href="mailto:bfpmadridejos@gmail.com">bantayancentral@gmail.com</a>
             </div>
             <div class="contact-item">
                 <i class="fab fa-facebook"></i>
@@ -309,7 +286,7 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>Suba, Bantayan, Cebu</span>
+                <span>Poblacion, Bantayan, Cebu</span>
             </div>
         </footer>
     </div>

@@ -152,8 +152,8 @@
       </a>
       <ul class="collapse" id="sidebarAboutDropdown">
         <li><a class="nav-link text-white" href="./about/aboutB.php">Bantayan</a></li>
-        <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
         <li><a class="nav-link text-white" href="./about/aboutM.php">Madridejos</a></li>
+        <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
 
