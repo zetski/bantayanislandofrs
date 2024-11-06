@@ -1,5 +1,5 @@
 <?php
-include "../../initialize1.php"; // Include your database connection
+include "../../initialize.php"; // Include your database connection
 
 if (
     isset($_POST['email']) &&
