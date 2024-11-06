@@ -1,26 +1,26 @@
 <?php
-require_once('sess_auth.php');
+// require_once('sess_auth.php');
 
-// Set Content Security Policy
-header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
+// // Set Content Security Policy
+// header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 
-// Set additional HTTP security headers
-header("X-Content-Type-Options: nosniff"); // Prevents MIME-type sniffing
-header("X-Frame-Options: SAMEORIGIN"); // Prevents clickjacking
-header("X-XSS-Protection: 1; mode=block"); // Enables XSS filtering
-header("Referrer-Policy: no-referrer-when-downgrade"); // Controls referrer information
+// // Set additional HTTP security headers
+// header("X-Content-Type-Options: nosniff"); // Prevents MIME-type sniffing
+// header("X-Frame-Options: SAMEORIGIN"); // Prevents clickjacking
+// header("X-XSS-Protection: 1; mode=block"); // Enables XSS filtering
+// header("Referrer-Policy: no-referrer-when-downgrade"); // Controls referrer information
 
-// HSTS (HTTP Strict Transport Security) - Requires HTTPS
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+// // HSTS (HTTP Strict Transport Security) - Requires HTTPS
+// header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
-// Enable permissions policy to restrict browser features
-header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
+// // Enable permissions policy to restrict browser features
+// header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 
-// Set HttpOnly and Secure flags for PHP sessions (if applicable)
-ini_set('session.cookie_httponly', 1); // Prevents JavaScript access to session cookies
-ini_set('session.cookie_secure', 1); // Requires cookies to be sent over HTTPS
-ini_set('session.use_only_cookies', 1); // Ensures sessions only use cookies, not URL parameters
-session_start();
+// // Set HttpOnly and Secure flags for PHP sessions (if applicable)
+// ini_set('session.cookie_httponly', 1); // Prevents JavaScript access to session cookies
+// ini_set('session.cookie_secure', 1); // Requires cookies to be sent over HTTPS
+// ini_set('session.use_only_cookies', 1); // Ensures sessions only use cookies, not URL parameters
+// session_start();
 
 ?>
 

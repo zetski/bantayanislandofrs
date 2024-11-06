@@ -1,20 +1,6 @@
 <?php 
 require_once('../config.php'); 
 
-// Set HTTP security headers
-header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
-header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
-header("X-Frame-Options: SAMEORIGIN"); // Prevent clickjacking
-header("X-XSS-Protection: 1; mode=block"); // Enable XSS filtering
-header("Referrer-Policy: no-referrer-when-downgrade"); // Control referrer information
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Require HTTPS (HSTS)
-
-// Start the session with HttpOnly and Secure cookie settings
-ini_set('session.cookie_httponly', 1); // Prevent JavaScript access to session cookie
-ini_set('session.cookie_secure', 1); // Ensure cookies are only sent over HTTPS
-ini_set('session.use_only_cookies', 1); // Only use cookies for sessions, no URL parameters
-session_start();
-
 // Sanitize and validate input
 function sanitize_input($input) {
     $input = strip_tags($input);
@@ -58,12 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (password_verify($password, $password_hash)) {
         if ($user) {
             // User authenticated successfully
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-            error_log("User logged in with district: " . $_SESSION['district']);
+            session_start();
+            $_SESSION['user_id'] = $user['id'];  // Store user ID in session
+            $_SESSION['username'] = $user['username'];  // Store username in session
+            $_SESSION['district'] = $user['district'];  // Store user's district in session
+
+            // Log the district to verify it's set
+        error_log("User logged in with district: " . $_SESSION['district']);
             
             echo 'Login successful';
+
+            // Optionally, redirect to the dashboard
+            // header("Location: dashboard.php");
             exit;
         } else {
             echo 'Invalid credentials';
@@ -167,36 +159,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
 
     // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+    // Replace disallowed characters in username field
+    e.target.value = e.target.value.replace(/[<>\/]/g, '');
+});
 
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+    // Replace disallowed characters in password field
+    e.target.value = e.target.value.replace(/[<>\/]/g, '');
+});
 
-    // Toggle password visibility
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
+// Toggle password visibility
+$('#toggle-password').on('click', function() {
+    let passwordField = $('#password');
+    let passwordFieldType = passwordField.attr('type');
+    if (passwordFieldType == 'password') {
+        passwordField.attr('type', 'text');
+        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+    } else {
+        passwordField.attr('type', 'password');
+        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+    }
+});
 
-    // Disable inspect element and right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-</script>
+// Disable inspect element and right-click
+// document.addEventListener('contextmenu', event => event.preventDefault());
+// document.onkeydown = function(e) {
+//     if (e.keyCode == 123 || e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0) || 
+//         e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0) || 
+//         e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+//         return false;
+//     }
+// };
+  </script>
 </body>
 </html>
