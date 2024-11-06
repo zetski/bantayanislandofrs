@@ -1,6 +1,6 @@
 <?php
 
-include "../../initialize.php";
+include "../../initialize1.php";
 // Include PHPMailer classes manually
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
