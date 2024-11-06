@@ -278,7 +278,7 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-envelope"></i>
-                <a href="mailto:bfpmadridejos@gmail.com">bantayancentral@gmail.com</a>
+                <a href="mailto:bfpmadridejos@gmail.com">santfebfp@gmail.com</a>
             </div>
             <div class="contact-item">
                 <i class="fab fa-facebook"></i>
