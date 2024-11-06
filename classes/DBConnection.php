@@ -4,6 +4,13 @@ if(!defined('DB_SERVER')){
 }
 class DBConnection{
 
+    // LIVE SERVER
+    // private $host = "127.0.0.1:3306";
+    // private $username = "u510162695_ofrs_db";
+    // private $password = "1Ofrs_db";
+    // private $database = "u510162695_ofrs_db";
+
+    // LOCALHOST
     private $host = DB_SERVER;
     private $username = DB_USERNAME;
     private $password = DB_PASSWORD;
@@ -20,7 +27,8 @@ class DBConnection{
             if (!$this->conn) {
                 echo 'Cannot connect to database server';
                 exit;
-            }            
+            } 
+                       
         }    
         
     }
