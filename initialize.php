@@ -11,13 +11,13 @@ if(!defined('DB_NAME')) define('DB_NAME',"u510162695_ofrs_db");
 
 // LOCALHOST 
 
-// if(!defined('base_url')) define('base_url','http://localhost/ofrs/');
-//     if(!defined('base_app')) define('base_app', str_replace('\\','/',__DIR__).'/' );
-//     // if(!defined('dev_data')) define('dev_data',$dev_data);
-//     if(!defined('DB_SERVER')) define('DB_SERVER',"localhost");
-//     if(!defined('DB_USERNAME')) define('DB_USERNAME',"root");
-//     if(!defined('DB_PASSWORD')) define('DB_PASSWORD',"");
-//     if(!defined('DB_NAME')) define('DB_NAME',"ofrs_db");
+if(!defined('base_url')) define('base_url','http://localhost/ofrs/');
+    if(!defined('base_app')) define('base_app', str_replace('\\','/',__DIR__).'/' );
+    // if(!defined('dev_data')) define('dev_data',$dev_data);
+    if(!defined('DB_SERVER')) define('DB_SERVER',"localhost");
+    if(!defined('DB_USERNAME')) define('DB_USERNAME',"root");
+    if(!defined('DB_PASSWORD')) define('DB_PASSWORD',"");
+    if(!defined('DB_NAME')) define('DB_NAME',"ofrs_db");
     // Establish the connection
 $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
 //$conn to $con forgot pass
