@@ -1,4 +1,27 @@
 <?php
+require_once('../config.php');
+
+// Secure Headers
+header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self';");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: SAMEORIGIN");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: no-referrer-when-downgrade");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+
+// Secure Cookie Flags
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', 1);
+ini_set('session.use_only_cookies', 1);
+
+session_start();
+
+// Define a function to sanitize input data
+function sanitizeInput($data) {
+    $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    $data = trim($data);
+    return $data;
+}
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Define a function to sanitize input data
         function sanitizeInput($data) {
