@@ -1,4 +1,5 @@
 <?php
+//csp security
 header("Content-Security-Policy: default-src 'self';");
 ob_start();
 ini_set('date.timezone','Asia/Manila');
