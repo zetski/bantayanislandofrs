@@ -82,7 +82,7 @@
         include './initialize.php';
 
         $sql = "SELECT * FROM events_list WHERE event_date >= CURDATE() AND delete_flag = 0 ORDER BY event_date ASC";
-            $result = mysqli_query($conn, $sql);
+            $result = mysqli_query($con, $sql);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -114,7 +114,7 @@
                 echo '<p>No upcoming events at the moment.</p>';
             }
 
-            mysqli_close($conn);
+            mysqli_close($con);
         ?>
     </div>
 </div>
