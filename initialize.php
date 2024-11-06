@@ -20,7 +20,7 @@ if(!defined('DB_NAME')) define('DB_NAME',"u510162695_ofrs_db");
 //     if(!defined('DB_NAME')) define('DB_NAME',"ofrs_db");
     // Establish the connection
 $con = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
-
+//$conn to $con forgot pass
 // Check the connection
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
