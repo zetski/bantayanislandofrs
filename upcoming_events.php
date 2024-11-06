@@ -82,10 +82,7 @@
         include './initialize.php';
 
         $sql = "SELECT * FROM events_list WHERE event_date >= CURDATE() AND delete_flag = 0 ORDER BY event_date ASC";
-        $result = mysqli_query($conn, $sql);
-        if (!$result) {
-            die("Error: " . mysqli_error($conn));
-        }
+            $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {
                 while ($row = mysqli_fetch_assoc($result)) {
