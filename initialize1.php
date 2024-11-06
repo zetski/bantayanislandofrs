@@ -22,7 +22,7 @@ define('base_app', str_replace('\\', '/', __DIR__) . '/');
 define('DB_SERVER', "127.0.0.1"); // or "localhost"
 define('DB_PORT', 3306); // Optional, can be used if you want to be explicit
 define('DB_USERNAME', "u510162695_ofrs_db");
-define('DB_PASSWORD', "1Ofrs_db");
+define('DB_PASSWORD', "1Bantayan_bfp");
 define('DB_NAME', "u510162695_ofrs_db");
 
 // Create a database connection
