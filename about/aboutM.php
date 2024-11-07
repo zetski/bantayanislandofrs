@@ -17,7 +17,7 @@
         html, body {
             height: 100%;
             font-family: Arial, sans-serif;
-            background-image: url('./officerimg/firebg.webp');
+            background-image: url('../officerimg/firebg.webp');
             background-size: cover;
             background-position: center;
             color: #333;
@@ -54,14 +54,16 @@
         /* Content Section */
         .content {
             flex: 1;
-            background-color: transparent;
+            background-color: rgba(255, 255, 255, 0.9);
             padding: 50px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             gap: 30px;
+            border-radius: 8px;
             margin: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .mission, .vision {
@@ -80,13 +82,25 @@
         }
 
         /* Officers Carousel Section */
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            background-color: transparent;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .carousel {
             display: flex;
             transition: transform 0.5s ease;
             width: 100%;
-            overflow: hidden;
-            max-width: 500px;
-            position: relative;
         }
 
         .officer {
@@ -98,9 +112,8 @@
         }
 
         .officer img {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
+            width: 300px;
+            height: 300px;
             border-radius: 20px;
             object-fit: cover;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -157,8 +170,8 @@
         /* Responsive Styles */
         @media (max-width: 768px) {
             .officer img {
-                width: 100%;
-                max-width: 300px;
+                width: 200px;
+                height: 200px;
             }
 
             .officer h3 {
@@ -187,18 +200,15 @@
             <p>A modern fire service fully capable of ensuring a fire-safe nation by 2034.</p>
 
             <!-- Officers Carousel Section -->
-            <div class="carousel" id="carousel">
-                <div class="officer">
-                    <img src="../officerimg/mel.jpg" alt="Officer 1">
-                    <h3>F01 Meljan Niño Salmasan</h3>
-                    <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
+            <div class="carousel-container">
+                <div class="carousel" id="carousel">
+                    <div class="officer">
+                        <img src="../officerimg/mel.jpg" alt="Officer 1">
+                        <h3>F01 Meljan Niño Salmasan</h3>
+                        <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
+                    </div>
+                    <!-- Add other officers here similarly -->
                 </div>
-                <div class="officer">
-                    <img src="../officerimg/mel.jpg" alt="Officer 1">
-                    <h3>F01 Meljan Niño Salmasan</h3>
-                    <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
-                </div>
-                <!-- Add other officers here similarly -->
             </div>
         </div>
 
