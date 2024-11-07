@@ -133,6 +133,27 @@
             margin-top: 5px;
         }
 
+        /* Carousel Dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .carousel-dots .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .carousel-dots .dot.active {
+            background-color: #f45000;
+        }
+
         /* Footer */
         .footer {
             background-color: #333;
@@ -212,7 +233,9 @@
                         <h3>F01 Loreto G Villacin Jr</h3>
                         <h6>Admin Clerk / FSI / Shift B Crew / Nozzleman</h6>
                     </div>
-                    <div class="officer">
+                    <!-- Add other officers here similarly -->
+                </div>
+                <div class="officer">
                         <img src="../officerimg/rex.jpg" alt="Officer 3">
                         <h3>F01 Rex I Egnora</h3>
                         <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
@@ -237,8 +260,8 @@
                         <h3>SF03 Renato C Veliganio</h3>
                         <h6>OIC, Municipal Fire Marshal</h6>
                     </div>
-                    <!-- Add other officers here similarly -->
-                </div>
+                <!-- Carousel Dots -->
+                <div class="carousel-dots" id="carousel-dots"></div>
             </div>
         </div>
 
@@ -267,27 +290,22 @@
         let currentSlide = 0;
         const carousel = document.getElementById('carousel');
         const totalSlides = document.querySelectorAll('.officer').length;
+        const dotsContainer = document.getElementById('carousel-dots');
 
-        // Swipe functionality
-        let startX = 0;
+        // Create dots based on the number of slides
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === currentSlide) dot.classList.add('active');
+            dot.addEventListener('click', () => showSlide(i));
+            dotsContainer.appendChild(dot);
+        }
 
-        carousel.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-        });
-
-        carousel.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            const touch = e.touches[0];
-            const change = startX - touch.clientX;
-
-            if (change > 50) {
-                nextSlide();
-                startX = touch.clientX;
-            } else if (change < -50) {
-                prevSlide();
-                startX = touch.clientX;
-            }
-        });
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
 
         function showSlide(index) {
             if (index >= totalSlides) {
@@ -300,6 +318,7 @@
 
             const offset = -currentSlide * 100;
             carousel.style.transform = `translateX(${offset}%)`;
+            updateDots();
         }
 
         function nextSlide() {
