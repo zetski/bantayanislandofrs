@@ -39,7 +39,7 @@ if (
     }
 
     // Check if the email exists in the database
-    $query = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
+ /*   $query = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $email);
     $stmt->execute();
@@ -47,6 +47,34 @@ if (
     $users = $result->fetch_assoc();
 
     if ($users) {
+        // Hash the new password using bcrypt
+        $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+
+        // Update the password in the database
+        $query = "UPDATE users SET pass = ? WHERE email = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ss", $newHashedPassword, $email);
+        if ($stmt->execute()) { */
+            // Password reset successful
+            // Fetch the user from the database based on the email
+    $query = "SELECT * FROM users WHERE email = ?";
+    $stmt = $con->prepare($query);
+
+    if (!$stmt) {
+        echo "Statement preparation failed: " . $con->error;
+        exit;
+    }
+
+    $stmt->bind_param("s", $email);
+    if (!$stmt->execute()) {
+        echo "Query execution failed: " . $stmt->error;
+        exit;
+    }
+
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+
+    if ($user) {
         // Hash the new password using bcrypt
         $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
