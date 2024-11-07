@@ -17,7 +17,7 @@
         html, body {
             height: 100%;
             font-family: Arial, sans-serif;
-            background-image: url('./officerimg/firebg.webp');
+            background-image: url('../officerimg/firebg.webp');
             background-size: cover;
             background-position: center;
             color: #333;
@@ -28,7 +28,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: rgba(0, 0, 0, 0.6);
+            background-color: transparent;
         }
 
         /* Header */
@@ -42,15 +42,6 @@
             top: 0;
             z-index: 10;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .header .back-button {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            margin-right: auto;
         }
 
         .header h1 {
@@ -94,18 +85,22 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            max-width: 350px;
+            max-width: 500px;
             overflow: hidden;
-            background-color: #f1f1f1;
+            background-color: transparent;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .carousel {
             display: flex;
             transition: transform 0.5s ease;
+            width: 100%;
         }
 
         .officer {
@@ -113,48 +108,50 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 10px;
         }
 
         .officer img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
             object-fit: cover;
-            border: 4px solid #f45000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .officer h3 {
             margin-top: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #333;
             text-align: center;
         }
 
-        /* Carousel buttons */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
+        .officer h6 {
+            font-size: 1rem;
+            color: #555;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Carousel Dots */
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+
+        .carousel-dots .dot {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
             border-radius: 50%;
+            background-color: #ccc;
+            cursor: pointer;
             transition: background-color 0.3s ease;
         }
 
-        .carousel-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .prev-btn {
-            left: 10px;
-        }
-
-        .next-btn {
-            right: 10px;
+        .carousel-dots .dot.active {
+            background-color: #f45000;
         }
 
         /* Footer */
@@ -193,51 +190,25 @@
 
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.2rem;
-            }
-
-            .mission, .vision {
-                font-size: 1.5rem;
-            }
-
-            .content p {
-                font-size: 0.9rem;
-            }
-
             .officer img {
-                width: 100px;
-                height: 100px;
+                width: 200px;
+                height: 200px;
             }
 
-            .footer {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .mission, .vision {
+            .officer h3 {
                 font-size: 1.2rem;
             }
 
-            .footer .contact-item {
+            .officer h6 {
                 font-size: 0.9rem;
-            }
-
-            .footer .contact-item i {
-                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header with Back Button -->
+        <!-- Header -->
         <header class="header">
-            <!-- <a href="/ofrs/index.php" class="back-button">
-                <i class="fas fa-arrow-left"></i> 
-            </a> -->
             <h1>Online Fire Reporting System</h1>
         </header>
 
@@ -251,22 +222,17 @@
 
             <!-- Officers Carousel Section -->
             <div class="carousel-container">
-                <button class="carousel-btn prev-btn" onclick="prevSlide()">&#10094;</button>
                 <div class="carousel" id="carousel">
                     <div class="officer">
-                        <img src="../officerimg/aspin.jpg" alt="Officer 1">
-                        <h3>Officer 1</h3>
+                        <img src="../officerimg/" alt="Officer 1">
+                        <h3>Blank</h3>
+                        <h6>Acting, Municipal Fire Marshal</h6>
                     </div>
-                    <div class="officer">
-                        <img src="../officerimg/dlaw.jpg" alt="Officer 2">
-                        <h3>Officer 2</h3>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/gear5.jpg" alt="Officer 3">
-                        <h3>Officer 3</h3>
-                    </div>
+                    <!-- Add other officers here similarly -->
                 </div>
-                <button class="carousel-btn next-btn" onclick="nextSlide()">&#10095;</button>
+
+                <!-- Carousel Dots -->
+                <div class="carousel-dots" id="carousel-dots"></div>
             </div>
         </div>
 
@@ -278,7 +244,7 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-envelope"></i>
-                <a href="mailto:bfpmadridejos@gmail.com">santfebfp@gmail.com</a>
+                <a href="mailto:bfpsantafe@gmail.com">bantayanbfp@gmail.com</a>
             </div>
             <div class="contact-item">
                 <i class="fab fa-facebook"></i>
@@ -286,18 +252,33 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>Poblacion, Bantayan, Cebu</span>
+                <span>Suba, Bantayan, Cebu</span>
             </div>
         </footer>
     </div>
 
     <script>
         let currentSlide = 0;
+        const carousel = document.getElementById('carousel');
+        const totalSlides = document.querySelectorAll('.officer').length;
+        const dotsContainer = document.getElementById('carousel-dots');
+
+        // Create dots based on the number of slides
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === currentSlide) dot.classList.add('active');
+            dot.addEventListener('click', () => showSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+
+        function updateDots() {
+            const dots = document.querySelectorAll('.dot');
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentSlide].classList.add('active');
+        }
 
         function showSlide(index) {
-            const carousel = document.getElementById('carousel');
-            const totalSlides = document.querySelectorAll('.officer').length;
-            
             if (index >= totalSlides) {
                 currentSlide = 0;
             } else if (index < 0) {
@@ -305,9 +286,10 @@
             } else {
                 currentSlide = index;
             }
-            
+
             const offset = -currentSlide * 100;
             carousel.style.transform = `translateX(${offset}%)`;
+            updateDots();
         }
 
         function nextSlide() {
