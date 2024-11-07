@@ -1,35 +1,7 @@
 <IfModule mod_rewrite.c>
-    # CORS Policy (Allow all origins - adjust if necessary)
-    Header set Access-Control-Allow-Origin "*"
-    
-    # Enable Rewrite Engine
-    RewriteEngine on
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ /index.php/$2/?page=$1 [L]
+Header set Access-Control-Allow-Origin "*"
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$    /index.php/$2/?page=$1   [L]
 </IfModule>
-
-# Additional Security Headers
-<IfModule mod_headers.c>
-    # Content Security Policy (restricts resources to same origin)
-    Header set Content-Security-Policy "default-src 'self'; script-src 'self'; object-src 'none';"
-    
-    # X-Content-Type-Options (prevents MIME-type sniffing)
-    Header set X-Content-Type-Options "nosniff"
-    
-    # X-Frame-Options (prevents clickjacking)
-    Header set X-Frame-Options "DENY"
-    
-    # X-XSS-Protection (enables XSS filtering)
-    Header set X-XSS-Protection "1; mode=block"
-    
-    # Referrer Policy (restricts referrer data leakage)
-    Header set Referrer-Policy "no-referrer"
-    
-    # Strict-Transport-Security (enforces HTTPS)
-    # Set this only if your site uses HTTPS
-    Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-</IfModule>
-
-# Prevent directory listing
-Options -Indexes
