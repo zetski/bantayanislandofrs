@@ -349,6 +349,32 @@ Class Master extends DBConnection {
 		echo json_encode($resp); // Echo out the JSON response
 	}
 
+	public function delete_permanently() {
+		header('Content-Type: application/json');
+	
+		// Check if 'id' is set in POST data
+		if (!isset($_POST['id'])) {
+			echo json_encode(['status' => 'failed', 'error' => 'ID not provided.']);
+			return;
+		}
+	
+		extract($_POST);
+		$id = intval($id); // Sanitize input
+	
+		// Perform the permanent delete from the request_list table
+		$delete = $this->conn->query("DELETE FROM request_list WHERE id = '{$id}'");
+	
+		if ($delete) {
+			$resp['status'] = 'success';
+			$this->settings->set_flashdata('success', "Request permanently deleted.");
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = $this->conn->error; // Capture any database error
+		}
+	
+		echo json_encode($resp);
+	}
+	
 	function assign_team(){
 		extract($_POST);
 		$update = $this->conn->query("UPDATE `request_list` set `status`  = 1, team_id = '{$team_id}' where id = '{$id}'");
@@ -468,6 +494,9 @@ switch ($action) {
 	break;
 	case 'save_event';
 		echo $Master->save_event();
+	break;
+	case 'delete_permanently';
+	echo $Master->delete_permanently();
 	break;
 	case 'restore_request': // Add this case for restoring requests
         echo $Master->restore_request();
