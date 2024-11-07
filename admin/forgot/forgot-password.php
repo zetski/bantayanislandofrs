@@ -30,7 +30,7 @@
                     <div class="row g-0">
                         <!-- Left side image -->
                         <div class="col-md-6">
-                            <img src="../img/r7logo.jpg" class="img-fluid forgot-password-img h-100 w-100">
+                            <img src="../img/r7logo.png" class="img-fluid forgot-password-img h-100 w-100">
                         </div>
                         <!-- Right side form -->
                         <div class="col-md-6">
