@@ -7,7 +7,7 @@
     <style>
     body {
         font-family: 'Poppins', sans-serif;
-        background-image: url('bfpbg.jpg');
+        background-image: url('firebg.jpg');
         background-size: cover;
         background-position: center;
         display: flex;
