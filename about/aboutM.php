@@ -44,15 +44,6 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        .header .back-button {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            margin-right: auto;
-        }
-
         .header h1 {
             flex: 1;
             text-align: center;
@@ -94,18 +85,22 @@
         .carousel-container {
             position: relative;
             width: 100%;
-            max-width: 350px;
+            max-width: 500px;
             overflow: hidden;
-            background-color: #f1f1f1;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .carousel {
             display: flex;
             transition: transform 0.5s ease;
+            width: 100%;
         }
 
         .officer {
@@ -113,48 +108,29 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            padding: 10px;
         }
 
         .officer img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            border-radius: 20px;
             object-fit: cover;
-            border: 4px solid #f45000;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         }
 
         .officer h3 {
             margin-top: 10px;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             color: #333;
             text-align: center;
         }
 
-        /* Carousel buttons */
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.6);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 50%;
-            transition: background-color 0.3s ease;
-        }
-
-        .carousel-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .prev-btn {
-            left: 10px;
-        }
-
-        .next-btn {
-            right: 10px;
+        .officer h6 {
+            font-size: 1rem;
+            color: #555;
+            text-align: center;
+            margin-top: 5px;
         }
 
         /* Footer */
@@ -193,51 +169,25 @@
 
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.2rem;
-            }
-
-            .mission, .vision {
-                font-size: 1.5rem;
-            }
-
-            .content p {
-                font-size: 0.9rem;
-            }
-
             .officer img {
-                width: 100px;
-                height: 100px;
+                width: 200px;
+                height: 200px;
             }
 
-            .footer {
-                flex-direction: column;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .mission, .vision {
+            .officer h3 {
                 font-size: 1.2rem;
             }
 
-            .footer .contact-item {
+            .officer h6 {
                 font-size: 0.9rem;
-            }
-
-            .footer .contact-item i {
-                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header with Back Button -->
+        <!-- Header -->
         <header class="header">
-            <!-- <a href="/ofrs/index.php" class="back-button">
-                <i class="fas fa-arrow-left"></i> 
-            </a> -->
             <h1>Online Fire Reporting System</h1>
         </header>
 
@@ -251,45 +201,14 @@
 
             <!-- Officers Carousel Section -->
             <div class="carousel-container">
-                <button class="carousel-btn prev-btn" onclick="prevSlide()">&#10094;</button>
                 <div class="carousel" id="carousel">
                     <div class="officer">
                         <img src="../officerimg/mel.jpg" alt="Officer 1">
                         <h3>F01 Meljan Niño Salmasan</h3>
-                        <h6>FSES Clerk / Shift A Crew / Nozzleman</h>
+                        <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
                     </div>
-                    <div class="officer">
-                        <img src="../officerimg/lor.jpg" alt="Officer 2">
-                        <h3>F01 Loreto G Villacin Jr</h3>
-                        <h6>Admin Clerk / FSI / Shift B Crew / Nozzleman</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/rex.jpg" alt="Officer 3">
-                        <h3>F01 Rex I Egnora</h3>
-                        <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ed.jpg" alt="Officer 2">
-                        <h3>F02 JR Ed E Villacampa</h3>
-                        <h6 style="font-size: 8px">C, Admin / Supply NCO / Investigator / Survivorship NCO / FSI</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ter.jpg" alt="Officer 2">
-                        <h3>F03 Teresito M Chavez Jr</h3>
-                        <h6>Chief / Operation / Chief, IIS</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/gwen.jpg" alt="Officer 2">
-                        <h3>SF01 Gwendolyn P Placencia</h3>
-                        <h6>Chief, FSES / Collecting Agent</h6>
-                    </div>
-                    <div class="officer">
-                        <img src="../officerimg/ren.jpg" alt="Officer 2">
-                        <h3>SF03 Renato C Veliganio</h3>
-                        <h6>OIC, Municipal Fire Marshal</h6>
-                    </div>
+                    <!-- Add other officers here similarly -->
                 </div>
-                <button class="carousel-btn next-btn" onclick="nextSlide()">&#10095;</button>
             </div>
         </div>
 
@@ -316,11 +235,31 @@
 
     <script>
         let currentSlide = 0;
+        const carousel = document.getElementById('carousel');
+        const totalSlides = document.querySelectorAll('.officer').length;
+
+        // Swipe functionality
+        let startX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+        });
+
+        carousel.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const change = startX - touch.clientX;
+
+            if (change > 50) {
+                nextSlide();
+                startX = touch.clientX;
+            } else if (change < -50) {
+                prevSlide();
+                startX = touch.clientX;
+            }
+        });
 
         function showSlide(index) {
-            const carousel = document.getElementById('carousel');
-            const totalSlides = document.querySelectorAll('.officer').length;
-            
             if (index >= totalSlides) {
                 currentSlide = 0;
             } else if (index < 0) {
@@ -328,7 +267,7 @@
             } else {
                 currentSlide = index;
             }
-            
+
             const offset = -currentSlide * 100;
             carousel.style.transform = `translateX(${offset}%)`;
         }
