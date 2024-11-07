@@ -36,35 +36,42 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Sanitize input to prevent XSS or injection attacks
   $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+  $password = $_POST['password']; // Passwords should not be altered
 
   if (empty($username) || empty($password)) {
-      echo 'Username or password cannot be empty.';
+      echo 'Invalid input';
       exit;
   }
 
   // Prepared statement to prevent SQL injection
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+  $stmt = $conn->prepare("SELECT id, username, password, district FROM users WHERE username = ?");
   $stmt->bind_param("s", $username);
   $stmt->execute();
   $result = $stmt->get_result();
   
   $user = $result->fetch_assoc();
 
-  // Use bcrypt for password hashing
+  // Generate a dummy hash using bcrypt to prevent timing attacks
   $dummy_hash = password_hash("invalid_password", PASSWORD_BCRYPT);
   $password_hash = $user ? $user['password'] : $dummy_hash;
 
+  // Verify password using bcrypt
   if (password_verify($password, $password_hash)) {
       if ($user) {
+          // Start session if not already started
+          if (session_status() == PHP_SESSION_NONE) {
+              session_start();
+          }
           // User authenticated successfully
-          $_SESSION['user_id'] = $user['id'];
-          $_SESSION['username'] = $user['username'];
-          $_SESSION['district'] = $user['district'];
+          $_SESSION['user_id']   = $user['id'];
+          $_SESSION['username']  = $user['username'];
+          $_SESSION['district']  = $user['district'];
           error_log("User logged in with district: " . $_SESSION['district']);
           
           echo 'Login successful';
+          exit;
       } else {
           echo 'Invalid credentials';
       }
@@ -73,7 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   $stmt->close();
-  $conn->close(); // Close the connection after the login process
 }
 
 ?>
