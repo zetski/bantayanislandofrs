@@ -14,7 +14,9 @@
     <form action="" id="search-report">
         <div class="form-group">
             <label for="search" class="control-label">Search by (Request Code, Name, or Contact #)</label>
-            <input type="text" class="form-control form-control-sm rounded-0" name="search" id="search" pattern="^[^<>/]*$" autocomplete="off">
+            <input type="text" class="form-control form-control-sm rounded-0" name="search" id="search" 
+                pattern="^[^<>]*$" title="Invalid characters detected. Please avoid using <, >, or any HTML tags." 
+                autocomplete="off" required>
         </div>
     </form>
 </div>
@@ -34,12 +36,14 @@
             e.preventDefault();
             const searchInput = $('#search').val();
 
-            // Validate against blacklisted characters and the word "script"
-            if (searchInput.match(/<>/g) || searchInput.toLowerCase().includes("script")) {
-                alert("Invalid input detected.");
+            // More rigorous validation to block any input containing '<', '>', '/', or the word "script"
+            const forbiddenPatterns = /[<>\/]|script/i;
+            if (forbiddenPatterns.test(searchInput)) {
+                alert("Invalid input detected. Please avoid using special characters or HTML tags.");
                 return;
             }
 
+            // If input is safe, proceed with form submission
             location.href = "./?p=report/list&" + $(this).serialize();
         });
     });
