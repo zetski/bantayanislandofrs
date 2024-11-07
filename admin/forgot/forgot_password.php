@@ -1,4 +1,5 @@
 <?php
+
 include "../../initialize.php";
 // Include PHPMailer classes manually
 require 'phpmailer/class.phpmailer.php';
@@ -44,6 +45,19 @@ if (isset($_POST['email'])) {
     $result = $stmt->get_result();
 
     if ($result->num_rows == 1) {
+        // Generate a unique token for password reset
+        $rawToken = bin2hex(random_bytes(50));  // The raw token that will be sent to the user
+        $hashedToken = password_hash($rawToken, PASSWORD_DEFAULT);  // Hashed token to store in the database
+
+        // Set token expiry time (e.g., 1 hour from now)
+        $expiryTime = date("Y-m-d H:i:s", strtotime('+1 hour'));
+
+        // Store hashed token and token expiry in the database
+        $query = "UPDATE users SET reset_token = ?, token_expiry = ? WHERE email = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("sss", $hashedToken, $expiryTime, $email);
+        $stmt->execute();
+
         // Send reset password email using PHPMailer
         $mail = new PHPMailer();
 
@@ -53,7 +67,7 @@ if (isset($_POST['email'])) {
             $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
             $mail->SMTPAuth   = true;
             $mail->Username   = 'bantayanbfp@gmail.com'; // Your Gmail address
-            $mail->Password   = 'vavy uqrt eypg nbjp';  // Your Gmail app password
+            $mail->Password   = 'sbwj rdtt dfhb hzkk';  // Your Gmail password or app password
             $mail->SMTPSecure = 'tls';  // Encryption: 'tls' or 'ssl'
             $mail->Port       = 587;    // Port for TLS connection
 
@@ -64,7 +78,7 @@ if (isset($_POST['email'])) {
             // Content
             $mail->isHTML(true);
             $mail->Subject = 'Password Reset Request';
-            $mail->Body    = "Hi, click the link below to reset your password:<br><br><a href='https://bantayan-bfp.com/admin/forgot/reset_password.php?email=" . urlencode($email) . "'>Reset Password</a>";
+            $mail->Body    = "Hi, click the link below to reset your password:<br><br><a href='https://bantayan-bfp.com/admin/forgot/reset_password.php?token=" . $rawToken . "&email=" . urlencode($email) . "'>Reset Password</a>";
 
             // Send mail
             if ($mail->send()) {

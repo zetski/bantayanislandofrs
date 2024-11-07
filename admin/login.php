@@ -36,49 +36,44 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Sanitize input to prevent XSS or injection attacks
-  $username = sanitize_input($_POST['username']);
-  $password = $_POST['password']; // Passwords should not be altered
+    $username = sanitize_input($_POST['username']);
+    $password = sanitize_input($_POST['password']);
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
-      exit;
-  }
+    if (empty($username) || empty($password)) {
+        echo 'Invalid input';
+        exit;
+    }
 
-  // Prepared statement to prevent SQL injection
-  $stmt = $conn->prepare("SELECT id, username, password, district FROM users WHERE username = ?");
-  $stmt->bind_param("s", $username);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  
-  $user = $result->fetch_assoc();
+    // Prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $user = $result->fetch_assoc();
+    
+    $dummy_hash = password_hash("invalid_password", PASSWORD_DEFAULT);
+    $password_hash = $user ? $user['password'] : $dummy_hash;
 
-  if ($user) {
-      // Verify password using bcrypt
-      if (password_verify($password, $user['password'])) {
-          // Start session if not already started
-          if (session_status() == PHP_SESSION_NONE) {
-              session_start();
-          }
-          // User authenticated successfully
-          $_SESSION['user_id']   = $user['id'];
-          $_SESSION['username']  = $user['username'];
-          $_SESSION['district']  = $user['district'];
-          error_log("User logged in with district: " . $_SESSION['district']);
-          
-          echo 'Login successful';
-          exit;
-      } else {
-          echo 'Invalid credentials';
-      }
-  } else {
-      // User not found
-      echo 'Invalid credentials';
-  }
+    if (password_verify($password, $password_hash)) {
+        if ($user) {
+            // User authenticated successfully
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['district'] = $user['district'];
+            error_log("User logged in with district: " . $_SESSION['district']);
+            
+            echo 'Login successful';
+            exit;
+        } else {
+            echo 'Invalid credentials';
+        }
+    } else {
+        echo 'Invalid credentials';
+    }
 
-  $stmt->close();
+    $stmt->close();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">
