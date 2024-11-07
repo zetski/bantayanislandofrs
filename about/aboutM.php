@@ -233,9 +233,7 @@
                         <h3>F01 Loreto G Villacin Jr</h3>
                         <h6>Admin Clerk / FSI / Shift B Crew / Nozzleman</h6>
                     </div>
-                    <!-- Add other officers here similarly -->
-                </div>
-                <div class="officer">
+                    <div class="officer">
                         <img src="../officerimg/rex.jpg" alt="Officer 3">
                         <h3>F01 Rex I Egnora</h3>
                         <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
@@ -260,6 +258,9 @@
                         <h3>SF03 Renato C Veliganio</h3>
                         <h6>OIC, Municipal Fire Marshal</h6>
                     </div>
+                    <!-- Add other officers here similarly -->
+                </div>
+
                 <!-- Carousel Dots -->
                 <div class="carousel-dots" id="carousel-dots"></div>
             </div>
