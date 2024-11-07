@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 07, 2024 at 04:51 PM
+-- Generation Time: Nov 06, 2024 at 02:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,8 +54,7 @@ INSERT INTO `events_list` (`id`, `event_name`, `event_description`, `event_date`
 (82, 'Tornado Drill', 'there\'s a hurricane milton', '2024-11-20', '10:40:00', 'Bantayan', 'Binaobao', 'Binaobao Elementary School', '1730724264_one.jpg', '2024-11-04 12:39:42', '2024-11-04 13:22:58', 1),
 (83, 'Earthquake Drill', 'hello folks', '2024-11-14', '09:00:00', 'Bantayan', 'Baigad', 'Baigad Elementary School', '1730725647_logo.jpg', '2024-11-04 13:07:27', '2024-11-04 13:21:46', 1),
 (84, 'Hazardous Materials Drill', 'hahahahaa', '2024-11-25', '10:00:00', 'Bantayan', 'Hilotongan', 'Hilotongan Elementary School', '1730726676_download (4).jpg', '2024-11-04 13:24:16', '2024-11-06 01:12:01', 1),
-(85, 'Fire Drill', '.....kdkdk', '2024-11-30', '10:00:00', 'Bantayan', 'Doong', 'Doong Elementary School', '1730856713_Screenshot 2024-11-02 090958.png', '2024-11-06 01:31:53', '2024-11-06 01:32:11', 1),
-(86, 'Fire Drill', 'amlala', '2024-11-08', '08:00:00', 'Santa Fe', 'Langub', 'lskwk', '1730876290_Screenshot 2024-11-05 142916.png', '2024-11-06 06:58:10', '2024-11-06 06:58:10', 0);
+(85, 'Fire Drill', '.....kdkdk', '2024-11-30', '10:00:00', 'Bantayan', 'Doong', 'Doong Elementary School', '1730856713_Screenshot 2024-11-02 090958.png', '2024-11-06 01:31:53', '2024-11-06 01:32:11', 1);
 
 -- --------------------------------------------------------
 
@@ -189,7 +188,7 @@ INSERT INTO `request_list` (`id`, `team_id`, `code`, `lastname`, `firstname`, `m
 (99, NULL, '20241102-0002', 'Je', 'Ri', 'Ko', '09294948294', 'Flood', 'no balance ', '../uploads/c95f045960df3f246b2986ab1004309b.jpg', 'Bantayan', 'Lipayran', 'Manlot Street', 5, '2024-11-02 15:57:59', '2024-11-02 16:18:46', NULL, NULL),
 (100, NULL, '20241102-0003', 'Mi', 'A', 'MO', '09294948294', 'Flood', 'fadfe', '../uploads/5110f5eed8817a36d3652ac08659a96d.jpg', 'Bantayan', 'Hilotongan', 'Malot', 5, '2024-11-02 16:17:33', '2024-11-02 16:18:23', NULL, NULL),
 (101, NULL, '20241104-0001', 'Ban', 'Toy', 'Layaog', '09343944303', 'Eartquake', 'hello can please help us because we are stranded here inside the building', '../uploads/61b5f8a88f657f1167e9a04a2c5fcdaf.jpeg', 'Bantayan', 'Guiwanon', 'Lumboy ', 0, '2024-11-04 16:46:14', '2024-11-04 21:24:59', NULL, NULL),
-(102, 11, '20241104-0002', 'Totoy', 'Bibo', 'Otso', '09224710248', 'Baha', 'walang its a prank', '../uploads/4194bc5378233a2ba68237f085a7fab0.jpg', 'Bantayan', 'Doong', 'Purok Bantoy', 0, '2024-11-04 17:12:02', '2024-11-06 14:37:03', NULL, NULL);
+(102, 11, '20241104-0002', 'Totoy', 'Bibo', 'Otso', '09224710248', 'Baha', 'walang its a prank', '../uploads/4194bc5378233a2ba68237f085a7fab0.jpg', 'Bantayan', 'Doong', 'Purok Bantoy', 0, '2024-11-04 17:12:02', '2024-11-06 09:31:03', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -353,7 +352,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `events_list`
 --
 ALTER TABLE `events_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86;
 
 --
 -- AUTO_INCREMENT for table `history_list`
@@ -561,7 +560,7 @@ CREATE TABLE `pma__recent` (
 --
 
 INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('root', '[{\"db\":\"ofrs_db\",\"table\":\"users\"},{\"db\":\"ofrs_db\",\"table\":\"team_list\"},{\"db\":\"ofrs_db\",\"table\":\"system_info\"},{\"db\":\"ofrs_db\",\"table\":\"request_list\"},{\"db\":\"ofrs_db\",\"table\":\"municipalities\"},{\"db\":\"ofrs_db\",\"table\":\"inquiry_list\"},{\"db\":\"ofrs_db\",\"table\":\"history_list\"},{\"db\":\"ofrs_db\",\"table\":\"events_list\"}]');
+('root', '[{\"db\":\"ofrs_db\",\"table\":\"events_list\"},{\"db\":\"ofrs_db\",\"table\":\"history_list\"},{\"db\":\"phpmyadmin\",\"table\":\"pma__history\"},{\"db\":\"ofrs_db\",\"table\":\"inquiry_list\"},{\"db\":\"ofrs_db\",\"table\":\"request_list\"},{\"db\":\"ofrs_db\",\"table\":\"system_info\"},{\"db\":\"ofrs_db\",\"table\":\"team_list\"},{\"db\":\"ofrs_db\",\"table\":\"users\"}]');
 
 -- --------------------------------------------------------
 
@@ -632,13 +631,6 @@ CREATE TABLE `pma__table_uiprefs` (
   `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
 
---
--- Dumping data for table `pma__table_uiprefs`
---
-
-INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
-('root', 'ofrs_db', 'users', '{\"sorted_col\":\"`users`.`password` ASC\"}', '2024-11-07 14:58:04');
-
 -- --------------------------------------------------------
 
 --
@@ -675,7 +667,7 @@ CREATE TABLE `pma__userconfig` (
 --
 
 INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('root', '2024-11-07 15:51:13', '{\"Console\\/Mode\":\"collapse\"}');
+('root', '2024-11-05 23:39:46', '{\"Console\\/Mode\":\"collapse\"}');
 
 -- --------------------------------------------------------
 
