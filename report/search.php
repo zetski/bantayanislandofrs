@@ -18,9 +18,15 @@
 </div>
 <script>
     $(function(){
+        // Restrict special characters <, >, and /
+        $('#search').on('input', function () {
+            const sanitized = $(this).val().replace(/[<>\/]/g, '');
+            $(this).val(sanitized);
+        });
+
         $('#search-report').submit(function(e){
-            e.preventDefault()
-            location.href = "./?p=report/list&"+$(this).serialize();
-        })
-    })
+            e.preventDefault();
+            location.href = "./?p=report/list&" + $(this).serialize();
+        });
+    });
 </script>
