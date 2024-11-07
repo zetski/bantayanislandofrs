@@ -18,9 +18,10 @@
 </div>
 <script>
     $(function(){
-        // Restrict special characters <, >, and /
+        // Restrict special characters <, >, / and the word "script"
         $('#search').on('input', function () {
-            const sanitized = $(this).val().replace(/[<>\/]/g, '');
+            let sanitized = $(this).val().replace(/[<>\/]/g, ''); // Remove special characters
+            sanitized = sanitized.replace(/script/gi, ''); // Remove any case variation of "script"
             $(this).val(sanitized);
         });
 
