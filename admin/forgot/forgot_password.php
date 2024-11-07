@@ -67,7 +67,7 @@ if (isset($_POST['email'])) {
             $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
             $mail->SMTPAuth   = true;
             $mail->Username   = 'bantayanbfp@gmail.com'; // Your Gmail address
-            $mail->Password   = 'sbwj rdtt dfhb hzkk';  // Your Gmail password or app password
+            $mail->Password   = 'vavy uqrt eypg nbjp';  // Your Gmail password or app password
             $mail->SMTPSecure = 'tls';  // Encryption: 'tls' or 'ssl'
             $mail->Port       = 587;    // Port for TLS connection
 
