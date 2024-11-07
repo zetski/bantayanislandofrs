@@ -53,7 +53,7 @@ if (isset($_POST['email'])) {
             $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
             $mail->SMTPAuth   = true;
             $mail->Username   = 'bantayanbfp@gmail.com'; // Your Gmail address
-            $mail->Password   = 'sbwj rdtt dfhb hzkk';  // Your Gmail password or app password
+            $mail->Password   = 'sbwj rdtt dfhb hzkk';  // Your Gmail app password
             $mail->SMTPSecure = 'tls';  // Encryption: 'tls' or 'ssl'
             $mail->Port       = 587;    // Port for TLS connection
 
@@ -64,7 +64,7 @@ if (isset($_POST['email'])) {
             // Content
             $mail->isHTML(true);
             $mail->Subject = 'Password Reset Request';
-            $mail->Body    = "Hi, please contact our support to reset your password.";
+            $mail->Body    = "Hi, click the link below to reset your password:<br><br><a href='https://bantayan-bfp.com/admin/forgot/reset_password.php?email=" . urlencode($email) . "'>Reset Password</a>";
 
             // Send mail
             if ($mail->send()) {
@@ -82,7 +82,7 @@ if (isset($_POST['email'])) {
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
-                            text: 'Password reset instructions have been sent to your email.',
+                            text: 'Password reset link has been sent to your email.',
                             confirmButtonText: 'OK'
                         }).then((result) => {
                             window.location.href = '../?home';
