@@ -6,7 +6,8 @@ if (
     isset($_POST['password']) &&
     isset($_POST['password_confirm'])
 ) {
-    $email = $_POST['email'];
+    // Trim and lowercase email to avoid case and space issues
+    $email = trim(strtolower($_POST['email']));
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
@@ -38,25 +39,7 @@ if (
         exit;
     }
 
-    // Check if the email exists in the database
- /*   $query = "SELECT * FROM users WHERE LOWER(email) = LOWER(?)";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $users = $result->fetch_assoc();
-
-    if ($users) {
-        // Hash the new password using bcrypt
-        $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-        // Update the password in the database
-        $query = "UPDATE users SET pass = ? WHERE email = ?";
-        $stmt = $con->prepare($query);
-        $stmt->bind_param("ss", $newHashedPassword, $email);
-        if ($stmt->execute()) { */
-            // Password reset successful
-            // Fetch the user from the database based on the email
+    // Fetch the user from the database based on the email
     $query = "SELECT * FROM users WHERE email = ?";
     $stmt = $con->prepare($query);
 
