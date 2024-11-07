@@ -36,44 +36,46 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = sanitize_input($_POST['username']);
-    $password = sanitize_input($_POST['password']);
+  $username = sanitize_input($_POST['username']);
+  $password = sanitize_input($_POST['password']);
 
-    if (empty($username) || empty($password)) {
-        echo 'Invalid input';
-        exit;
-    }
+  if (empty($username) || empty($password)) {
+      echo 'Username or password cannot be empty.';
+      exit;
+  }
 
-    // Prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    $user = $result->fetch_assoc();
-    
-    $dummy_hash = password_hash("invalid_password", PASSWORD_DEFAULT);
-    $password_hash = $user ? $user['password'] : $dummy_hash;
+  // Prepared statement to prevent SQL injection
+  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $result = $stmt->get_result();
+  
+  $user = $result->fetch_assoc();
 
-    if (password_verify($password, $password_hash)) {
-        if ($user) {
-            // User authenticated successfully
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-            error_log("User logged in with district: " . $_SESSION['district']);
-            
-            echo 'Login successful';
-            exit;
-        } else {
-            echo 'Invalid credentials';
-        }
-    } else {
-        echo 'Invalid credentials';
-    }
+  // Use bcrypt for password hashing
+  $dummy_hash = password_hash("invalid_password", PASSWORD_BCRYPT);
+  $password_hash = $user ? $user['password'] : $dummy_hash;
 
-    $stmt->close();
+  if (password_verify($password, $password_hash)) {
+      if ($user) {
+          // User authenticated successfully
+          $_SESSION['user_id'] = $user['id'];
+          $_SESSION['username'] = $user['username'];
+          $_SESSION['district'] = $user['district'];
+          error_log("User logged in with district: " . $_SESSION['district']);
+          
+          echo 'Login successful';
+      } else {
+          echo 'Invalid credentials';
+      }
+  } else {
+      echo 'Invalid credentials';
+  }
+
+  $stmt->close();
+  $conn->close(); // Close the connection after the login process
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">
