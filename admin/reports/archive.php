@@ -126,36 +126,53 @@ if ($admin_district) {
     </table>
     <script>
     $(document).ready(function(){
-        $('.restore_data').click(function(){
-            var id = $(this).data('id');
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You want to restore this request?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, restore it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    restore_request(id);
-                }
-            });
+    $('.restore_data').click(function(){
+        var id = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to restore this request?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, restore it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                restore_request(id);
+            }
         });
-
-        $('.table').DataTable({
-            columnDefs: [
-                { orderable: false, targets: [6] } // Adjust index for action column
-            ],
-            order:[0,'asc']
-        });
-
-        $('.dataTable td,.dataTable th').addClass('py-1 px-2 align-middle');
     });
 
-    function restore_request(id) {
+    $('.delete_permanently').click(function(){
+        var id = $(this).data('id');
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This action cannot be undone. Do you want to permanently delete this request?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                delete_permanently(id);
+            }
+        });
+    });
+
+    $('.table').DataTable({
+        columnDefs: [
+            { orderable: false, targets: [6] } // Adjust index for action column
+        ],
+        order:[0,'asc']
+    });
+
+    $('.dataTable td,.dataTable th').addClass('py-1 px-2 align-middle');
+});
+
+function delete_permanently(id) {
     $.ajax({
-        url: _base_url_ + 'classes/Master.php?f=restore_request',
+        url: _base_url_ + 'classes/Master.php?f=delete_permanently',
         method: 'POST',
         data: { id: id },
         dataType: 'json',
@@ -164,18 +181,16 @@ if ($admin_district) {
         },
         success: function(resp) {
             end_loader();
-            if (resp.stats === 'success') {
-                // Determine the redirect page based on the 'deleted_from' value
-                let redirectPage = resp.deleted_from === 'index' ? 'index.php' : 'another_page.php'; // Adjust 'another_page.php' as needed
-                Swal.fire('Restored!', 'The request has been restored.', 'success').then(() => {
-                    window.location.href = _base_url_ + 'admin/' + redirectPage;
+            if (resp.status === 'success') {
+                Swal.fire('Deleted!', 'The request has been permanently deleted.', 'success').then(() => {
+                    location.reload(); // Refresh to show changes
                 });
             } else {
-                Swal.fire('Failed!', 'An error occurred.', 'error');
+                Swal.fire('Failed!', 'An error occurred while deleting.', 'error');
             }
         },
         error: function() {
-            Swal.fire('Failed!', 'An error occurred.', 'error');
+            Swal.fire('Failed!', 'An error occurred while deleting.', 'error');
             end_loader();
         }
     });
