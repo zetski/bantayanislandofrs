@@ -17,7 +17,7 @@
         html, body {
             height: 100%;
             font-family: Arial, sans-serif;
-            background-image: url('./officerimg/firebg.webp');
+            background-image: url('../officerimg/firebg.webp');
             background-size: cover;
             background-position: center;
             color: #333;
@@ -28,7 +28,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            background-color: transparent;
+            background-color: rgba(0, 0, 0, 0.6);
         }
 
         /* Header */
