@@ -49,8 +49,14 @@ if (
     $users = $result->fetch_assoc();
 
     if ($users) {
-        $hashedToken = $users['reset_token'];
-        $tokenExpiry = $users['token_expiry'];
+        $token = bin2hex(random_bytes(16)); // Generate a secure token
+        $hashedToken = password_hash($token, PASSWORD_BCRYPT);
+        $expiryTime = date("Y-m-d H:i:s", strtotime('+1 hour')); // Set expiry time, e.g., 1 hour from now
+
+        $query = "UPDATE users SET reset_token = ?, token_expiry = ? WHERE email = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("sss", $hashedToken, $expiryTime, $email);
+        $stmt->execute();
 
         // Check if token has expired
         if (new DateTime() > new DateTime($tokenExpiry)) {
