@@ -112,10 +112,13 @@ if ($admin_district) {
                 echo '<td>' . $subject_message . '</td>';
                 echo '<td>' . $address . '</td>';
                 echo '<td>
-                    <a class="dropdown-item restore_data" href="javascript:void(0)" data-id="' . $row['id'] . '">
-                        <span class="fa fa-undo text-success"></span> Restore
-                    </a>
-                </td>';
+                        <a class="dropdown-item restore_data" href="javascript:void(0)" data-id="' . $row['id'] . '">
+                            <span class="fa fa-undo text-success"></span> Restore
+                        </a>
+                        <a class="dropdown-item delete_permanently" href="javascript:void(0)" data-id="' . $row['id'] . '">
+                            <span class="fa fa-trash text-danger"></span> Delete Permanently
+                        </a>
+                    </td>';
                 echo '</tr>';
             }
             ?>
