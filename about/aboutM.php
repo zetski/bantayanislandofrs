@@ -87,7 +87,7 @@
             width: 100%;
             max-width: 500px;
             overflow: hidden;
-            background-color: transparent;
+            background-color: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
