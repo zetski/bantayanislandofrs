@@ -1,6 +1,9 @@
 <?php
 include "../../initialize.php"; // Include your database connection
 
+$status = ''; // Initialize status
+$message = ''; // Initialize message
+
 if (
     isset($_POST['email']) &&
     isset($_POST['token']) &&
@@ -14,103 +17,94 @@ if (
 
     // Check if passwords match
     if ($password !== $password_confirm) {
-        echo "<script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Passwords do not match.',
-                confirmButtonText: 'OK'
-            }).then(() => window.history.back());
-        </script>";
-        exit;
-    }
+        $status = 'error';
+        $message = 'Passwords do not match.';
+    } else {
+        // Fetch the hashed token and expiry time from the database
+        $query = "SELECT reset_token, token_expiry FROM users WHERE LOWER(email) = LOWER(?)";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-    // Fetch the hashed token and expiry time from the database
-    $query = "SELECT reset_token, token_expiry FROM users WHERE LOWER(email) = LOWER(?)";
-    $stmt = $con->prepare($query);
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+        if ($user) {
+            $hashedToken = $user['reset_token'];
+            $tokenExpiry = $user['token_expiry'];
 
-    if ($user) {
-        $hashedToken = $user['reset_token'];
-        $tokenExpiry = $user['token_expiry'];
+            // Check if token has expired
+            if (new DateTime() > new DateTime($tokenExpiry)) {
+                $status = 'error';
+                $message = 'This password reset link has expired.';
+            } else if (password_verify($token, $hashedToken)) {
+                // Token is valid, proceed with password update
+                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Check if token has expired
-        if (new DateTime() > new DateTime($tokenExpiry)) {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'This password reset link has expired.',
-                    confirmButtonText: 'OK'
-                }).then(() => window.location.href = 'https://bantayan-bfp.com/');
-            </script>";
-            exit;
-        }
+                // Update the password in the database
+                $query = "UPDATE users SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
+                $stmt = $con->prepare($query);
+                $stmt->bind_param("ss", $newHashedPassword, $email);
 
-        // Verify the token
-        if (password_verify($token, $hashedToken)) {
-            // Token is valid, proceed with password update
-            $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-            // Update the password in the database
-            $query = "UPDATE users SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
-            $stmt = $con->prepare($query);
-            $stmt->bind_param("ss", $newHashedPassword, $email);
-
-            if ($stmt->execute()) {
-                echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Your password has been reset successfully.',
-                        confirmButtonText: 'OK'
-                    }).then(() => window.location.href = 'https://bantayan-bfp.com/');
-                </script>";
+                if ($stmt->execute()) {
+                    $status = 'success';
+                    $message = 'Your password has been reset successfully.';
+                } else {
+                    $status = 'error';
+                    $message = 'Failed to reset your password. Please try again.';
+                }
             } else {
-                echo "<script>
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to reset your password. Please try again.',
-                        confirmButtonText: 'OK'
-                    }).then(() => window.history.back());
-                </script>";
+                $status = 'error';
+                $message = 'Invalid or expired token.';
             }
         } else {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Invalid or expired token.',
-                    confirmButtonText: 'OK'
-                }).then(() => window.location.href = 'https://bantayan-bfp.com/');
-            </script>";
+            $status = 'error';
+            $message = 'No user found with that email.';
         }
-    } else {
-        echo "<script>
+
+        // Close the statement and connection
+        $stmt->close();
+    }
+    $con->close();
+} else {
+    $status = 'error';
+    $message = 'Invalid request.';
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Reset Status</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Display alert based on PHP variables
+        const status = "<?php echo $status; ?>";
+        const message = "<?php echo $message; ?>";
+        
+        if (status === 'success') {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = 'https://bantayan-bfp.com/';
+            });
+        } else if (status === 'error') {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'No user found with that email.',
+                text: message,
                 confirmButtonText: 'OK'
-            }).then(() => window.location.href = 'https://bantayan-bfp.com/');
-        </script>";
-    }
-
-    // Close the statement and connection
-    $stmt->close();
-    $con->close();
-} else {
-    echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Invalid request.',
-            confirmButtonText: 'OK'
-        }).then(() => window.location.href = 'https://bantayan-bfp.com/');
-    </script>";
-}
-?>
+            }).then(() => {
+                window.history.back();
+            });
+        }
+    });
+</script>
+</body>
+</html>
