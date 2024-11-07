@@ -207,6 +207,36 @@
                         <h3>F01 Meljan Niño Salmasan</h3>
                         <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
                     </div>
+                    <div class="officer">
+                        <img src="../officerimg/lor.jpg" alt="Officer 2">
+                        <h3>F01 Loreto G Villacin Jr</h3>
+                        <h6>Admin Clerk / FSI / Shift B Crew / Nozzleman</h6>
+                    </div>
+                    <div class="officer">
+                        <img src="../officerimg/rex.jpg" alt="Officer 3">
+                        <h3>F01 Rex I Egnora</h3>
+                        <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
+                    </div>
+                    <div class="officer">
+                        <img src="../officerimg/ed.jpg" alt="Officer 2">
+                        <h3>F02 JR Ed E Villacampa</h3>
+                        <h6 style="font-size: 8px">C, Admin / Supply NCO / Investigator / Survivorship NCO / FSI</h6>
+                    </div>
+                    <div class="officer">
+                        <img src="../officerimg/ter.jpg" alt="Officer 2">
+                        <h3>F03 Teresito M Chavez Jr</h3>
+                        <h6>Chief / Operation / Chief, IIS</h6>
+                    </div>
+                    <div class="officer">
+                        <img src="../officerimg/gwen.jpg" alt="Officer 2">
+                        <h3>SF01 Gwendolyn P Placencia</h3>
+                        <h6>Chief, FSES / Collecting Agent</h6>
+                    </div>
+                    <div class="officer">
+                        <img src="../officerimg/ren.jpg" alt="Officer 2">
+                        <h3>SF03 Renato C Veliganio</h3>
+                        <h6>OIC, Municipal Fire Marshal</h6>
+                    </div>
                     <!-- Add other officers here similarly -->
                 </div>
             </div>
