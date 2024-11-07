@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>Bantayan Island BFP - Reset Password</title>
     <style>
     body {
         font-family: 'Poppins', sans-serif;
@@ -51,19 +51,22 @@
         font-size: 0.9em;
         color: #555;
     }
+    .reset-container input[type="email"], 
     .reset-container input[type="password"],
     .reset-container button {
         padding: 0.85em;
         border-radius: 6px;
         width: 100%;
-        box-sizing: border-box; /* Ensures padding and border are included in width */
+        box-sizing: border-box;
         margin-bottom: 1.2em;
     }
+    .reset-container input[type="email"], 
     .reset-container input[type="password"] {
         border: 1px solid #ddd;
         font-size: 0.95em;
         transition: border-color 0.3s;
     }
+    .reset-container input[type="email"]:focus,
     .reset-container input[type="password"]:focus {
         border-color: #007bff;
         outline: none;
@@ -80,22 +83,7 @@
     .reset-container button:hover {
         background-color: #0056b3;
     }
-    .reset-container .forgot-password {
-        background-color: #28a745;
-        color: white;
-        text-decoration: none;
-        padding: 0.7em 1.2em;
-        border-radius: 6px;
-        display: inline-block;
-        font-size: 0.9em;
-        margin-top: 0.8em;
-        transition: background-color 0.3s;
-    }
-    .reset-container .forgot-password:hover {
-        background-color: #218838;
-    }
-</style>
-
+    </style>
 </head>
 <body>
 
@@ -103,8 +91,8 @@
     <h2>Reset Your Password</h2>
     <p>Bantayan Island BFP</p>
     <form action="reset_password_process.php" method="POST">
-        <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
-        <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
+        <label for="email">Email Address:</label>
+        <input type="email" name="email" required placeholder="Enter your email">
 
         <label for="password">New Password:</label>
         <input type="password" name="password" required placeholder="Enter new password">
