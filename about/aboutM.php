@@ -239,22 +239,22 @@
                         <h6 style="font-size: 8px">Shift A Driver / Investigator / First Adviser / Operation Clerk / FSI</h6>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/ed.jpg" alt="Officer 2">
+                        <img src="../officerimg/ed.jpg" alt="Officer 4">
                         <h3>F02 JR Ed E Villacampa</h3>
                         <h6 style="font-size: 8px">C, Admin / Supply NCO / Investigator / Survivorship NCO / FSI</h6>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/ter.jpg" alt="Officer 2">
+                        <img src="../officerimg/ter.jpg" alt="Officer 5">
                         <h3>F03 Teresito M Chavez Jr</h3>
                         <h6>Chief / Operation / Chief, IIS</h6>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/gwen.jpg" alt="Officer 2">
+                        <img src="../officerimg/gwen.jpg" alt="Officer 6">
                         <h3>SF01 Gwendolyn P Placencia</h3>
                         <h6>Chief, FSES / Collecting Agent</h6>
                     </div>
                     <div class="officer">
-                        <img src="../officerimg/ren.jpg" alt="Officer 2">
+                        <img src="../officerimg/ren.jpg" alt="Officer 7">
                         <h3>SF03 Renato C Veliganio</h3>
                         <h6>OIC, Municipal Fire Marshal</h6>
                     </div>
@@ -282,7 +282,7 @@
             </div>
             <div class="contact-item">
                 <i class="fas fa-map-marker-alt"></i>
-                <span>Suba, Bantayan, Cebu</span>
+                <span>Poblacion, Bantayan, Cebu</span>
             </div>
         </footer>
     </div>
