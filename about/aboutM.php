@@ -29,7 +29,6 @@
             flex-direction: column;
             min-height: 100vh;
             background-color: transparent;
-            opacity: 50%;
         }
 
         /* Header */
@@ -88,7 +87,7 @@
             width: 100%;
             max-width: 500px;
             overflow: hidden;
-            background-color: white;
+            background-color: transparent;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
