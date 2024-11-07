@@ -29,6 +29,7 @@
             flex-direction: column;
             min-height: 100vh;
             background-color: transparent;
+            opacity: 50%;
         }
 
         /* Header */
