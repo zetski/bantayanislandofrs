@@ -53,13 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   
   $user = $result->fetch_assoc();
 
-  // Generate a dummy hash using bcrypt to prevent timing attacks
-  $dummy_hash = password_hash("invalid_password", PASSWORD_BCRYPT);
-  $password_hash = $user ? $user['password'] : $dummy_hash;
-
-  // Verify password using bcrypt
-  if (password_verify($password, $password_hash)) {
-      if ($user) {
+  if ($user) {
+      // Verify password using bcrypt
+      if (password_verify($password, $user['password'])) {
           // Start session if not already started
           if (session_status() == PHP_SESSION_NONE) {
               session_start();
@@ -76,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           echo 'Invalid credentials';
       }
   } else {
+      // User not found
       echo 'Invalid credentials';
   }
 
