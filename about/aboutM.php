@@ -193,6 +193,11 @@
                     <h3>F01 Meljan Niño Salmasan</h3>
                     <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
                 </div>
+                <div class="officer">
+                    <img src="../officerimg/mel.jpg" alt="Officer 1">
+                    <h3>F01 Meljan Niño Salmasan</h3>
+                    <h6>FSES Clerk / Shift A Crew / Nozzleman</h6>
+                </div>
                 <!-- Add other officers here similarly -->
             </div>
         </div>
