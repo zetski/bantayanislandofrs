@@ -1,5 +1,5 @@
 <?php
-include "../../../initialize.php"; // Include your database connection
+include "../../initialize.php"; // Include your database connection
 
 if (
     isset($_POST['email']) &&
@@ -62,7 +62,7 @@ if (
         $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
         // Update the password in the database
-        $query = "UPDATE users SET pass = ? WHERE email = ?";
+        $query = "UPDATE users SET password = ? WHERE email = ?";
         $stmt = $con->prepare($query);
         $stmt->bind_param("ss", $newHashedPassword, $email);
         if ($stmt->execute()) {
