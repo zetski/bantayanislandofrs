@@ -14,8 +14,9 @@
     <form action="" id="search-report">
         <div class="form-group">
             <label for="search" class="control-label">Search by (Request Code, Name, or Contact #)</label>
+            <!-- Alphanumeric only pattern -->
             <input type="text" class="form-control form-control-sm rounded-0" name="search" id="search" 
-                pattern="^[^<>]*$" title="Invalid characters detected. Please avoid using <, >, or any HTML tags." 
+                pattern="^[a-zA-Z0-9 ]*$" title="Only letters, numbers, and spaces are allowed." 
                 autocomplete="off" required>
         </div>
     </form>
@@ -29,17 +30,18 @@
 </div>
 
 <script>
-    document.getElementById("search").addEventListener("paste", (e) => e.preventDefault()); // Disable paste
+    // Disable paste to prevent pasting restricted characters
+    document.getElementById("search").addEventListener("paste", (e) => e.preventDefault());
 
     $(function() {
         $('#search-report').submit(function(e) {
             e.preventDefault();
             const searchInput = $('#search').val();
 
-            // More rigorous validation to block any input containing '<', '>', '/', or the word "script"
-            const forbiddenPatterns = /[<>\/]|script/i;
-            if (forbiddenPatterns.test(searchInput)) {
-                alert("Invalid input detected. Please avoid using special characters or HTML tags.");
+            // Validate against any non-alphanumeric characters
+            const forbiddenPattern = /[^a-zA-Z0-9 ]/;
+            if (forbiddenPattern.test(searchInput)) {
+                alert("Invalid input detected. Only letters, numbers, and spaces are allowed.");
                 return;
             }
 
