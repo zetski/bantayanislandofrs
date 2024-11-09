@@ -1,14 +1,30 @@
 <?php
-include "../../initialize.php";
+include "../../initialize.php"; // Include your database connection
 
-if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password_confirm'])) {
+if (
+    isset($_POST['email']) &&
+    isset($_POST['token']) &&
+    isset($_POST['password']) &&
+    isset($_POST['password_confirm'])
+) {
     $email = $_POST['email'];
     $token = $_POST['token'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
 
+    // Check if passwords match
     if ($password !== $password_confirm) {
-        echo "<script>
+        // Passwords do not match, display an error message using SweetAlert2
+        ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Passwords Do Not Match</title>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </head>
+        <body>
+            <script>
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -17,7 +33,10 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                 }).then(() => {
                     window.history.back();
                 });
-              </script>";
+            </script>
+        </body>
+        </html>
+        <?php
         exit;
     }
 
@@ -35,7 +54,17 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
 
         // Check if token has expired
         if (new DateTime() > new DateTime($tokenExpiry)) {
-            echo "<script>
+            // Token has expired
+            ?>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Token Expired</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
+                <script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -44,20 +73,36 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                     }).then(() => {
                         window.location.href = 'https://bantayan-bfp.com/';
                     });
-                  </script>";
+                </script>
+            </body>
+            </html>
+            <?php
             exit;
         }
 
         // Verify the token
         if (password_verify($token, $hashedToken)) {
+            // Token is valid, proceed with password update
+
+            // Hash the new password using bcrypt
             $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
             // Update the password in the database
-            $query = "UPDATE users SET password = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
+            $query = "UPDATE users SET pass = ?, reset_token = NULL, token_expiry = NULL WHERE email = ?";
             $stmt = $con->prepare($query);
             $stmt->bind_param("ss", $newHashedPassword, $email);
             if ($stmt->execute()) {
-                echo "<script>
+                // Password reset successful
+                ?>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Password Reset Successful</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
@@ -66,9 +111,22 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                         }).then(() => {
                             window.location.href = 'https://bantayan-bfp.com/';
                         });
-                      </script>";
+                    </script>
+                </body>
+                </html>
+                <?php
             } else {
-                echo "<script>
+                // Failed to reset password
+                ?>
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Error</title>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                </head>
+                <body>
+                    <script>
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
@@ -77,10 +135,23 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                         }).then(() => {
                             window.history.back();
                         });
-                      </script>";
+                    </script>
+                </body>
+                </html>
+                <?php
             }
         } else {
-            echo "<script>
+            // Invalid token
+            ?>
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <title>Invalid Token</title>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            </head>
+            <body>
+                <script>
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
@@ -89,10 +160,23 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                     }).then(() => {
                         window.location.href = 'https://bantayan-bfp.com/';
                     });
-                  </script>";
+                </script>
+            </body>
+            </html>
+            <?php
         }
     } else {
-        echo "<script>
+        // No user found with that email
+        ?>
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>User Not Found</title>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        </head>
+        <body>
+            <script>
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -101,13 +185,27 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
                 }).then(() => {
                     window.location.href = 'https://bantayan-bfp.com/';
                 });
-              </script>";
+            </script>
+        </body>
+        </html>
+        <?php
     }
 
+    // Close the statement and connection
     $stmt->close();
     $con->close();
 } else {
-    echo "<script>
+    // Invalid request
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Invalid Request</title>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
+    <body>
+        <script>
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -116,6 +214,9 @@ if (isset($_POST['email'], $_POST['token'], $_POST['password'], $_POST['password
             }).then(() => {
                 window.location.href = 'https://bantayan-bfp.com/';
             });
-          </script>";
+        </script>
+    </body>
+    </html>
+    <?php
 }
 ?>

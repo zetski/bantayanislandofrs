@@ -96,22 +96,25 @@
     }
 </style>
 
+</head>
 <body>
-    <div class="reset-container">
-        <h2>Reset Your Password</h2>
-        <p>Bantayan Island BFP</p>
-        <form action="reset_password_process.php" method="POST">
-            <input type="hidden" name="email" value="<?php echo htmlspecialchars($_GET['email']); ?>">
-            <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
 
-            <label for="password">New Password:</label>
-            <input type="password" name="password" required placeholder="Enter new password">
+<div class="reset-container">
+    <h2>Reset Your Password</h2>
+    <p>Bantayan Island BFP</p>
+    <form action="reset_password_process.php" method="POST">
+        <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
+        <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
 
-            <label for="password_confirm">Confirm Password:</label>
-            <input type="password" name="password_confirm" required placeholder="Confirm new password">
+        <label for="password">New Password:</label>
+        <input type="password" name="password" required placeholder="Enter new password">
 
-            <button type="submit">Reset Password</button>
-        </form>
-    </div>
+        <label for="password_confirm">Confirm Password:</label>
+        <input type="password" name="password_confirm" required placeholder="Confirm new password">
+
+        <button type="submit">Reset Password</button>
+    </form>
+</div>
+
 </body>
 </html>
