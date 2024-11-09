@@ -41,7 +41,7 @@
                                         <label for="email" class="form-label">Enter your email address</label>
                                         <input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary w-100"></button>
+                                    <button type="submit" class="btn btn-primary w-100">Submit</button>
                                 </form>
                                 <div class="text-center mt-3">
                                     <a href="../login.php" class="text-decoration-none">Back to Login</a>
