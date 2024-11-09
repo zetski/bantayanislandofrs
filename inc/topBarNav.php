@@ -4,7 +4,6 @@
     margin-left: 15px;
     margin: -10px;
   }
-
   /* Sidebar styling with formal hover effect */
   .sidebar {
     position: fixed;
@@ -12,54 +11,54 @@
     top: 0;
     width: 250px;
     height: 100%;
-    background-color: #333333;
+    background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
   }
 
   /* Style for the About Us Dropdown */
-  .nav-item .dropdown-menu {
-    background-color: #333333;
-    border: none;
-  }
+.nav-item .dropdown-menu {
+  background-color: #333333; /* Match sidebar background */
+  border: none;
+}
 
-  .nav-item .dropdown-menu .dropdown-item {
-    color: white;
-  }
+.nav-item .dropdown-menu .dropdown-item {
+  color: white; /* White text */
+}
 
-  .nav-item .dropdown-menu .dropdown-item:hover {
-    background-color: #ff4600;
-  }
+.nav-item .dropdown-menu .dropdown-item:hover {
+  background-color: #ff4600; /* Orange hover effect */
+}
 
-  /* Sidebar dropdown styling */
-  #sidebarAboutDropdown {
-    padding-top: 5px;
-    list-style: none;
-    padding-left: 20px;
-  }
 
-  #sidebarAboutDropdown li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
+/* Sidebar dropdown styling */
+#sidebarAboutDropdown {
+  padding-top: 5px;
+  list-style: none;
+  padding-left: 20px; /* Indent the dropdown items */
+}
 
-  #sidebarAboutDropdown li a:hover {
-    background-color: #ff4600;
-    color: #fff;
-  }
+#sidebarAboutDropdown li a {
+  color: #fff; /* White text */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#sidebarAboutDropdown li a:hover {
+  background-color: #ff4600; /* Formal orange hover background */
+  color: #fff;
+}
 
   .navbar-brand,
   .navbar-nav {
-    margin-left: -70px;
+    margin-left: -70px; /* Adjust this value to move more or less */
   }
 
-  .navbar-brand img {
+  .navbar-brand img{
     border-radius: 50%;
   }
-
   .sidebar.show {
     left: 0;
   }
@@ -75,48 +74,32 @@
   }
 
   .sidebar ul li a {
-    color: #fff;
+    color: #fff; /* White text */
     text-decoration: none;
     display: block;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.5rem; /* Adjusted padding for better spacing */
     font-size: 16px;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   /* Hover effect for sidebar items */
   .sidebar ul li a:hover {
-    background-color: #ff4600;
-    color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
   }
 
   /* Active state styling */
   .sidebar ul li a.active {
-    background-color: #ff4600;
-    color: #fff;
-    font-weight: bold;
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
   }
 
   /* Responsive for smaller devices */
   @media (max-width: 768px) {
     .sidebar ul {
       padding-top: 4rem;
-    }
-  }
-
-  /* High pixel density media query */
-  @media only screen and (-webkit-min-device-pixel-ratio: 2.75) {
-    /* Add specific styles for high-density screens */
-    .sidebar {
-      background-color: #222222;
-    }
-
-    .nav-item .dropdown-menu .dropdown-item:hover {
-      background-color: #e64a00;
-    }
-
-    #sidebarAboutDropdown li a:hover {
-      background-color: #e64a00;
     }
   }
 </style>
