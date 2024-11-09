@@ -102,7 +102,7 @@
 <div class="reset-container">
     <h2>Reset Your Password</h2>
     <p>Bantayan Island BFP</p>
-    <form action="../reset_password_process.php" method="POST">
+    <form action="reset_password_process.php" method="POST">
         <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
         <input type="hidden" name="token" value="<?php echo htmlspecialchars($token); ?>">
 
