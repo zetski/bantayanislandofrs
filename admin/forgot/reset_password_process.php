@@ -41,7 +41,7 @@ if (
     }
 
     // Fetch the hashed token and expiry time from the database
-    $query = "SELECT reset_token, token_expiry FROM users WHERE LOWER(email) = LOWER(?)";
+    $query = "SELECT reset_token, token_expiry FROM users WHERE LOWER(email) = LOWER('bantayanbfp@gmail.com')";
     $stmt = $con->prepare($query);
     $stmt->bind_param("s", $email);
     $stmt->execute();
