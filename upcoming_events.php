@@ -51,9 +51,9 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        .event-details .event-location {
+        /* .event-details .event-location {
             margin-bottom: 30%;
-        }
+        } */
         .carousel-dots {
             position: absolute;
             bottom: 20px;
