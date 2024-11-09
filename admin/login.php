@@ -36,64 +36,43 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+    $username = sanitize_input($_POST['username']);
+    $password = sanitize_input($_POST['password']);
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
-      exit;
-  }
+    if (empty($username) || empty($password)) {
+        echo 'Invalid input';
+        exit;
+    }
 
-  // Prepared statement to prevent SQL injection
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-  $stmt->bind_param("s", $username);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    // Prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    $user = $result->fetch_assoc();
+    
+    $dummy_hash = password_hash("invalid_password", PASSWORD_DEFAULT);
+    $password_hash = $user ? $user['password'] : $dummy_hash;
 
-  $user = $result->fetch_assoc();
+    if (password_verify($password, $password_hash)) {
+        if ($user) {
+            // User authenticated successfully
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['district'] = $user['district'];
+            error_log("User logged in with district: " . $_SESSION['district']);
+            
+            echo 'Login successful';
+            exit;
+        } else {
+            echo 'Invalid credentials';
+        }
+    } else {
+        echo 'Invalid credentials';
+    }
 
-  if ($user) {
-      $storedHash = $user['password'];
-
-      // Check if the password is in MD5 format (32 characters long)
-      if (strlen($storedHash) == 32) {
-          // Verify with MD5 first
-          if (md5($password) === $storedHash) {
-              // Re-hash the password with password_hash for future logins
-              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-              $updateStmt->bind_param("ss", $newHashedPassword, $username);
-              $updateStmt->execute();
-              $updateStmt->close();
-
-              // Set session variables after successful login
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      } else {
-          // Verify with password_verify for bcrypt or any other compatible algorithm
-          if (password_verify($password, $storedHash)) {
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      }
-  } else {
-      echo 'Invalid credentials';
-  }
-
-  $stmt->close();
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
