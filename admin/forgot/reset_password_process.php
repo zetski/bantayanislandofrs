@@ -55,9 +55,9 @@ if (
     }
 
     $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+    $users = $result->fetch_assoc();
 
-    if ($user) {
+    if ($users) {
         // Hash the new password using bcrypt
         $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
