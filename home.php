@@ -62,9 +62,9 @@
                                 <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
                             </center>
                             <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
-                            <!-- <div>
+                            <div>
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
-                            </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>
