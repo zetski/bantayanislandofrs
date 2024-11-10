@@ -1,4 +1,9 @@
 <style>
+  /* General padding to account for fixed navbar */
+  body {
+      padding-top: 60px; /* Adjust padding based on navbar height */
+  }
+
   /* Button style adjustments */
   button[type="button"] {
     background-color: transparent !important;
