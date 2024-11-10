@@ -1,35 +1,45 @@
-<style>
-    body {
-        padding-top: 10px;
-        margin-top: 40px;
-    }
-    .carousel-item > img {
-        object-fit: cover;
-        width: 100%;
-        height: 20em; /* Adjust the height to your desired value */
-    }
-    #carouselExampleControls .carousel-inner {
-        height: 20em; /* Match this to the image height */
-    }
-    @media (max-width: 768px) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Carousel Example</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            padding-top: 10px;
+            margin-top: 40px;
+        }
         .carousel-item > img {
-            height: 15em; /* Reduced height for smaller screens */
+            object-fit: cover;
+            width: 100%;
+            height: 20em; /* Adjust the height to your desired value */
         }
         #carouselExampleControls .carousel-inner {
-            height: 15em;
+            height: 20em; /* Match this to the image height */
         }
-    }
-    .btn {
-        color: #fff;
-        margin-top: 20px;
-        background-color: #f46000;
-    }
-    .btn:focus, .btn:hover {
-        outline: none;
-        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-    }
-</style>
-
+        @media (max-width: 768px) {
+            .carousel-item > img {
+                height: 15em; /* Reduced height for smaller screens */
+            }
+            #carouselExampleControls .carousel-inner {
+                height: 15em;
+            }
+        }
+        .btn {
+            color: #fff;
+            margin-top: 20px;
+            background-color: #f46000;
+        }
+        .btn:focus, .btn:hover {
+            outline: none;
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+    </style>
+</head>
+<body>
 <section class="py-3">
     <div class="container">
         <div class="row">
@@ -38,8 +48,8 @@
                     <div class="carousel-inner">
                         <?php 
                             $upload_path = "uploads/banner";
-                            if (is_dir(base_app . $upload_path)): 
-                                $file = scandir(base_app . $upload_path);
+                            if (is_dir($upload_path)): 
+                                $file = scandir($upload_path);
                                 $_i = 0;
                                 foreach ($file as $img):
                                     if (in_array($img, array('.', '..')))
@@ -47,7 +57,7 @@
                                     $_i++;
                         ?>
                         <div class="carousel-item <?php echo $_i == 1 ? 'active' : '' ?>">
-                            <img src="<?php echo validate_image($upload_path . '/' . $img) ?>" class="d-block w-100" alt="<?php echo $img ?>">
+                            <img src="<?php echo $upload_path . '/' . $img ?>" class="d-block w-100" alt="<?php echo $img ?>">
                         </div>
                         <?php endforeach; ?>
                         <?php endif; ?>
@@ -71,7 +81,9 @@
                             <center>
                                 <hr class="bg-navy opacity-100" style="width:8em;height:3px;">
                             </center>
-                            <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
+                            <?php
+                                echo file_get_contents('./welcome.html');
+                            ?>
                             <div class="text-center mt-3">
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
                             </div>
@@ -82,3 +94,10 @@
         </div>
     </div>
 </section>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
