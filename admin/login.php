@@ -3,90 +3,142 @@ require_once('../config.php');
 
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
-header("X-Content-Type-Options: nosniff");
-header("X-Frame-Options: SAMEORIGIN");
-header("X-XSS-Protection: 1; mode=block");
-header("Referrer-Policy: no-referrer-when-downgrade");
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
+header("X-Frame-Options: SAMEORIGIN"); // Prevent clickjacking
+header("X-XSS-Protection: 1; mode=block"); // Enable XSS filtering
+header("Referrer-Policy: no-referrer-when-downgrade"); // Control referrer information
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Require HTTPS (HSTS)
 
 // Start the session with HttpOnly and Secure cookie settings
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 1);
-ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_httponly', 1); // Prevent JavaScript access to session cookie
+ini_set('session.cookie_secure', 1); // Ensure cookies are only sent over HTTPS
+ini_set('session.use_only_cookies', 1); // Only use cookies for sessions, no URL parameters
 session_start();
 
+// Sanitize and validate input
 function sanitize_input($input) {
     $input = strip_tags($input);
-    return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+    $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+    
+    // Disallow dangerous symbols and the word "script"
+    $disallowed_symbols = ['<', '>', '/', '"', "'"];
+    foreach ($disallowed_symbols as $symbol) {
+        if (strpos($input, $symbol) !== false) {
+            return '';
+        }
+    }
+
+    if (preg_match('/script/i', $input)) {
+        return '';
+    }
+
+    return $input;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = sanitize_input($_POST['username']);
-    $password = sanitize_input($_POST['password']);
+  $username = sanitize_input($_POST['username']);
+  $password = sanitize_input($_POST['password']);
 
-    if (empty($username) || empty($password)) {
-        echo 'Invalid input';
-        exit;
-    }
+  if (empty($username) || empty($password)) {
+      echo 'Invalid input';
+      exit;
+  }
 
-    // Verify reCAPTCHA
-    if (isset($_POST['g-recaptcha-response'])) {
-        $recaptcha_secret = 'YOUR_SECRET_KEY_HERE';
-        $recaptcha_response = $_POST['g-recaptcha-response'];
+  // Prepared statement to prevent SQL injection
+  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-        $verify_url = "https://www.google.com/recaptcha/api/siteverify";
-        $data = [
-            'secret' => $recaptcha_secret,
-            'response' => $recaptcha_response
-        ];
-        
-        $ch = curl_init($verify_url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        $response = curl_exec($ch);
-        curl_close($ch);
+  $user = $result->fetch_assoc();
 
-        $response_data = json_decode($response);
+  if ($user) {
+      $storedHash = $user['password'];
 
-        if (!$response_data->success) {
-            echo 'reCAPTCHA verification failed';
-            exit;
-        }
-    } else {
-        echo 'Please complete the reCAPTCHA';
-        exit;
-    }
+      // Check if the password is in MD5 format (32 characters long)
+      if (strlen($storedHash) == 32) {
+          // Verify with MD5 first
+          if (md5($password) === $storedHash) {
+              // Re-hash the password with password_hash for future logins
+              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+              $updateStmt->bind_param("ss", $newHashedPassword, $username);
+              $updateStmt->execute();
+              $updateStmt->close();
 
-    // Prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+              // Set session variables after successful login
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      } else {
+          // Verify with password_verify for bcrypt or any other compatible algorithm
+          if (password_verify($password, $storedHash)) {
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      }
+  } else {
+      echo 'Invalid credentials';
+  }
 
-    $user = $result->fetch_assoc();
-
-    if ($user) {
-        $storedHash = $user['password'];
-
-        if (password_verify($password, $storedHash)) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-            echo 'Login successful';
-            exit;
-        } else {
-            echo 'Invalid credentials';
-        }
-    } else {
-        echo 'Invalid credentials';
-    }
-    $stmt->close();
+  $stmt->close();
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
+  <script>
+    start_loader()
+  </script>
+  <style>
+    body {
+        background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
+        background-size: cover; /* Ensure the image covers the entire background */
+        background-position: center; /* Center the image */
+        background-repeat: no-repeat; /* Prevent repeating the image */
+        backdrop-filter: contrast(1);
+        height: 100vh; /* Ensure body takes full viewport height */
+        margin: 0; /* Remove default margin */
+    }
+    #page-title {
+        text-shadow: 6px 4px 7px black;
+        font-size: 3.5em;
+        color: #fff4f4 !important;
+    }
+    .login-box {
+        margin: auto; /* Center the login box */
+        max-width: 400px; /* Set a max width for the login box */
+        width: 90%; /* Allow it to be responsive */
+    }
+
+    /* Media queries for responsive design */
+    @media (max-width: 768px) {
+        #page-title {
+            font-size: 2.5em; /* Reduce title size on smaller screens */
+        }
+        .login-box {
+            width: 95%; /* Make the login box wider on smaller screens */
+        }
+    }
+    @media (max-width: 480px) {
+        #page-title {
+            font-size: 2em; /* Further reduce title size on very small screens */
+        }
+    }
+</style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
     <div class="card card-danger my-2">
@@ -94,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username">
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -109,9 +161,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <!-- reCAPTCHA widget -->
-          <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE"></div>
           <div class="row">
+            <div class="col-8">
+              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
+            </div>
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
@@ -124,10 +177,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 
-  <!-- Load reCAPTCHA API script -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <!-- Scripts -->
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="dist/js/adminlte.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      end_loader();
+    });
+
+    // Automatically remove disallowed characters as they are typed
+    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    // Toggle password visibility
+    $('#toggle-password').on('click', function() {
+        let passwordField = $('#password');
+        let passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
+
+    // Disable inspect element and right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
+</script>
 </body>
 </html>
