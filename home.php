@@ -78,12 +78,10 @@
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
-                            <center>
+                        <center>
                                 <hr class="bg-navy opacity-100" style="width:8em;height:3px;">
                             </center>
-                            <?php
-                                echo file_get_contents('./welcome.html');
-                            ?>
+                            <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
                             <div class="text-center mt-3">
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
                             </div>
