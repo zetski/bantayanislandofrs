@@ -165,8 +165,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="col-8">
               <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
             </div>
-            <!-- reCAPTCHA -->
-            <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY_HERE"></div>
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
@@ -180,7 +178,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 
   <!-- Scripts -->
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="dist/js/adminlte.min.js"></script>
@@ -221,38 +218,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate input
-    $username = sanitize_input($_POST['username']);
-    $password = sanitize_input($_POST['password']);
-    
-    // Check if reCAPTCHA response is present
-    if (isset($_POST['g-recaptcha-response'])) {
-        $recaptcha_secret = 'YOUR_SECRET_KEY_HERE';
-        $recaptcha_response = $_POST['g-recaptcha-response'];
-
-        // Verify reCAPTCHA
-        $verify_url = "https://www.google.com/recaptcha/api/siteverify?secret=$recaptcha_secret&response=$recaptcha_response";
-        $response = file_get_contents($verify_url);
-        $response_data = json_decode($response);
-
-        if (!$response_data->success) {
-            echo 'reCAPTCHA verification failed';
-            exit;
-        }
-    } else {
-        echo 'Please complete the reCAPTCHA';
-        exit;
-    }
-
-    // Continue with login processing if reCAPTCHA is verified
-    if (empty($username) || empty($password)) {
-        echo 'Invalid input';
-        exit;
-    }
-    
-    // (Existing login validation code)
-}
 </script>
 </body>
 </html>
