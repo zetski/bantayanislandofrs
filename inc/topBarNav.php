@@ -117,20 +117,19 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
         <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
-        <li class="nav-item"><a class="nav-link text-white" id="search_report" href="javascript:void(0)">View Status</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./search.php">View Status</a></li> <!-- Link updated -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             About Us
           </a>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-          <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
-          <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
-          <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
-        </ul>
-</li>
-        <!-- <li class="nav-item"><a class="nav-link text-white" href="./?p=contact">Contact Us</a></li> -->
-         <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
-         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
+            <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
+            <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
+            <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
+        <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
       </ul>
       <div class="d-flex align-items-center">
         <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
@@ -138,13 +137,12 @@
     </div>
   </div>
 </nav>
-
 <!-- Sidebar content -->
 <div class="sidebar" id="sidebarMenu">
   <ul>
     <li><a href="./">Home</a></li>
     <li><a href="./?p=report">Report</a></li>
-    <li><a href="javascript:void(0)" id="search_report_sidebar">View Status</a></li>
+    <li><a href="./search.php">View Status</a></li>
     <!-- sidebar dropdown about us -->
     <li class="nav-item">
       <a href="javascript:void(0)" class="nav-link text-white" id="aboutSidebarDropdown" data-bs-toggle="collapse" data-bs-target="#sidebarAboutDropdown" aria-expanded="false">
@@ -182,8 +180,8 @@ $(document).ready(function() {
     });
 
     // Modal for search report
-    $('#search_report, #search_report_sidebar').click(function() {
-      uni_modal("Search Request Report", "report/search.php");
-    });
-  });
+  //   $('#search_report, #search_report_sidebar').click(function() {
+  //     uni_modal("Search Request Report", "report/search.php");
+  //   });
+  // });
 </script>
