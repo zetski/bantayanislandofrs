@@ -4,10 +4,12 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('config.php'); // Ensure the config file path is correct
-require_once('../../initialize.php');
+require_once('../config.php'); // Ensure the config file path is correct
 
-session_start();
+// Check if session is not active, then start the session
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 $error = ""; // Initialize error message
 
