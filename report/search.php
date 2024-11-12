@@ -1,5 +1,14 @@
 <style>
-    /* Running text styling */
+    #uni_modal .modal-footer {
+        display: none !important;
+    }
+
+    /* Styling for the running text */
+    #runningTextContainer {
+        position: relative;
+        margin-bottom: 10px; /* Space between running text and search form */
+    }
+
     #runningText {
         width: 100%;
         overflow: hidden;
@@ -7,19 +16,18 @@
         font-size: 1rem;
         color: #343a40;
         background-color: #ffebb7;
-        padding: 5px;
-        border-radius: 5px;
+        padding: 10px;
         font-weight: bold;
         text-align: center;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1; /* Ensure it stays in the background */
+        position: relative;
+        z-index: 10; /* Ensures it stays on top of other modal content */
     }
+
     .marquee {
         display: inline-block;
         animation: scroll 15s linear infinite;
     }
+
     @keyframes scroll {
         from {
             transform: translateX(100%);
@@ -31,10 +39,12 @@
 </style>
 
 <!-- Running Text Background for Modal -->
-<div id="runningText">
-    <span id="marqueeText" class="marquee">
-        <!-- The text content will be dynamically updated -->
-    </span>
+<div id="runningTextContainer">
+    <div id="runningText">
+        <span id="marqueeText" class="marquee">
+            <!-- The text content will be dynamically updated -->
+        </span>
+    </div>
 </div>
 
 <div class="container-fluid">
@@ -78,3 +88,4 @@
         });
     });
 </script>
+
