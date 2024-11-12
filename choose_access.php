@@ -56,7 +56,7 @@ if (isset($_SESSION['role'])) {
         <h2>Welcome to the Website</h2>
         <p>Please choose how you'd like to continue:</p>
         <button class="btn guest-btn" onclick="window.location.href='./set_guest.php'">Continue as Guest</button>
-        <button class="btn admin-btn" onclick="window.location.href='admin_login.php'">Login as Admin</button>
+        <button class="btn admin-btn" onclick="window.location.href='./admin'">Login as Admin</button>
     </div>
 </body>
 </html>

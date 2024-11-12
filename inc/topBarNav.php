@@ -110,7 +110,7 @@ session_start();
             <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
                     <!-- Show Login link for admin only -->
-                    <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="logout.php">Logout</a>
+                    <!-- <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="logout.php">Logout</a> -->
                 <?php endif; ?>
             </div>
         </div>
