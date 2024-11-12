@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         send_verification_code($email); // Implement this to send a code
         $_SESSION['pending_verification'] = true;
         $_SESSION['admin_email'] = $email;
-        header("Location: verify_email.php"); // Redirect to email verification page
+        header("Location: ./verify_email.php"); // Redirect to email verification page
         exit;
     } else {
         $error = "Invalid admin email.";
