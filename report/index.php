@@ -54,8 +54,7 @@ function sanitizeInput($data) {
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
-                        <?php if($_settings->chk_flashdata('request_sent')): ?>
-                            <?php echo "<script>console.log('Request sent: " . $_settings->flashdata('request_sent') . "');</script>"; ?>
+                            <?php if($_settings->chk_flashdata('request_sent')): ?>
                             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                             <script>
                                 Swal.fire({
@@ -63,11 +62,9 @@ function sanitizeInput($data) {
                                     title: 'Success!',
                                     html: 'Your report has been sent successfully. Your request code id: <b><?= $_settings->flashdata('request_sent') ?></b>',
                                     showConfirmButton: true,
-                                    confirmButtonColor: '#3085d6', // Customize the OK button color here
-                                    confirmButtonText: 'OK'
                                 });
                             </script>
-                        <?php endif; ?>
+                            <?php endif;?>
                             <form action="" id="request-form" enctype="multipart/form-data">
                                 <input type="hidden" name="id">
                                 
