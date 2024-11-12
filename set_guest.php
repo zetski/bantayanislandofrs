@@ -1,6 +1,6 @@
 <?php
 session_start();
 $_SESSION['role'] = 'guest';
-header("Location: ./home.php");
+header("Location: index.php");
 exit;
 ?>
