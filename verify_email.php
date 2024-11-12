@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = "Please enter a valid email.";
     } else {
         // Check if the email exists in the database for an admin user
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND email = 'admin'");
+        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND role = 'admin'");
         if ($stmt) {
             $stmt->bind_param("s", $email);
             $stmt->execute();
