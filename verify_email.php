@@ -5,6 +5,7 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('config.php'); // Ensure the config file path is correct
+require_once('../../initialize.php');
 
 session_start();
 
