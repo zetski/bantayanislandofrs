@@ -117,7 +117,7 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
         <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
         <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./search.php">View Status</a></li> <!-- Link updated -->
+        <li class="nav-item"><a class="nav-link text-white" href="./?p=search">View Status</a></li> <!-- Link updated -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle text-white" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             About Us
