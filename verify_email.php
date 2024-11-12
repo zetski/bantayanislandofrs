@@ -1,32 +1,4 @@
-<?php
-require_once('../config.php');
-session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Sanitize and validate the email
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Please enter a valid email.";
-    } else {
-        // Check if the email exists in the database for an admin user
-        $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND role = 'admin'");
-        $stmt->bind_param("s", $email);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $_SESSION['email_verified'] = true;
-            header("Location: login.php");
-            exit;
-        } else {
-            $error = "Admin email not found.";
-        }
-        
-        $stmt->close();
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html lang="en">
