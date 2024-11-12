@@ -5,6 +5,7 @@ $admin_district = $_settings->userdata('district'); // Get the admin's district
 
 // Modify the SQL query to filter by the municipality for the Bantayan District admin
 if ($from_date && $to_date) {
+    // $requests = $conn->query("SELECT * FROM `request_list` WHERE municipality = '{$admin_district}' AND date(date_created) BETWEEN '{$from_date}' AND '{$to_date}' ORDER BY abs(unix_timestamp(date_created)) asc ");
     $requests = $conn->query("SELECT * FROM `request_list` WHERE municipality = '{$admin_district}' AND status != 5 AND date(date_created) BETWEEN '{$from_date}' AND '{$to_date}' ORDER BY abs(unix_timestamp(date_created)) ASC");
 } else {
     $requests = $conn->query("SELECT * FROM `request_list` WHERE municipality = '{$admin_district}' ORDER BY abs(unix_timestamp(date_created)) asc ");
