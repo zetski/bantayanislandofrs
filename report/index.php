@@ -62,6 +62,8 @@ function sanitizeInput($data) {
                                     title: 'Success!',
                                     html: 'Your report has been sent successfully. Your request code id: <b><?= $_settings->flashdata('request_sent') ?></b>',
                                     showConfirmButton: true,
+                                    confirmButtonColor: '#3085d6';
+                                    confirmButtonText: 'OK';
                                 });
                             </script>
                             <?php endif;?>
