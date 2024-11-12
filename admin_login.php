@@ -1,13 +1,40 @@
 <?php
 session_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once('config.php'); // Ensure your DB connection is available here
+
+function is_admin_email($email) {
+    global $conn;
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->num_rows > 0; // Returns true if email exists in database
+}
+
+function send_verification_code($email) {
+    $verification_code = rand(100000, 999999); // Generate a random 6-digit code
+    $_SESSION['verification_code'] = $verification_code; // Store it in the session for now
+
+    $subject = "Your Verification Code";
+    $message = "Your verification code is: $verification_code";
+    $headers = "From: no-reply@example.com";
+
+    if (!mail($email, $subject, $message, $headers)) {
+        throw new Exception("Failed to send email");
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
-    // Check if email belongs to an admin
-    if (is_admin_email($email)) { // Implement this function for email validation
-        send_verification_code($email); // Implement this to send a code
+    if (is_admin_email($email)) {
+        send_verification_code($email);
         $_SESSION['pending_verification'] = true;
         $_SESSION['admin_email'] = $email;
-        header("Location: ./verify_email.php"); // Redirect to email verification page
+        header("Location: verify_email.php");
         exit;
     } else {
         $error = "Invalid admin email.";
