@@ -88,10 +88,16 @@ function sanitizeInput($data) {
                                     <input type="text" class="form-control form-control-sm rounded-0" name="contact" id="contact" required="required" maxlength="11" pattern="\d{11}" title="Please enter 11 digits">
                                 </div>
 
-                                <!-- Subject -->
+                               <!-- Subject Dropdown -->
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
                                     <label for="subject" class="control-label">Subject <small class="text-danger">*</small></label>
-                                    <input type="text" class="form-control form-control-sm rounded-0" name="subject" id="subject" required="required">
+                                    <select class="form-control form-control-sm rounded-0" name="subject" id="subject" required="required">
+                                        <option value="">Select Disaster Type</option>
+                                        <option value="Fire">Fire</option>
+                                        <option value="Flood">Flood</option>
+                                        <option value="Landslide">Landslide</option>
+                                        <option value="Earthquake">Earthquake</option>
+                                    </select>
                                 </div>
 
                                 <!-- Message -->
