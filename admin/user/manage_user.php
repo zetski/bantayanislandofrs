@@ -54,14 +54,10 @@ if(isset($_GET['id'])){
 
 				<div class="form-group">
 					<label for="password"><?= isset($meta['id']) ? "New" : "" ?> Password</label>
-					<input type="password" name="password" id="password" class="form-control" minlength="8" autocomplete="off">
-					<?php if(isset($meta['id'])): ?>
+					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off">
+                    <?php if(isset($meta['id'])): ?>
 					<small><i>Leave this blank if you don't want to change the password.</i></small>
-					<?php endif; ?>
-				</div>
-				<div class="form-group">
-					<label for="confirm_password">Confirm Password</label>
-					<input type="password" name="confirm_password" id="confirm_password" class="form-control" minlength="8" autocomplete="off">
+                    <?php endif; ?>
 				</div>
                 <div class="form-group">
                     <label for="type" class="control-label">Type</label>
@@ -101,24 +97,6 @@ if(isset($_GET['id'])){
 	}
 </style>
 <script>
-	document.getElementById('manage-user').addEventListener('submit', function(e) {
-        // Get password and confirm password values
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirm_password').value;
-
-        // Check if password meets the length requirement and matches confirm password
-        if (password.length > 0 && (password.length < 8 || password !== confirmPassword)) {
-            e.preventDefault(); // Prevent form submission
-            let errorMessage = '';
-            if (password.length < 8) {
-                errorMessage += 'Password must be at least 8 characters long.\n';
-            }
-            if (password !== confirmPassword) {
-                errorMessage += 'Passwords do not match.';
-            }
-            alert(errorMessage); // Show error message
-        }
-    });
 	function displayImg(input,_this) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
