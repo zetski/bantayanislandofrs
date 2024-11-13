@@ -46,7 +46,7 @@ if(isset($_GET['id'])){
 						</select>
 					</div>
 					<div class="form-group col-md-6">
-						<label for="email">Email</label>
+						<label for="email" placeholder="email@gmail.com">Email</label>
 						<input type="email" name="email" id="email" class="form-control" value="<?php echo isset($meta['email']) ? $meta['email']: '' ?>" required>
 					</div>
 				</div>
