@@ -54,11 +54,15 @@ if(isset($_GET['id'])){
 
 				<div class="form-group">
 					<label for="password"><?= isset($meta['id']) ? "New" : "" ?> Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off">
+					<input type="password" name="password" id="password" class="form-control" autocomplete="off" placeholder="8-12 alphanumeric characters">
                     <?php if(isset($meta['id'])): ?>
 					<small><i>Leave this blank if you don't want to change the password.</i></small>
                     <?php endif; ?>
 				</div>
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="form-control" autocomplete="off">
+                </div>
                 <div class="form-group">
                     <label for="type" class="control-label">Type</label>
                     <select name="type" id="type" class="form-control form-control-sm rounded-0" required>
@@ -88,6 +92,7 @@ if(isset($_GET['id'])){
 			</div>
 		</div>
 </div>
+
 <style>
 	img#cimg{
 		height: 15vh;
@@ -96,6 +101,10 @@ if(isset($_GET['id'])){
 		border-radius: 100% 100%;
 	}
 </style>
+
+<!-- SweetAlert Library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script>
 	function displayImg(input,_this) {
 	    if (input.files && input.files[0]) {
@@ -109,25 +118,51 @@ if(isset($_GET['id'])){
 			$('#cimg').attr('src', "<?php echo validate_image(isset($meta['avatar']) ? $meta['avatar'] :'') ?>");
 		}
 	}
+
 	$('#manage-user').submit(function(e){
 		e.preventDefault();
-		start_loader()
+		const password = $('#password').val();
+		const confirmPassword = $('#confirm_password').val();
+
+		// Check if the password is alphanumeric and between 8-12 characters
+		const passwordPattern = /^[a-zA-Z0-9]{8,12}$/;
+		if (!passwordPattern.test(password)) {
+			Swal.fire({
+				icon: 'error',
+				title: 'Invalid Password',
+				text: 'Password must be 8-12 alphanumeric characters only.',
+			});
+			return;
+		}
+
+		// Check if the passwords match
+		if (password !== confirmPassword) {
+			Swal.fire({
+				icon: 'error',
+				title: 'Passwords Do Not Match',
+				text: 'Please make sure both passwords are identical.',
+			});
+			return;
+		}
+
+		// Proceed with AJAX submission if validation passes
+		start_loader();
 		$.ajax({
-			url:_base_url_+'classes/Users.php?f=save',
+			url: _base_url_ + 'classes/Users.php?f=save',
 			data: new FormData($(this)[0]),
-		    cache: false,
-		    contentType: false,
-		    processData: false,
-		    method: 'POST',
-		    type: 'POST',
-			success:function(resp){
-				if(resp ==1){
-					location.href='./?page=user/list'
-				}else{
-					$('#msg').html('<div class="alert alert-danger">Username already exists</div>')
-					end_loader()
+			cache: false,
+			contentType: false,
+			processData: false,
+			method: 'POST',
+			type: 'POST',
+			success: function(resp) {
+				if (resp == 1) {
+					location.href = './?page=user/list';
+				} else {
+					$('#msg').html('<div class="alert alert-danger">Username already exists</div>');
+					end_loader();
 				}
 			}
-		})
-	})
+		});
+	});
 </script>
