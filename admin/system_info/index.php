@@ -89,18 +89,7 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 	<br>
-									<!-- District Logo Input -->
-					<!-- <div class="form-group">
-						<label for="" class="control-label">District Logo</label>
-						<div class="custom-file">
-							<input type="file" class="custom-file-input rounded-circle" id="districtLogoInput" name="district_logo" onchange="displayDistrictLogo(this,$(this))">
-							<label class="custom-file-label" for="districtLogoInput">Choose file</label>
-						</div>
-					</div>
-						<div class="form-group d-flex justify-content-center">
-						<img src="</?php echo validate_image($_settings->info('district_logo')) ?>" alt="" id="districtLogo" class="img-fluid img-thumbnail">
-					</div>
-					 -->
+									
 					<!-- Officers Edit Section -->
 					<div class="card card-outline rounded-0 card-info mt-4">
 						<div class="card-header">
@@ -147,6 +136,16 @@
 	</div>
 
 	<script>
+		function displayOfficerImg(input, _this) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function (e) {
+					$('#officer_img_preview').attr('src', e.target.result);
+					_this.siblings('.custom-file-label').html(input.files[0].name);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+}
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
