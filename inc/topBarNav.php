@@ -120,7 +120,7 @@ session_start();
 <!-- Sidebar -->
 <div class="sidebar" id="sidebarMenu">
     <ul>
-        <li><a href="./">Home</a></li>
+        <li><a href="./choose_access.php">Home</a></li>
         <li><a href="./?p=report">Report</a></li>
         <li><a href="javascript:void(0)" id="search_report_sidebar">View Status</a></li>
         <li>
