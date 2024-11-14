@@ -88,9 +88,22 @@
 					</div>
 					<?php endforeach; ?>
 					<?php endif; ?>
-				<br>
-					    <!-- Officers Management Section -->
-    <div class="card card-outline rounded-0 card-danger mt-3">
+	<br>
+									
+				</form>
+			</div>
+			<div class="card-footer">
+				<div class="col-md-12">
+					<div class="row">
+						<button class="btn btn-sm btn-primary" form="system-frm">Update</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	    <!-- Officers Management Section -->
+		<div class="card card-outline rounded-0 card-danger mt-3">
         <div class="card-header">
             <h5 class="card-title">Officers Management</h5>
         </div>
@@ -136,20 +149,25 @@
             </div>
         </div>
     </div>
-</div>		
-				</form>
-			</div>
-			<div class="card-footer">
-				<div class="col-md-12">
-					<div class="row">
-						<button class="btn btn-sm btn-primary" form="system-frm">Update</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
+</div>
 	<script>
+		function previewOfficerImages(input) {
+        const previewContainer = $('#officer-images-preview');
+        previewContainer.html(''); // Clear previous previews
+        if (input.files) {
+            Array.from(input.files).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = $('<img>')
+                        .attr('src', e.target.result)
+                        .css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+                        .addClass('img-thumbnail');
+                    previewContainer.append(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
