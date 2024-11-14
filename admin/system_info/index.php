@@ -73,6 +73,34 @@
 						</div>
 						<small><i>Choose to upload new banner images</i></small>
 					</div>
+					
+					<?php 
+					$upload_path = "uploads/banner";
+					if(is_dir(base_app.$upload_path)): 
+						$file= scandir(base_app.$upload_path);
+						foreach($file as $img):
+							if(in_array($img,array('.','..')))
+								continue;
+					?>
+					<div class="d-flex w-100 align-items-center img-item">
+						<span><img src="<?php echo base_url.$upload_path.'/'.$img."?v=".(time()) ?>" width="150px" height="100px" style="object-fit:cover;" class="img-thumbnail" alt=""></span>
+						<span class="ml-4"><button class="btn btn-sm btn-default text-danger rem_img" type="button" data-path="<?php echo base_app.$upload_path.'/'.$img ?>"><i class="fa fa-trash"></i></button></span>
+					</div>
+					<?php endforeach; ?>
+					<?php endif; ?>
+	<br>
+									<!-- District Logo Input -->
+					<!-- <div class="form-group">
+						<label for="" class="control-label">District Logo</label>
+						<div class="custom-file">
+							<input type="file" class="custom-file-input rounded-circle" id="districtLogoInput" name="district_logo" onchange="displayDistrictLogo(this,$(this))">
+							<label class="custom-file-label" for="districtLogoInput">Choose file</label>
+						</div>
+					</div>
+						<div class="form-group d-flex justify-content-center">
+						<img src="</?php echo validate_image($_settings->info('district_logo')) ?>" alt="" id="districtLogo" class="img-fluid img-thumbnail">
+					</div>
+					 -->
 					<!-- Officers Edit Section -->
 					<div class="card card-outline rounded-0 card-info mt-4">
 						<div class="card-header">
@@ -106,33 +134,6 @@
 							</div>
 						</div>
 					</div>
-					<?php 
-					$upload_path = "uploads/banner";
-					if(is_dir(base_app.$upload_path)): 
-						$file= scandir(base_app.$upload_path);
-						foreach($file as $img):
-							if(in_array($img,array('.','..')))
-								continue;
-					?>
-					<div class="d-flex w-100 align-items-center img-item">
-						<span><img src="<?php echo base_url.$upload_path.'/'.$img."?v=".(time()) ?>" width="150px" height="100px" style="object-fit:cover;" class="img-thumbnail" alt=""></span>
-						<span class="ml-4"><button class="btn btn-sm btn-default text-danger rem_img" type="button" data-path="<?php echo base_app.$upload_path.'/'.$img ?>"><i class="fa fa-trash"></i></button></span>
-					</div>
-					<?php endforeach; ?>
-					<?php endif; ?>
-	<br>
-									<!-- District Logo Input -->
-					<!-- <div class="form-group">
-						<label for="" class="control-label">District Logo</label>
-						<div class="custom-file">
-							<input type="file" class="custom-file-input rounded-circle" id="districtLogoInput" name="district_logo" onchange="displayDistrictLogo(this,$(this))">
-							<label class="custom-file-label" for="districtLogoInput">Choose file</label>
-						</div>
-					</div>
-						<div class="form-group d-flex justify-content-center">
-						<img src="</?php echo validate_image($_settings->info('district_logo')) ?>" alt="" id="districtLogo" class="img-fluid img-thumbnail">
-					</div>
-					 -->
 				</form>
 			</div>
 			<div class="card-footer">
