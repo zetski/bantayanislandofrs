@@ -10,6 +10,7 @@ if (isset($_SESSION['role'])) {
         exit;
     }
 }
+$SESSION['access_selected'] = true;
 ?>
 <!DOCTYPE html>
 <html lang="en">
