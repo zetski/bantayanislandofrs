@@ -89,7 +89,30 @@
 					<?php endforeach; ?>
 					<?php endif; ?>
 	<br>
-									
+									<!-- Officers Section -->
+				<div class="form-group mt-4">
+					<label class="control-label">Officers Information</label>
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="officerFile" name="officer_images[]" multiple accept=".png,.jpg,.jpeg" onchange="displayOfficerImages(this,$(this))">
+						<label class="custom-file-label" for="officerFile">Choose images</label>
+					</div>
+					<small><i>Choose to upload new images for officers</i></small>
+				</div>
+
+				<?php 
+				$officer_upload_path = "uploads/officers";
+				if(is_dir(base_app.$officer_upload_path)): 
+					$officer_files = scandir(base_app.$officer_upload_path);
+					foreach($officer_files as $officer_img):
+						if(in_array($officer_img, array('.', '..')))
+							continue;
+				?>
+				<div class="d-flex w-100 align-items-center img-item">
+					<span><img src="<?php echo base_url.$officer_upload_path.'/'.$officer_img."?v=".(time()) ?>" width="150px" height="100px" style="object-fit:cover;" class="img-thumbnail" alt=""></span>
+					<span class="ml-4"><button class="btn btn-sm btn-default text-danger rem_img" type="button" data-path="<?php echo base_app.$officer_upload_path.'/'.$officer_img ?>"><i class="fa fa-trash"></i></button></span>
+				</div>
+				<?php endforeach; ?>
+				<?php endif; ?>
 				</form>
 			</div>
 			<div class="card-footer">
@@ -204,4 +227,58 @@
 				]
 			});
 		});
+		function displayOfficerImages(input, _this) {
+        var fileNames = [];
+        Object.keys(input.files).map(function(k) {
+            fileNames.push(input.files[k].name);
+        });
+        _this.siblings('.custom-file-label').html(fileNames.join(", "));
+    }
+
+    function delete_img(path) {
+        start_loader();
+        $.ajax({
+            url: _base_url_+'classes/Master.php?f=delete_img',
+            data: { path: path },
+            method: 'POST',
+            dataType: "json",
+            error: err => {
+                console.log(err);
+                alert_toast("An error occurred while deleting an Image", "error");
+                end_loader();
+            },
+            success: function(resp) {
+                $('.modal').modal('hide');
+                if (typeof resp == 'object' && resp.status == 'success') {
+                    $('[data-path="'+path+'"]').closest('.img-item').hide('slow', function() {
+                        $('[data-path="'+path+'"]').closest('.img-item').remove();
+                    });
+                    alert_toast("Image Successfully Deleted", "success");
+                } else {
+                    console.log(resp);
+                    alert_toast("An error occurred while deleting an Image", "error");
+                }
+                end_loader();
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('.rem_img').click(function() {
+            var path = $(this).attr('data-path');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    delete_img(path);
+                }
+            });
+        });
+    });
 	</script>
