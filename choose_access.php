@@ -59,4 +59,4 @@ if (isset($_SESSION['role'])) {
         <button class="btn admin-btn" onclick="window.location.href='./admin'">Login as Admin</button>
     </div>
 </body>
-</ht
+</html>
