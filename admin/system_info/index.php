@@ -90,39 +90,6 @@
 					<?php endif; ?>
 	<br>
 									
-					<!-- Officers Edit Section -->
-					<div class="card card-outline rounded-0 card-info mt-4">
-						<div class="card-header">
-							<h5 class="card-title">Edit Officers</h5>
-						</div>
-						<div class="card-body">
-							<!-- Officer Name Input -->
-							<div class="form-group">
-								<label for="officer_name" class="control-label">Officer Name</label>
-								<input type="text" class="form-control form-control-sm" name="officer_name" id="officer_name" placeholder="Enter officer's full name">
-							</div>
-							
-							<!-- Officer Position Input -->
-							<div class="form-group">
-								<label for="officer_position" class="control-label">Position</label>
-								<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
-							</div>
-							
-							<!-- Officer Image Upload -->
-							<div class="form-group">
-								<label for="officer_image" class="control-label">Officer Image</label>
-								<div class="custom-file">
-									<input type="file" class="custom-file-input" id="officer_image" name="officer_image" onchange="displayOfficerImg(this, $(this))">
-									<label class="custom-file-label" for="officer_image">Choose file</label>
-								</div>
-							</div>
-							
-							<!-- Officer Image Preview -->
-							<div class="form-group d-flex justify-content-center">
-								<img src="#" alt="Officer Image Preview" id="officer_img_preview" class="img-fluid img-thumbnail" style="height: 15vh; width: 15vh; object-fit: cover; border-radius: 100%;">
-							</div>
-						</div>
-					</div>
 				</form>
 			</div>
 			<div class="card-footer">
@@ -136,16 +103,6 @@
 	</div>
 
 	<script>
-		function displayOfficerImg(input, _this) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-				reader.onload = function (e) {
-					$('#officer_img_preview').attr('src', e.target.result);
-					_this.siblings('.custom-file-label').html(input.files[0].name);
-				}
-				reader.readAsDataURL(input.files[0]);
-			}
-}
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
