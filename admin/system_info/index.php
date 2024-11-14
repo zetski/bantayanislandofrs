@@ -73,7 +73,39 @@
 						</div>
 						<small><i>Choose to upload new banner images</i></small>
 					</div>
-					
+					<!-- Officers Edit Section -->
+					<div class="card card-outline rounded-0 card-info mt-4">
+						<div class="card-header">
+							<h5 class="card-title">Edit Officers</h5>
+						</div>
+						<div class="card-body">
+							<!-- Officer Name Input -->
+							<div class="form-group">
+								<label for="officer_name" class="control-label">Officer Name</label>
+								<input type="text" class="form-control form-control-sm" name="officer_name" id="officer_name" placeholder="Enter officer's full name">
+							</div>
+							
+							<!-- Officer Position Input -->
+							<div class="form-group">
+								<label for="officer_position" class="control-label">Position</label>
+								<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
+							</div>
+							
+							<!-- Officer Image Upload -->
+							<div class="form-group">
+								<label for="officer_image" class="control-label">Officer Image</label>
+								<div class="custom-file">
+									<input type="file" class="custom-file-input" id="officer_image" name="officer_image" onchange="displayOfficerImg(this, $(this))">
+									<label class="custom-file-label" for="officer_image">Choose file</label>
+								</div>
+							</div>
+							
+							<!-- Officer Image Preview -->
+							<div class="form-group d-flex justify-content-center">
+								<img src="#" alt="Officer Image Preview" id="officer_img_preview" class="img-fluid img-thumbnail" style="height: 15vh; width: 15vh; object-fit: cover; border-radius: 100%;">
+							</div>
+						</div>
+					</div>
 					<?php 
 					$upload_path = "uploads/banner";
 					if(is_dir(base_app.$upload_path)): 
