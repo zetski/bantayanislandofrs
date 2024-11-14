@@ -7,11 +7,6 @@ if (!isset($_SESSION['role'])) {
     header("Location: ./choose_access.php"); // Redirect to the new gateway page
     exit;
 }
-// Check if user navigates back to index.php
-if (isset($_SESSION['access_page']) && $_SESSION['access_page'] == './choose_access.php') {
-  header("Location: " . $_SESSION['access_page']);
-  exit;
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
