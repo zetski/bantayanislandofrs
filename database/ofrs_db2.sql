@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 14, 2024 at 02:04 AM
+-- Generation Time: Nov 07, 2024 at 04:51 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -17,49 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- Database: `login_db`
---
-CREATE DATABASE IF NOT EXISTS `login_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `login_db`;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `admin`
---
-
-CREATE TABLE `admin` (
-  `id` int(11) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `reset_token_hash` varchar(64) DEFAULT NULL,
-  `reset_token_expiry_at` datetime DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `admin`
---
-ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `admin`
---
-ALTER TABLE `admin`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Database: `ofrs_db`
 --
@@ -321,18 +278,17 @@ CREATE TABLE `users` (
   `date_added` datetime NOT NULL DEFAULT current_timestamp(),
   `date_updated` datetime DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `otp_code` varchar(10) DEFAULT NULL,
-  `otp_expiry` datetime DEFAULT NULL,
-  `role` varchar(50) DEFAULT NULL
+  `otp_expiry` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='2';
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `username`, `district`, `email`, `password`, `reset_token`, `token_expiry`, `avatar`, `last_login`, `type`, `date_added`, `date_updated`, `otp_code`, `otp_expiry`, `role`) VALUES
-(10, 'Bantayan ', '', 'BFP', 'Bantayan-RVII', 'Bantayan', 'bantayanbfp@gmail.com', '2e7c98c8bc62d3ba105faaa51eba2d3e', NULL, NULL, 'uploads/avatars/10.png?v=1730373976', NULL, 1, '2024-10-06 22:16:59', '2024-10-31 19:26:16', NULL, NULL, NULL),
-(11, 'Madridejos', '', 'BFP', 'Madridejos-RVII', 'Madridejos', 'madridejosbfp@gmail.com', '33f52a03489d9611e00bfe954e2a71fa', NULL, NULL, 'uploads/avatars/11.png?v=1728224493', NULL, 1, '2024-10-06 22:21:33', '2024-10-31 19:29:16', NULL, NULL, NULL),
-(12, 'SantaFe', '', 'BFP', 'SantaFe-RVII', 'Santa Fe', 'santafebfp@gmail.com', '6876f7176bfb68c41c1793c9ce0becd1', NULL, NULL, 'uploads/avatars/12.png?v=1730393364', NULL, 1, '2024-10-06 22:24:28', '2024-11-01 00:49:24', NULL, NULL, NULL);
+INSERT INTO `users` (`id`, `firstname`, `middlename`, `lastname`, `username`, `district`, `email`, `password`, `reset_token`, `token_expiry`, `avatar`, `last_login`, `type`, `date_added`, `date_updated`, `otp_code`, `otp_expiry`) VALUES
+(10, 'Bantayan ', '', 'BFP', 'Bantayan-RVII', 'Bantayan', 'bantayanbfp@gmail.com', '2e7c98c8bc62d3ba105faaa51eba2d3e', NULL, NULL, 'uploads/avatars/10.png?v=1730373976', NULL, 1, '2024-10-06 22:16:59', '2024-10-31 19:26:16', NULL, NULL),
+(11, 'Madridejos', '', 'BFP', 'Madridejos-RVII', 'Madridejos', 'madridejosbfp@gmail.com', '33f52a03489d9611e00bfe954e2a71fa', NULL, NULL, 'uploads/avatars/11.png?v=1728224493', NULL, 1, '2024-10-06 22:21:33', '2024-10-31 19:29:16', NULL, NULL),
+(12, 'SantaFe', '', 'BFP', 'SantaFe-RVII', 'Santa Fe', 'santafebfp@gmail.com', '6876f7176bfb68c41c1793c9ce0becd1', NULL, NULL, 'uploads/avatars/12.png?v=1730393364', NULL, 1, '2024-10-06 22:24:28', '2024-11-01 00:49:24', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -605,7 +561,7 @@ CREATE TABLE `pma__recent` (
 --
 
 INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('root', '[{\"db\":\"ofrs_db\",\"table\":\"users\"}]');
+('root', '[{\"db\":\"ofrs_db\",\"table\":\"users\"},{\"db\":\"ofrs_db\",\"table\":\"team_list\"},{\"db\":\"ofrs_db\",\"table\":\"system_info\"},{\"db\":\"ofrs_db\",\"table\":\"request_list\"},{\"db\":\"ofrs_db\",\"table\":\"municipalities\"},{\"db\":\"ofrs_db\",\"table\":\"inquiry_list\"},{\"db\":\"ofrs_db\",\"table\":\"history_list\"},{\"db\":\"ofrs_db\",\"table\":\"events_list\"}]');
 
 -- --------------------------------------------------------
 
@@ -676,6 +632,13 @@ CREATE TABLE `pma__table_uiprefs` (
   `last_update` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='Tables'' UI preferences';
 
+--
+-- Dumping data for table `pma__table_uiprefs`
+--
+
+INSERT INTO `pma__table_uiprefs` (`username`, `db_name`, `table_name`, `prefs`, `last_update`) VALUES
+('root', 'ofrs_db', 'users', '{\"sorted_col\":\"`users`.`password` ASC\"}', '2024-11-07 14:58:04');
+
 -- --------------------------------------------------------
 
 --
@@ -712,7 +675,7 @@ CREATE TABLE `pma__userconfig` (
 --
 
 INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('root', '2024-11-14 01:03:15', '{\"Console\\/Mode\":\"collapse\"}');
+('root', '2024-11-07 15:51:13', '{\"Console\\/Mode\":\"collapse\"}');
 
 -- --------------------------------------------------------
 
