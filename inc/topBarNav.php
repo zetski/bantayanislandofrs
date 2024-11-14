@@ -155,9 +155,8 @@ session_start();
 
         // Modal functionality for search report
         $('#search_report, #search_report_sidebar').click(function() {
-            alert("Search Request Report functionality here.");
-            // Replace with actual modal or other functionality as needed
-        });
+          uni_modal("Search Request Report", "report/search.php");
+      });
     });
 </script>
 
