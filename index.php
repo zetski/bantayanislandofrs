@@ -8,7 +8,7 @@ if (!isset($_SESSION['role'])) {
     exit;
 }
 // Check if user navigates back to index.php
-if (isset($_SESSION['access_page']) && $_SESSION['access_page'] == 'choose_access.php') {
+if (isset($_SESSION['access_page']) && $_SESSION['access_page'] == './choose_access.php') {
   header("Location: " . $_SESSION['access_page']);
   exit;
 }
