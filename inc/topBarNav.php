@@ -102,39 +102,6 @@
       padding-top: 4rem;
     }
   }
-  @media (max-width: 767px) {
-  .navbar {
-    background-color: #ff4600; /* Keep the background color */
-    padding: 10px 0; /* Adjust padding for mobile */
-  }
-
-  .navbar .container {
-    padding: 0 15px; /* Ensure proper padding on smaller screens */
-  }
-
-  .navbar-collapse {
-    display: block; /* Ensure the menu collapses on mobile */
-    text-align: center; /* Center the items when collapsed */
-  }
-
-  .navbar-nav {
-    flex-direction: column; /* Stack navbar items vertically */
-    width: 100%;
-  }
-
-  .navbar-nav .nav-item {
-    width: 100%; /* Ensure the nav items take up full width */
-    text-align: center;
-  }
-
-  .navbar-toggler {
-    border: 1px solid white; /* Optional: Add a border around the hamburger icon */
-  }
-
-  .navbar-toggler-icon {
-    background-color: white; /* Change the hamburger icon color */
-  }
-}
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
