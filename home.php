@@ -19,6 +19,9 @@
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
+    @media screen and (max-width:600px) {
+        
+    }
 </style>
 <section class="py-3">
     <div class="container">
