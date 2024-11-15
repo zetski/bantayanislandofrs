@@ -139,6 +139,33 @@
   </div>
 </nav>
 
+<!-- Email Verification Modal -->
+<div class="modal fade" id="emailVerifyModal" tabindex="-1" aria-labelledby="emailVerifyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="emailVerifyLabel">Verify Email</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="emailVerifyForm" method="POST" action="verify_email.php">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
+              <div class="g-recaptcha" data-sitekey="YOUR_SITE_KEY"></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Verify</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
 <!-- Sidebar content -->
 <div class="sidebar" id="sidebarMenu">
   <ul>
