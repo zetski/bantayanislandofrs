@@ -63,9 +63,7 @@
                             </center>
                             <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
                             <div>
-                                <center>
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
-                                </center>
                             </div>
                         </div>
                     </div>
