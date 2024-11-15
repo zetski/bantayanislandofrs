@@ -19,12 +19,6 @@
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
-    @media (max-width: 768px) {
-    .col-md-12{
-        width: 100%;
-        min-width: 1rem;
-    }
-  }
 </style>
 <section class="py-3">
     <div class="container">
