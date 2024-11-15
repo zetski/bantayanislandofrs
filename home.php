@@ -19,52 +19,7 @@
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
-
-    /* Media Query for Responsive Design */
-    @media (max-width: 768px) {
-        /* Adjust the height of the carousel images on smaller screens */
-        .carousel-item > img {
-            height: 15em; /* Smaller height for mobile devices */
-        }
-        #carouselExampleControls .carousel-inner {
-            height: 15em !important; /* Adjust carousel inner height */
-        }
-        /* Reduce the margin on the button for mobile */
-        .btn {
-            margin-left: 0;
-            width: 100%;
-            text-align: center;
-        }
-        /* Adjust carousel controls for mobile */
-        .carousel-control-prev, .carousel-control-next {
-            top: 50%; /* Align controls vertically at the center */
-            transform: translateY(-50%); /* Center the controls */
-        }
-    }
-
-    /* Additional Media Query for smaller mobile screens (Portrait mode) */
-    @media (max-width: 480px) {
-        /* Further adjust the image height for very small screens */
-        .carousel-item > img {
-            height: 12em; /* Even smaller image height */
-        }
-        #carouselExampleControls .carousel-inner {
-            height: 12em !important; /* Adjust carousel inner height */
-        }
-        /* Increase button size and make it full-width */
-        .btn {
-            font-size: 1.2em;
-            margin-left: 0;
-            width: 100%;
-            text-align: center;
-        }
-        /* Adjust card body padding for smaller screens */
-        .card-body {
-            padding: 10px; /* Reduce padding for small screens */
-        }
-    }
 </style>
-
 <section class="py-3">
     <div class="container">
         <div class="row">
