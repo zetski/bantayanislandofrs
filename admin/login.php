@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -155,25 +155,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" disabled>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3"></div>
+          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
+              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
             </div>
           </div>
         </form>
         <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>">Go to Website</a>
+          <a href="<?php echo base_url ?>" disabled>Go to Website</a>
         </p>
       </div>
     </div>
@@ -220,6 +220,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initially disable the form fields and buttons
+    const formElements = [
+      document.querySelector('input[name="username"]'),
+      document.querySelector('input[name="password"]'),
+      document.querySelector('a[href="forgot/forgot-password.php"]'),
+      document.querySelector('a[href="<?php echo base_url ?>"]'),
+      document.querySelector('button[type="submit"]')
+    ];
+
+    formElements.forEach(el => el.disabled = true);
+
+    // Monitor reCAPTCHA state
+    function enableFormElements() {
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (recaptchaResponse.length > 0) {
+        formElements.forEach(el => el.disabled = false);
+      } else {
+        formElements.forEach(el => el.disabled = true);
+      }
+    }
+
+    // Add event listener for reCAPTCHA changes
+    window.enableRecaptcha = enableFormElements; // Bind function to global scope
+  });
 </script>
 </body>
 </html>
