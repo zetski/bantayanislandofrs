@@ -162,13 +162,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableSumbitButton"></div>
+          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3"></div>
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" id="mySubmitBtn" disabled="disabled" class="btn btn-primary btn-block">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
           </div>
         </form>
@@ -185,9 +185,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-     function enableSubmitButton(){
-      document.getElementById(SubmitButton).disabled = false;
-    }
     $(document).ready(function(){
       end_loader();
     });
