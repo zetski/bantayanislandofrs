@@ -1,34 +1,68 @@
 <style>
-  /* General styling */
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  button[type="button"] {
+  button[type="button"]{
     background-color: transparent !important;
     margin-left: 15px;
     margin: -10px;
   }
-
-  /* Sidebar styling */
+  /* Sidebar styling with formal hover effect */
   .sidebar {
     position: fixed;
     left: -250px;
     top: 0;
     width: 250px;
     height: 100%;
-    background-color: #333333;
+    background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
   }
 
+  /* Style for the About Us Dropdown */
+.nav-item .dropdown-menu {
+  background-color: #333333; /* Match sidebar background */
+  border: none;
+}
+
+.nav-item .dropdown-menu .dropdown-item {
+  color: white; /* White text */
+}
+
+.nav-item .dropdown-menu .dropdown-item:hover {
+  background-color: #ff4600; /* Orange hover effect */
+}
+
+
+/* Sidebar dropdown styling */
+#sidebarAboutDropdown {
+  padding-top: 5px;
+  list-style: none;
+  padding-left: 20px; /* Indent the dropdown items */
+}
+
+#sidebarAboutDropdown li a {
+  color: #fff; /* White text */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#sidebarAboutDropdown li a:hover {
+  background-color: #ff4600; /* Formal orange hover background */
+  color: #fff;
+}
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: -70px; /* Adjust this value to move more or less */
+  }
+
+  .navbar-brand img{
+    border-radius: 50%;
+  }
   .sidebar.show {
     left: 0;
   }
 
-  /* Sidebar list items */
   .sidebar ul {
     list-style: none;
     padding: 0;
@@ -40,119 +74,43 @@
   }
 
   .sidebar ul li a {
-    color: #fff;
+    color: #fff; /* White text */
     text-decoration: none;
     display: block;
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.5rem; /* Adjusted padding for better spacing */
     font-size: 16px;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Hover effect for sidebar items */
   .sidebar ul li a:hover {
-    background-color: #ff4600;
-    color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
   }
 
+  /* Active state styling */
   .sidebar ul li a.active {
-    background-color: #ff4600;
-    color: #fff;
-    font-weight: bold;
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
   }
 
-  /* Navbar styling */
-  .navbar {
-    background-color: #ff4600;
-    padding: 10px 0;
-  }
-
-  .navbar-brand img {
-    border-radius: 50%;
-  }
-
-  .navbar-nav {
-    margin-left: -70px;
-  }
-
-  .navbar-nav .nav-link {
-    color: #fff;
-    padding-left: 1rem;
-  }
-
-  .navbar-toggler {
-    border: none;
-    background-color: transparent;
-  }
-
-  .navbar-toggler-icon {
-    background-color: #fff;
-  }
-
-  /* Navbar Dropdown */
-  .nav-item .dropdown-menu {
-    background-color: #333333;
-    border: none;
-  }
-
-  .nav-item .dropdown-item {
-    color: white;
-  }
-
-  .nav-item .dropdown-item:hover {
-    background-color: #ff4600;
-  }
-
-  /* Responsive design for mobile */
+  /* Responsive for smaller devices */
   @media (max-width: 768px) {
-    /* Adjust the navbar for mobile */
-    .navbar-nav {
-      margin-left: 0;
-    }
-
-    .sidebar {
-      width: 200px;
-    }
-
-    .sidebar ul li a {
-      padding: 1rem 1.5rem;
-      font-size: 14px;
-    }
-
-    .navbar-toggler {
-      margin-left: 10px;
-    }
-  }
-
-  /* For very small mobile screens */
-  @media (max-width: 480px) {
-    .navbar-brand img {
-      width: 25px;
-      height: 25px;
-    }
-
-    .navbar-nav .nav-link {
-      font-size: 14px;
-    }
-
-    .sidebar ul li a {
-      padding-top: 20px;
-      font-size: 14px;
-      padding: 0.75rem;
-    }
-
-    .sidebar {
-      width: 180px;
+    .sidebar ul {
+      padding-top: 4rem;
     }
   }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
     <a class="navbar-brand" href="./">
       <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
       <?php echo $_settings->info('short_name') ?>
     </a>
-    <button class="navbar-toggler btn btn-lg" type="button" id="sidebarToggle" style="border: none;">
+    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -165,13 +123,14 @@
             About Us
           </a>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-            <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
-            <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
-            <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
-          </ul>
-        </li>
-        <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
-        <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</a></li>
+          <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
+          <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
+          <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
+        </ul>
+</li>
+        <!-- <li class="nav-item"><a class="nav-link text-white" href="./?p=contact">Contact Us</a></li> -->
+         <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
+         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
       </ul>
       <div class="d-flex align-items-center">
         <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
@@ -197,20 +156,27 @@
         <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
+
     <li><a href="./?p=citizencharter">Citizen Charter</a></li>
-    <li><a href="./?p=safetytips">Safetytips</a></li>
+    <li><a href="./?p=safetytips">Safetytips</li>
     <li><a href="./admin">Login</a></li>
   </ul>
 </div>
 
 <script>
+  //navbar dropdown about us
   $(document).ready(function() {
-    // Sidebar toggle for About Us dropdown
-    $('#aboutSidebarDropdown').click(function() {
-      $('#sidebarAboutDropdown').collapse('toggle');
-    });
+  $('.dropdown-toggle').dropdown();
+});
 
-    // Sidebar toggle for menu
+$(document).ready(function() {
+  // Sidebar toggle for About Us dropdown
+  $('#aboutSidebarDropdown').click(function() {
+    $('#sidebarAboutDropdown').collapse('toggle');
+  });
+});
+
+  $(document).ready(function() {
     $('#sidebarToggle').click(function() {
       $('#sidebarMenu').toggleClass('show');
     });
