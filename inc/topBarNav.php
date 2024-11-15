@@ -165,7 +165,7 @@
       </div>
     </div>
   </div>
-  
+
 <!-- Sidebar content -->
 <div class="sidebar" id="sidebarMenu">
   <ul>
@@ -190,6 +190,7 @@
   </ul>
 </div>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
   //navbar dropdown about us
   $(document).ready(function() {
