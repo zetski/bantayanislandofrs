@@ -135,6 +135,7 @@
     }
 
     .sidebar ul li a {
+      padding-top: 20px;
       font-size: 14px;
       padding: 0.75rem;
     }
