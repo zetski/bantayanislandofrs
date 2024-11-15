@@ -132,6 +132,28 @@
          <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
          <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
       </ul>
+
+      <div class="modal fade" id="recaptchaModal" tabindex="-1" aria-labelledby="recaptchaModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="recaptchaModalLabel">Verify You're Human</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+              <form id="recaptchaForm">
+                <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3
+"></div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="verifyCaptcha">Submit</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="d-flex align-items-center">
         <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
       </div>
@@ -163,7 +185,23 @@
   </ul>
 </div>
 
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script>
+  document.getElementById('loginLink').addEventListener('click', function () {
+    const modal = new bootstrap.Modal(document.getElementById('recaptchaModal'));
+    modal.show();
+  });
+
+  // Handle reCAPTCHA Submission
+  document.getElementById('verifyCaptcha').addEventListener('click', function () {
+    const response = grecaptcha.getResponse();
+    if (response.length === 0) {
+      alert('Please complete the reCAPTCHA verification.');
+    } else {
+      // Redirect to the login page or perform your login logic here
+      window.location.href = './admin';
+    }
+  });
   //navbar dropdown about us
   $(document).ready(function() {
   $('.dropdown-toggle').dropdown();
