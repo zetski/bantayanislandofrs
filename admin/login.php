@@ -104,11 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     start_loader()
   </script>
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script>
-    function enableSubmitButton(){
-      document.getElementById(SubmitButton).disabled = false;
-    }
-  </script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -190,6 +185,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
+     function enableSubmitButton(){
+      document.getElementById(SubmitButton).disabled = false;
+    }
     $(document).ready(function(){
       end_loader();
     });
