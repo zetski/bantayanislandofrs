@@ -245,52 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
-
-  // allow location haha
-  document.addEventListener('DOMContentLoaded', function () {
-    const loginButton = document.querySelector('button[type="submit"]');
-
-    // Disable login button until location is allowed
-    loginButton.disabled = true;
-
-    // Function to continuously request location access
-    function requestLocationAccess() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // Location access granted
-            alert("Location access granted. You may now log in.");
-            loginButton.disabled = false; // Enable the login button
-          },
-          (error) => {
-            // Handle errors when location access is denied
-            if (error.code === error.PERMISSION_DENIED) {
-              // Show an alert with a 1-second timeout
-              alert("Location access is required. Please enable it in your device settings.");
-              setTimeout(() => {
-                requestLocationAccess(); // Re-prompt after 1 second
-              }, 1000);
-            } else {
-              alert("Unable to retrieve location. Please try again.");
-            }
-          }
-        );
-      } else {
-        alert("Geolocation is not supported by your browser. Please use a compatible browser.");
-      }
-    }
-
-    // Attach event listener to the login button
-    loginButton.addEventListener('click', function (event) {
-      if (loginButton.disabled) {
-        event.preventDefault(); // Prevent form submission if location access is not granted
-        alert("Please allow location access before logging in.");
-      }
-    });
-
-    // Start requesting location access
-    requestLocationAccess();
-  });
 </script>
 </body>
 </html>
