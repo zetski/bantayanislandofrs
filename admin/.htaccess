@@ -1,7 +1,17 @@
 <IfModule mod_rewrite.c>
-Header set Access-Control-Allow-Origin "*"
-RewriteEngine on
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$    /index.php/$2/?page=$1   [L]
+    # Allow cross-origin requests (if necessary)
+    Header set Access-Control-Allow-Origin "*"
+
+    RewriteEngine on
+
+    # Remove .php extension for all admin pages
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME}.php -f
+    RewriteRule ^(.*)$ $1.php [L]
+
+    # Route non-existent files or directories through index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
 </IfModule>
