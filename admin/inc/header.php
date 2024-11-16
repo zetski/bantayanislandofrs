@@ -23,15 +23,7 @@ ini_set('session.use_only_cookies', 1); // Ensures sessions only use cookies, no
 session_start();
 
 ?>
-<?php
-$request = $_SERVER['REQUEST_URI'];
 
-if (strpos($request, '.php') !== false) {
-    $new_url = str_replace('.php', '', $request);
-    header("Location: $new_url", true, 301);
-    exit();
-}
-?>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
