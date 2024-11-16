@@ -213,6 +213,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // hcaptcha
     function enableForm() {
+      console.log("hCaptcha solved, enabling form...");
       document.querySelector('input[name="username"]').disabled = false;
       document.querySelector('input[name="password"]').disabled = false;
       document.querySelector('#forgot-pass').removeAttribute('disabled');
