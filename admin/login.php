@@ -162,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableForm"></div>
+          <div class="g-recaptcha" data-sitekey="b6c03f6e-0732-425c-91b0-51547a369f3a" data-callback="enableForm"></div>
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;" id="forgot-pass" disabled>Forgot password?</a>
