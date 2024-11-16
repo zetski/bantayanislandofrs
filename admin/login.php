@@ -234,8 +234,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Monitor reCAPTCHA state
     function enableFormElements() {
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (recaptchaResponse.length > 0) {
+      const hcaptchaResponse = ghcaptcha.getResponse();
+      if (hcaptchaResponse.length > 0) {
         formElements.forEach(el => el.disabled = false);
       } else {
         formElements.forEach(el => el.disabled = true);
@@ -243,7 +243,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
+    window.enablehCaptcha = enableFormElements; // Bind function to global scope
   });
 </script>
 </body>
