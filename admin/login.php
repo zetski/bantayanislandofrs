@@ -245,53 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
-  document.addEventListener('DOMContentLoaded', function () {
-    const loginButton = document.querySelector('button[type="submit"]');
-
-    // Initially disable the login button
-    loginButton.disabled = true;
-
-    // Function to prompt for location access
-    function requestLocationAccess() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            // Location access granted
-            alert("Location access granted. You may now log in.");
-            loginButton.disabled = false; // Enable the login button
-          },
-          (error) => {
-            // Location access denied
-            if (error.code === error.PERMISSION_DENIED) {
-              const userResponse = confirm(
-                "Location access is denied. Please enable location services in your browser settings. Click OK to learn how to allow location access."
-              );
-              if (userResponse) {
-                // Redirect to a page with instructions on enabling location services
-                window.location.href = "https://www.whatismybrowser.com/guides/how-to-enable-location";
-              }
-            } else {
-              alert("Unable to retrieve your location. Please try again.");
-            }
-          }
-        );
-      } else {
-        alert("Geolocation is not supported by your browser.");
-      }
-    }
-
-    // Attach event listener to the login button
-    loginButton.addEventListener('click', function (event) {
-      // Prevent form submission until location access is verified
-      if (loginButton.disabled) {
-        event.preventDefault();
-        alert("Please allow location access before logging in.");
-      }
-    });
-
-    // Prompt for location access when the page loads
-    requestLocationAccess();
-  });
 </script>
 </body>
 </html>
