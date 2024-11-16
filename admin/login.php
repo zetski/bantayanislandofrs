@@ -245,6 +245,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
+
+  // e allow imo location
+  document.addEventListener('DOMContentLoaded', function () {
+  const loginButton = document.querySelector('button[type="submit"]');
+
+  // Disable login button initially
+  loginButton.disabled = true;
+
+  // Function to check location access
+  function checkLocationAccess() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // Location access granted
+          alert("Location access granted. You may now log in.");
+          loginButton.disabled = false; // Enable login button
+          document.getElementById('location-notice').style.display = 'none'; // Hide notice
+        },
+        (error) => {
+          // Handle errors when location access is denied
+          if (error.code === error.PERMISSION_DENIED) {
+            document.getElementById('location-notice').style.display = 'block'; // Show notice
+            loginButton.disabled = true; // Keep login disabled
+          } else {
+            alert("Unable to retrieve location. Please try again.");
+          }
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by your browser. Please use a compatible browser.");
+    }
+  }
+
+  // Function to show guidance for enabling location
+  function showEnableLocationInstructions() {
+    alert("To enable location services:\n\n1. Go to your device's settings.\n2. Enable location for your browser.\n3. Refresh the page to try again.");
+  }
+
+  // Check location access on page load
+  checkLocationAccess();
+
+  // Recheck location access on button click
+  loginButton.addEventListener('click', function (event) {
+    if (loginButton.disabled) {
+      event.preventDefault(); // Prevent form submission if location is not granted
+      showEnableLocationInstructions();
+    }
+  });
+
+  // Add a button to manually recheck location access
+  const locationNotice = document.createElement('p');
+  locationNotice.id = 'location-notice';
+  locationNotice.className = 'text-danger';
+  locationNotice.style.display = 'none';
+  locationNotice.innerHTML =
+    'Location access is required to proceed. <button id="enable-location" class="btn btn-link p-0">Enable Location</button>';
+  document.body.insertBefore(locationNotice, document.body.firstChild);
+
+  document
+    .getElementById('enable-location')
+    .addEventListener('click', () => {
+      showEnableLocationInstructions();
+      checkLocationAccess(); // Recheck location when the user clicks the notice
+    });
+});
 </script>
 </body>
 </html>
