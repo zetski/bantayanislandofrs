@@ -146,14 +146,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="card-body">
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-user"></span>
-              </div>
-            </div>
-          </div>
+        <div class="floating-label">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder=" "
+            value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>"
+            required
+          />
+          <label for="username">Username</label>
+        </div>
           <div class="input-group mb-3">
             <input type="password" class="form-control" id="password" name="password" placeholder="Password" disabled>
             <div class="input-group-append">
