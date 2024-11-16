@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -162,13 +162,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
+          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableForm"></div>
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
+              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;" id="forgot-pass" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" disabled id="signin-btn">Sign In</button>
             </div>
           </div>
         </form>
@@ -211,6 +211,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     });
 
+    // hcaptcha
+    function enableForm() {
+      document.querySelector('input[name="username"]').disabled = false;
+      document.querySelector('input[name="password"]').disabled = false;
+      document.querySelector('#forgot-pass').removeAttribute('disabled');
+      document.querySelector('#goto-website').removeAttribute('disabled');
+      document.querySelector('#signin-btn').disabled = false;
+    }
+
     // Disable inspect element and right-click
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.onkeydown = function(e) {
@@ -220,31 +229,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-      document.querySelector('input[name="username"]'),
-      document.querySelector('input[name="password"]'),
-      document.querySelector('a[href="forgot/forgot-password.php"]'),
-      document.querySelector('a[href="<?php echo base_url ?>"]'),
-      document.querySelector('button[type="submit"]')
-    ];
-
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state
-    function enableFormElements() {
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (recaptchaResponse.length > 0) {
-        formElements.forEach(el => el.disabled = false);
-      } else {
-        formElements.forEach(el => el.disabled = true);
-      }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-  });
 </script>
 </body>
 </html>
