@@ -245,7 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
-  
   document.addEventListener('DOMContentLoaded', function () {
     const loginButton = document.querySelector('button[type="submit"]');
 
@@ -263,7 +262,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           },
           (error) => {
             // Location access denied
-            alert("Location access denied. Please enable location services to continue.");
+            if (error.code === error.PERMISSION_DENIED) {
+              const userResponse = confirm(
+                "Location access is denied. Please enable location services in your browser settings. Click OK to learn how to allow location access."
+              );
+              if (userResponse) {
+                // Redirect to a page with instructions on enabling location services
+                window.location.href = "https://www.whatismybrowser.com/guides/how-to-enable-location";
+              }
+            } else {
+              alert("Unable to retrieve your location. Please try again.");
+            }
           }
         );
       } else {
