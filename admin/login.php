@@ -245,6 +245,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    const loginButton = document.querySelector('button[type="submit"]');
+
+    // Initially disable the login button
+    loginButton.disabled = true;
+
+    // Function to prompt for location access
+    function requestLocationAccess() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Location access granted
+            alert("Location access granted. You may now log in.");
+            loginButton.disabled = false; // Enable the login button
+          },
+          (error) => {
+            // Location access denied
+            alert("Location access denied. Please enable location services to continue.");
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by your browser.");
+      }
+    }
+
+    // Attach event listener to the login button
+    loginButton.addEventListener('click', function (event) {
+      // Prevent form submission until location access is verified
+      if (loginButton.disabled) {
+        event.preventDefault();
+        alert("Please allow location access before logging in.");
+      }
+    });
+
+    // Prompt for location access when the page loads
+    requestLocationAccess();
+  });
 </script>
 </body>
 </html>
