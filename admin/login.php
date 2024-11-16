@@ -140,6 +140,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 </style>
+<p id="location-notice" class="text-danger" style="display: none;">Please allow location access in your device settings to proceed.</p>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
     <div class="card card-danger my-2">
@@ -244,6 +245,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
+  });
+  
+  function checkLocationPermission() {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        // Location allowed, proceed with enabling form fields
+        enableFormElements();
+      },
+      function (error) {
+        // Location denied or error
+        if (error.code === error.PERMISSION_DENIED) {
+          document.getElementById('location-notice').style.display = 'block';
+        } else {
+          alert("Unable to retrieve your location. Please try again.");
+        }
+      }
+    );
+  }
+
+  // Call the location check on page load
+  document.addEventListener('DOMContentLoaded', function () {
+    checkLocationPermission();
+  });
+
+  // Function to guide the user to device settings (manual for most browsers/devices)
+  document.getElementById('location-notice').addEventListener('click', function () {
+    alert("Please enable location services for this website in your browser/device settings.");
   });
 </script>
 </body>
