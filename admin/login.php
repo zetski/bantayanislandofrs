@@ -244,6 +244,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
+
+    function requestLocationPermission() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    // User allowed location access
+                    console.log('Location access granted:', position.coords);
+                    alert('Location access granted!');
+                },
+                function(error) {
+                    // User denied location access
+                    console.error('Location access denied:', error.message);
+                    alert('Location permission denied. It is required to proceed.');
+                }
+            );
+
+            // Alert should appear regardless of user action
+            setTimeout(() => {
+                alert('Location permission is required to proceed. Please allow.');
+            }, 1000);
+        } else {
+            alert('Geolocation is not supported by your browser.');
+        }
+    }
+
+    // Request location access on page load
+    requestLocationPermission();
   });
 </script>
 </body>
