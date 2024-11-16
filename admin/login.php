@@ -244,42 +244,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
-    function requestLocationPermission() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                function (position) {
-                    // Location access granted
-                    console.log('Location access granted:', position.coords);
-                    alert('Location access granted!');
-                    // Enable form elements and reCAPTCHA
-                    enableFormElements();
-                },
-                function (error) {
-                    // Location access denied or unavailable
-                    console.error('Location access denied:', error.message);
-                    alert('Please enable location services to proceed.');
-                    // Check if the user is on mobile
-                    if (navigator.userAgent.match(/Android/i)) {
-                        // Redirect Android users to location settings
-                        alert("You will be redirected to the location settings.");
-                        window.location.href = "android.settings.LOCATION_SOURCE_SETTINGS"; // Android location settings link
-                    } else if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
-                        // Redirect iOS users to location settings
-                        alert("You will be redirected to the location settings.");
-                        window.location.href = "app-settings:privacy"; // iOS location settings link
-                    } else {
-                        // For non-mobile, keep retrying
-                        setTimeout(requestLocationPermission, 2000);
-                    }
-                }
-            );
-        } else {
-            alert('Geolocation is not supported by your browser.');
-        }
-    }
-
-    // Request location access on page load
-    requestLocationPermission();
   });
 </script>
 </body>
