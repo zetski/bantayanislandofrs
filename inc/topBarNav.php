@@ -30,6 +30,7 @@
   }
   nav .logo a{
     text-decoration: none;
+    color: #fff;
   }
   nav .logo img{
     border-radius: 50%;
