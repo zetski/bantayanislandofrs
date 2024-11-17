@@ -12,7 +12,7 @@
     padding: 0;
   }
   body {
-    background: #f2f2f2;
+    background: #f46000;
   }
   nav {
     background: #171c24;
@@ -26,9 +26,8 @@
   }
   nav .logo {
     color: #fff;
-    font-size: 30px;
-    font-weight: 600;
     letter-spacing: -1px;
+    border-radius: 50%;
   }
   nav .nav-items {
     display: flex;
