@@ -7,6 +7,10 @@
     box-sizing: border-box;
     font-family: 'Montserrat', sans-serif;
   }
+  html, body{
+    margin: 0;
+    padding: 0;
+  }
   body {
     background: #f2f2f2;
   }
@@ -17,6 +21,7 @@
     align-items: center;
     justify-content: space-between;
     height: 70px;
+    margin: 0;
     padding: 0 100px;
   }
   nav .logo {
