@@ -65,6 +65,10 @@
     color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
+  #navbarNav .ul{
+    color: #808080;
+    text-shadow: #000;
+  }
   .sidebar.show {
     left: 0;
   }
