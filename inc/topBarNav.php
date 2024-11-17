@@ -1,199 +1,189 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Updated Navbar</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <style>
-    @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Montserrat', sans-serif;
-    }
-    body {
-      margin: 0;
-      padding-top: 70px; /* Adjust based on navbar height */
-    }
-    nav {
-      background: #ff4600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 70px;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 0 20px;
-    }
-    nav .logo {
-      display: flex;
-      align-items: center;
-    }
-    nav .logo img {
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    nav .logo span {
-      color: #fff;
-      font-size: 22px;
-      font-weight: 600;
-    }
-    nav .nav-items {
-      display: flex;
-    }
-    nav .nav-items li {
-      list-style: none;
-      margin: 0 15px;
-    }
-    nav .nav-items li a {
-      color: #fff;
-      font-size: 16px;
-      text-decoration: none;
-    }
-    nav .nav-items li a:hover {
-      color: #ffdab3;
-    }
-    nav .nav-items li ul {
-      display: none;
-      position: absolute;
-      background: #fff;
-      padding: 10px;
-      list-style: none;
-      margin-top: 10px;
-      border-radius: 5px;
-    }
-    nav .nav-items li:hover ul {
-      display: block;
-    }
-    nav .nav-items li ul li {
-      margin: 5px 0;
-    }
-    nav .nav-items li ul li a {
-      color: #000;
-    }
-    nav .menu-icon {
-      display: none;
-      color: #fff;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .sidebar {
-      position: fixed;
-      top: 70px;
-      left: 0;
-      width: 250px;
-      background: #333;
-      color: #fff;
-      height: 100%;
-      z-index: 1001;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    }
+<style>
+  button[type="button"]{
+    background-color: transparent !important;
+    margin-left: 15px;
+    margin: -10px;
+  }
+  /* Sidebar styling with formal hover effect */
+  .sidebar {
+    position: fixed;
+    left: -250px;
+    top: 0;
+    width: 250px;
+    height: 100%;
+    background-color: #333333; /* Darker sidebar background */
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+
+  /* Style for the About Us Dropdown */
+.nav-item .dropdown-menu {
+  background-color: #333333; /* Match sidebar background */
+  border: none;
+}
+
+.nav-item .dropdown-menu .dropdown-item {
+  color: white; /* White text */
+}
+
+.nav-item .dropdown-menu .dropdown-item:hover {
+  background-color: #ff4600; /* Orange hover effect */
+}
+
+
+/* Sidebar dropdown styling */
+#sidebarAboutDropdown {
+  padding-top: 5px;
+  list-style: none;
+  padding-left: 20px; /* Indent the dropdown items */
+}
+
+#sidebarAboutDropdown li a {
+  color: #fff; /* White text */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#sidebarAboutDropdown li a:hover {
+  background-color: #ff4600; /* Formal orange hover background */
+  color: #fff;
+}
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: -70px; /* Adjust this value to move more or less */
+  }
+
+  .navbar-brand img{
+    border-radius: 50%;
+  }
+  .sidebar.show {
+    left: 0;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar ul li {
+    padding: 0;
+  }
+
+  .sidebar ul li a {
+    color: #fff; /* White text */
+    text-decoration: none;
+    display: block;
+    padding: 0.75rem 1.5rem; /* Adjusted padding for better spacing */
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Hover effect for sidebar items */
+  .sidebar ul li a:hover {
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
+  }
+
+  /* Active state styling */
+  .sidebar ul li a.active {
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
+  }
+
+  /* Responsive for smaller devices */
+  @media (max-width: 768px) {
     .sidebar ul {
-      list-style: none;
-      padding: 0;
+      padding-top: 4rem;
     }
-    .sidebar ul li {
-      margin: 20px 0;
-    }
-    .sidebar ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 18px;
-    }
-    .sidebar ul li a:hover {
-      text-decoration: underline;
-    }
-    .content {
-      margin-left: 270px; /* Account for sidebar width */
-      padding: 20px;
-    }
-    @media (max-width: 768px) {
-      nav .nav-items {
-        display: none;
-        flex-direction: column;
-        background: #ff4600;
-        position: absolute;
-        top: 70px;
-        right: 0;
-        width: 100%;
-      }
-      nav .nav-items.active {
-        display: flex;
-      }
-      nav .menu-icon {
-        display: block;
-      }
-      .sidebar {
-        width: 200px;
-      }
-      .content {
-        margin-left: 220px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <!-- Navbar -->
-  <nav>
-    <div class="logo">
-      <img src="<?php echo validate_image($_settings->info('logo')) ?>" alt="Logo" width="40" height="40">
-      <span><?php echo $_settings->info('short_name') ?></span>
-    </div>
-    <ul class="nav-items">
-      <li><a href="./">Home</a></li>
-      <li><a href="./?p=report">Report</a></li>
-      <li><a href="javascript:void(0)" id="search_report">View Status</a></li>
-      <li>
-        <a href="javascript:void(0)">About Us</a>
-        <ul>
-          <li><a href="./about/aboutB.php">Bantayan</a></li>
-          <li><a href="./about/aboutS.php">Santa Fe</a></li>
-          <li><a href="./about/aboutM.php">Madridejos</a></li>
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="./">
+      <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
+      <?php echo $_settings->info('short_name') ?>
+    </a>
+    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
+        <li class="nav-item"><a class="nav-link text-white" id="search_report" href="javascript:void(0)">View Status</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            About Us
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+          <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
+          <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
+          <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
         </ul>
-      </li>
-      <li><a href="./citizencharter.php">Citizen Charter</a></li>
-      <li><a href="./safetytips.php">Safety Tips</a></li>
-      <li><a href="./admin">Login</a></li>
-    </ul>
-    <div class="menu-icon">
-      <i class="fas fa-bars"></i>
+</li>
+        <!-- <li class="nav-item"><a class="nav-link text-white" href="./?p=contact">Contact Us</a></li> -->
+         <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
+         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
+      </div>
     </div>
-  </nav>
-
-  <!-- Sidebar -->
-  <div class="sidebar">
-    <ul>
-      <li><a href="#">Sidebar Link 1</a></li>
-      <li><a href="#">Sidebar Link 2</a></li>
-      <li><a href="#">Sidebar Link 3</a></li>
-    </ul>
   </div>
+</nav>
 
-  <!-- Content -->
-  <div class="content">
-    <h1>Welcome</h1>
-    <p>Your content goes here.</p>
-  </div>
+<!-- Sidebar content -->
+<div class="sidebar" id="sidebarMenu">
+  <ul>
+    <li><a href="./">Home</a></li>
+    <li><a href="./?p=report">Report</a></li>
+    <li><a href="javascript:void(0)" id="search_report_sidebar">View Status</a></li>
+    <!-- sidebar dropdown about us -->
+    <li class="nav-item">
+      <a href="javascript:void(0)" class="nav-link text-white" id="aboutSidebarDropdown" data-bs-toggle="collapse" data-bs-target="#sidebarAboutDropdown" aria-expanded="false">
+        About Us
+      </a>
+      <ul class="collapse" id="sidebarAboutDropdown">
+        <li><a class="nav-link text-white" href="./about/aboutB.php">Bantayan</a></li>
+        <li><a class="nav-link text-white" href="./about/aboutM.php">Madridejos</a></li>
+        <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
+      </ul>
+    </li>
 
-  <script>
-    // Toggle mobile menu
-    const menuIcon = document.querySelector(".menu-icon");
-    const navItems = document.querySelector(".nav-items");
+    <li><a href="./?p=citizencharter">Citizen Charter</a></li>
+    <li><a href="./?p=safetytips">Safetytips</li>
+    <li><a href="./admin">Login</a></li>
+  </ul>
+</div>
 
-    menuIcon.addEventListener("click", () => {
-      navItems.classList.toggle("active");
+<script>
+  //navbar dropdown about us
+  $(document).ready(function() {
+  $('.dropdown-toggle').dropdown();
+});
+
+$(document).ready(function() {
+  // Sidebar toggle for About Us dropdown
+  $('#aboutSidebarDropdown').click(function() {
+    $('#sidebarAboutDropdown').collapse('toggle');
+  });
+});
+
+  $(document).ready(function() {
+    $('#sidebarToggle').click(function() {
+      $('#sidebarMenu').toggleClass('show');
     });
 
-    // View Status functionality
-    document.getElementById('search_report').addEventListener('click', () => {
-      alert('View Status functionality triggered!');
-      // Add your functionality here
+    // Modal for search report
+    $('#search_report, #search_report_sidebar').click(function() {
+      uni_modal("Search Request Report", "report/search.php");
     });
-  </script>
-</body>
-</html>
+  });
+</script>
