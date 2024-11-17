@@ -28,6 +28,9 @@
     color: #fff;
     letter-spacing: -1px;
   }
+  nav .logo a{
+    text-decoration: none;
+  }
   nav .logo img{
     border-radius: 50%;
   }
