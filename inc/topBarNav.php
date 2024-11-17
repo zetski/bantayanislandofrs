@@ -65,10 +65,6 @@
     color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
-  #navbarNav ul{
-    color: #808080;
-    text-shadow: #000;
-  }
   .sidebar.show {
     left: 0;
   }
@@ -114,7 +110,7 @@
   }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: transparent !important;">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
     <a class="navbar-brand" href="./">
       <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
