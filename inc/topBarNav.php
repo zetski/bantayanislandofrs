@@ -11,9 +11,9 @@
     margin: 0;
     padding: 0;
   }
-  body {
-    background: #f46000;
-  }
+  /* body {
+    background: #f2f2f2;
+  } */
   nav {
     background: #171c24;
     display: flex;
