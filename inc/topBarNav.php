@@ -137,7 +137,11 @@
 
     menuIcon.addEventListener("click", () => {
       navItems.classList.toggle("active");
+       // Modal for search report
+    $('#search_report, #search_report_sidebar').click(function() {
+      uni_modal("Search Request Report", "report/search.php");
     });
+  });
   </script>
 </body>
 </html>
