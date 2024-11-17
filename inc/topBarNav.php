@@ -27,7 +27,6 @@
   nav .logo {
     color: #fff;
     letter-spacing: -1px;
-    border-radius: 50%;
   }
   nav .nav-items {
     display: flex;
