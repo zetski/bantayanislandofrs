@@ -13,7 +13,7 @@
     height: 100%;
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
-    z-index: 1000;
+    z-index: -1;
   }
 
   /* Style for the About Us Dropdown */
