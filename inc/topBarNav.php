@@ -25,23 +25,12 @@
     padding: 0 100px;
   }
   nav .logo {
-  text-align: center; /* Center align the logo */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    color: #fff;
+    letter-spacing: -1px;
   }
-  nav .logo a{
-  text-decoration: none; /* Remove underline */
-  color: #fff; /* Change text color to white */
-  display: flex;
-  align-items: center;
+  nav .logo img{
+    border-radius: 50%;
   }
-  nav .logo img {
-  border-radius: 50%; /* Make the logo circular */
-  width: 50px; /* Adjust the size if necessary */
-  height: 50px; /* Ensure consistent dimensions */
-  margin-right: 10px; /* Add space between the logo and the short name */
-}
   nav .nav-items {
     display: flex;
     flex: 1;
