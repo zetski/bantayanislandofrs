@@ -59,6 +59,12 @@
   .navbar-brand img{
     border-radius: 50%;
   }
+
+  #navbarNav a:hover{
+    background-color: #ff4600;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  }
   .sidebar.show {
     left: 0;
   }
