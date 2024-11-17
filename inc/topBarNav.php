@@ -93,7 +93,7 @@
   }
 </style>
 
-<nav>
+<nav class="fixed-top">
   <div class="menu-icon">
     <span class="fas fa-bars"></span>
   </div>
