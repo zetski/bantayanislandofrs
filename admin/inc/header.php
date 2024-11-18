@@ -2,12 +2,14 @@
 require_once('sess_auth.php');
 
 // Set Content Security Policy
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://trusted-cdn.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self';");
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 
 // Set additional HTTP security headers
 header("X-Content-Type-Options: nosniff"); // Prevents MIME-type sniffing
 header("X-Frame-Options: SAMEORIGIN"); // Prevents clickjacking
 header("X-XSS-Protection: 1; mode=block"); // Enables XSS filtering
+header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 header("Referrer-Policy: no-referrer-when-downgrade"); // Controls referrer information
 
 // HSTS (HTTP Strict Transport Security) - Requires HTTPS
@@ -20,6 +22,7 @@ header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
 ini_set('session.cookie_httponly', 1); // Prevents JavaScript access to session cookies
 ini_set('session.cookie_secure', 1); // Requires cookies to be sent over HTTPS
 ini_set('session.use_only_cookies', 1); // Ensures sessions only use cookies, not URL parameters
+ini_set('session.cookie_samesite', 'Strict');
 session_start();
 
 ?>
