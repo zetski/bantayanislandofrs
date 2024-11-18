@@ -20,7 +20,7 @@
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
 </style>
-<section class="py-0">
+<section class="py-3">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="row justify-content-center mt-n3">
-            <div class="col-lg-10 col-md-11 col-sm-11">
+            <div class="col-xl-10 col-xl-11 col-lg-11">
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
