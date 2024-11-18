@@ -20,7 +20,7 @@
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
 </style>
-<section class="py-3">
+<section class="py-0">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
