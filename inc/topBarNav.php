@@ -170,22 +170,29 @@
 </div>
 
 <script>
-  //navbar dropdown about us
   $(document).ready(function() {
-  $('.dropdown-toggle').dropdown();
-});
+    // Initialize the navbar dropdown for "About Us"
+    $('#aboutDropdown').on('click', function (e) {
+      var $el = $(this).next('.dropdown-menu');
+      var isVisible = $el.is(':visible');
+      // Slide up all dropdowns
+      $('.dropdown-menu').slideUp('400');
+      // If this wasn't already visible, slide it down
+      if (!isVisible) {
+        $el.stop(true, true).slideDown('400');
+      }
+    });
 
-$(document).ready(function() {
-  // Sidebar toggle for About Us dropdown
-  $('#aboutSidebarDropdown').click(function() {
-    $('#sidebarAboutDropdown').collapse('toggle');
-  });
-});
+    // Sidebar toggle for About Us dropdown (sidebar version)
+    $('#aboutSidebarDropdown').click(function() {
+      $('#sidebarAboutDropdown').collapse('toggle');
+    });
 
-  $(document).ready(function() {
+    // Sidebar toggle button (to show/hide the entire sidebar)
     $('#sidebarToggle').click(function() {
       $('#sidebarMenu').toggleClass('show');
     });
+
 
     // Modal for search report
     $('#search_report, #search_report_sidebar').click(function() {
