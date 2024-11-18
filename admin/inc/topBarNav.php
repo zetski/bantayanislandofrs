@@ -63,7 +63,7 @@ $new_reports_count = $new_reports_query->num_rows;
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
   <!-- Left navbar links -->
-  <ul class="navbar-nav">
+  <ul class="navbar-nav-lg">
     <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
     </li>
