@@ -19,21 +19,11 @@
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
-    @media screen and (max-width:  600px){
-        .container{
-            width: 100%;
-        }
-    }
-    @media screen and (min-width: 601px) and (max-width: 1024px) {
-        .container{
-            width: 80%;
-        }
-    }
 </style>
 <section class="py-3">
     <div class="container">
         <div class="row">
-            <div class="col-xl-12">
+            <div class="col-md-12">
                 <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
                     <div class="carousel-inner">
                         <?php 
