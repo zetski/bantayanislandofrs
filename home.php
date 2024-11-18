@@ -3,42 +3,27 @@
         padding-top: 10px;
         margin-top: 40px;
     }
-    .carousel-item > img {
+    .carousel-item>img {
         object-fit: cover !important;
         height: 20em; /* Adjust the height to your desired value */
     }
     #carouselExampleControls .carousel-inner {
         height: 20em !important; /* Ensure this matches the image height */
     }
-    .btn {
+    .btn{
         color: #fff;
         margin-left: 30px;
         background-color: #f46000;
     }
-    .btn:focus, .btn:hover {
+    .btn:focus, .btn:hover{
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
-    /* Ensure the container spans full width on smaller screens */
-    .container {
-        max-width: 100%;
-    }
-    /* Add padding to match navbar spacing */
-    .py-3 {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
-    @media (max-width: 768px) {
-        .carousel-item > img {
-            height: 15em; /* Adjust height for smaller screens */
-        }
-    }
 </style>
-
 <section class="py-3">
     <div class="container">
         <div class="row">
-            <div class="col-12">
+            <div class="col-md-12">
                 <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
                     <div class="carousel-inner">
                         <?php 
@@ -69,7 +54,7 @@
             </div>
         </div>
         <div class="row justify-content-center mt-n3">
-            <div class="col-lg-10 col-md-11 col-sm-12">
+            <div class="col-lg-10 col-md-11 col-sm-11">
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
@@ -77,7 +62,7 @@
                                 <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
                             </center>
                             <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
-                            <div class="text-center mt-3">
+                            <div>
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
                             </div>
                         </div>
