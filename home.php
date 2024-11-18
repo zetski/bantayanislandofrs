@@ -54,7 +54,7 @@
             </div>
         </div>
         <div class="row justify-content-center mt-n3">
-            <div class="col-xl-10 col-xl-11 col-lg-11">
+            <div class="col-lg-10 col-md-11 col-sm-11">
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
