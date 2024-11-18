@@ -1,318 +1,176 @@
-<!DOCTYPE html>
-<!-- Created By CodingNepal -->
-<html lang="en" dir="ltr">
-   <head>
-      <meta charset="utf-8">
-      <title>Responsive Navbar with Search Box | CodingNepal</title>
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-   </head>
-<style>@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
-*{
-  margin: 0;
-  padding: 0;
-  outline: none;
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-}
-body{
-  background: #f2f2f2;
-}
-nav{
-  background: #171c24;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  height: 70px;
-  padding: 0 100px;
-}
-nav .logo{
-  color: #fff;
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: -1px;
-}
-nav .nav-items{
-  display: flex;
-  flex: 1;
-  padding: 0 0 0 40px;
-}
-nav .nav-items li{
-  list-style: none;
-  padding: 0 15px;
-}
-nav .nav-items li a{
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  text-decoration: none;
-}
-nav .nav-items li a:hover{
-  color: #ff3d00;
-}
-nav form{
-  display: flex;
-  height: 40px;
-  padding: 2px;
-  background: #1e232b;
-  min-width: 18%!important;
-  border-radius: 2px;
-  border: 1px solid rgba(155,155,155,0.2);
-}
-nav form .search-data{
-  width: 100%;
-  height: 100%;
-  padding: 0 10px;
-  color: #fff;
-  font-size: 17px;
-  border: none;
-  font-weight: 500;
-  background: none;
-}
-nav form button{
-  padding: 0 15px;
-  color: #fff;
-  font-size: 17px;
-  background: #ff3d00;
-  border: none;
-  border-radius: 2px;
-  cursor: pointer;
-}
-nav form button:hover{
-  background: #e63600;
-}
-nav .menu-icon,
-nav .cancel-icon,
-nav .search-icon{
-  width: 40px;
-  text-align: center;
-  margin: 0 50px;
-  font-size: 18px;
-  color: #fff;
-  cursor: pointer;
-  display: none;
-}
-nav .menu-icon span,
-nav .cancel-icon,
-nav .search-icon{
-  display: none;
-}
-@media (max-width: 1245px) {
-  nav{
-    padding: 0 50px;
+<style>
+  button[type="button"]{
+    background-color: transparent !important;
+    margin-left: 15px;
+    margin: -10px;
   }
-}
-@media (max-width: 1140px){
-  nav{
-    padding: 0px;
-  }
-  nav .logo{
-    flex: 2;
-    text-align: center;
-  }
-  nav .nav-items{
+  /* Sidebar styling with formal hover effect */
+  .sidebar {
     position: fixed;
-    z-index: 99;
-    top: 70px;
-    width: 100%;
-    left: -100%;
+    left: -250px;
+    top: 0;
+    width: 250px;
     height: 100%;
-    padding: 10px 50px 0 50px;
-    text-align: center;
-    background: #14181f;
-    display: inline-block;
+    background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
+    z-index: 1000;
   }
-  nav .nav-items.active{
-    left: 0px;
+
+  /* Style for the About Us Dropdown */
+.nav-item .dropdown-menu {
+  background-color: #333333; /* Match sidebar background */
+  border: none;
+}
+
+.nav-item .dropdown-menu .dropdown-item {
+  color: white; /* White text */
+}
+
+.nav-item .dropdown-menu .dropdown-item:hover {
+  background-color: #ff4600; /* Orange hover effect */
+}
+
+
+/* Sidebar dropdown styling */
+#sidebarAboutDropdown {
+  padding-top: 5px;
+  list-style: none;
+  padding-left: 20px; /* Indent the dropdown items */
+}
+
+#sidebarAboutDropdown li a {
+  color: #fff; /* White text */
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  display: block;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#sidebarAboutDropdown li a:hover {
+  background-color: #ff4600; /* Formal orange hover background */
+  color: #fff;
+}
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: -70px; /* Adjust this value to move more or less */
   }
-  nav .nav-items li{
-    line-height: 40px;
-    margin: 30px 0;
+
+  .navbar-brand img{
+    border-radius: 50%;
   }
-  nav .nav-items li a{
-    font-size: 20px;
+
+  #navbarNav a:hover{
+    background-color: #ff4600;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
-  nav form{
-    position: absolute;
-    top: 80px;
-    right: 50px;
-    opacity: 0;
-    pointer-events: none;
-    transition: top 0.3s ease, opacity 0.1s ease;
+  .sidebar.show {
+    left: 0;
   }
-  nav form.active{
-    top: 95px;
-    opacity: 1;
-    pointer-events: auto;
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
-  nav form:before{
-    position: absolute;
-    content: "";
-    top: -13px;
-    right: 0px;
-    width: 0;
-    height: 0;
-    z-index: -1;
-    border: 10px solid transparent;
-    border-bottom-color: #1e232b;
-    margin: -20px 0 0;
+
+  .sidebar ul li {
+    padding: 0;
   }
-  nav form:after{
-    position: absolute;
-    content: '';
-    height: 60px;
-    padding: 2px;
-    background: #1e232b;
-    border-radius: 2px;
-    min-width: calc(100% + 20px);
-    z-index: -2;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-  nav .menu-icon{
+
+  .sidebar ul li a {
+    color: #fff; /* White text */
+    text-decoration: none;
     display: block;
-  }
-  nav .search-icon,
-  nav .menu-icon span{
-    display: block;
-  }
-  nav .menu-icon span.hide,
-  nav .search-icon.hide{
-    display: none;
-  }
-  nav .cancel-icon.show{
-    display: block;
-  }
-}
-.content{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  text-align: center;
-  transform: translate(-50%, -50%);
-}
-.content header{
-  font-size: 30px;
-  font-weight: 700;
-}
-.content .text{
-  font-size: 30px;
-  font-weight: 700;
-}
-.space{
-  margin: 10px 0;
-}
-nav .logo.space{
-  color: red;
-  padding: 0 5px 0 0;
-}
-@media (max-width: 980px){
-  nav .menu-icon,
-  nav .cancel-icon,
-  nav .search-icon{
-    margin: 0 20px;
-  }
-  nav form{
-    right: 30px;
-  }
-}
-@media (max-width: 350px){
-  nav .menu-icon,
-  nav .cancel-icon,
-  nav .search-icon{
-    margin: 0 10px;
+    padding: 0.75rem 1.5rem; /* Adjusted padding for better spacing */
     font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
-}
-.content{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-.content header{
-  font-size: 30px;
-  font-weight: 700;
-}
-.content .text{
-  font-size: 30px;
-  font-weight: 700;
-}
-.content .space{
-  margin: 10px 0;
-}
+
+  /* Hover effect for sidebar items */
+  .sidebar ul li a:hover {
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
+  }
+
+  /* Active state styling */
+  .sidebar ul li a.active {
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
+  }
+
+  /* Responsive for smaller devices */
+  @media (max-width: 768px) {
+    .sidebar ul {
+      padding-top: 4rem;
+    }
+  }
 </style>
-   <body>
-      <nav>
-         <div class="menu-icon">
-            <span class="fas fa-bars"></span>
-         </div>
-         <div class="logo">
-           Bantayan Island Fire Station
-         </div>
-         <div class="nav-items">
-            <li><a href="./">Home</a></li>
-            <li><a href="./?=report">Report</a></li>
-            <li><a id="search_report" href="javascript:void(0)">View Status</a></li>
-            <li><a href="#" class="nav-link dropdown-toggle" id="aboutDrowpdown" role="button" data-bs-toggle="dropdown">About Us</a>
-        <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-            <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
-            <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
-            <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
+
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
+  <div class="container px-4 px-lg-5">
+    <a class="navbar-brand" href="./">
+      <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
+      <?php echo $_settings->info('short_name') ?>
+    </a>
+    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+        <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
+        <li class="nav-item"><a class="nav-link text-white" id="search_report" href="javascript:void(0)">View Status</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            About Us
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+          <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
+          <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
+          <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
         </ul>
-        </li>
-            <li><a href="./citizencharter.php">Citizen Charter</a></li>
-            <li><a href="./safetytips.php">Safetytips</a></li>
-            <div>
-            <li><a href="./admin">Login</a></li>
-            </div>
-         </div>
-         <!-- <div class="search-icon">
-            <span class="fas fa-search"></span>
-         </div> -->
-         <div class="cancel-icon">
-            <span class="fas fa-times"></span>
-         </div>
-         <form action="#">
-            <input type="search" class="search-data" placeholder="Search" required>
-            <button type="submit" class="fas fa-search"></button>
-         </form>
-      </nav>
-      <div class="content">
-         <header class="space">Responsive Navbar with Search Box</header>
-         <div class="space text">
-            using HTML CSS & JavaScript
-         </div>
+</li>
+        <!-- <li class="nav-item"><a class="nav-link text-white" href="./?p=contact">Contact Us</a></li> -->
+         <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
+         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
       </div>
-      <script>
-         const menuBtn = document.querySelector(".menu-icon span");
-         const searchBtn = document.querySelector(".search-icon");
-         const cancelBtn = document.querySelector(".cancel-icon");
-         const items = document.querySelector(".nav-items");
-         const form = document.querySelector("form");
-         menuBtn.onclick = ()=>{
-           items.classList.add("active");
-           menuBtn.classList.add("hide");
-           searchBtn.classList.add("hide");
-           cancelBtn.classList.add("show");
-         }
-         cancelBtn.onclick = ()=>{
-           items.classList.remove("active");
-           menuBtn.classList.remove("hide");
-           searchBtn.classList.remove("hide");
-           cancelBtn.classList.remove("show");
-           form.classList.remove("active");
-           cancelBtn.style.color = "#ff3d00";
-         }
-         searchBtn.onclick = ()=>{
-           form.classList.add("active");
-           searchBtn.classList.add("hide");
-           cancelBtn.classList.add("show");
-         }
-          //navbar dropdown about us
+    </div>
+  </div>
+</nav>
+
+<!-- Sidebar content -->
+<div class="sidebar" id="sidebarMenu">
+  <ul>
+    <li><a href="./">Home</a></li>
+    <li><a href="./?p=report">Report</a></li>
+    <li><a href="javascript:void(0)" id="search_report_sidebar">View Status</a></li>
+    <!-- sidebar dropdown about us -->
+    <li class="nav-item">
+      <a href="javascript:void(0)" class="nav-link text-white" id="aboutSidebarDropdown" data-bs-toggle="collapse" data-bs-target="#sidebarAboutDropdown" aria-expanded="false">
+        About Us
+      </a>
+      <ul class="collapse" id="sidebarAboutDropdown">
+        <li><a class="nav-link text-white" href="./about/aboutB.php">Bantayan</a></li>
+        <li><a class="nav-link text-white" href="./about/aboutM.php">Madridejos</a></li>
+        <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
+      </ul>
+    </li>
+
+    <li><a href="./?p=citizencharter">Citizen Charter</a></li>
+    <li><a href="./?p=safetytips">Safetytips</li>
+    <li><a href="./admin">Login</a></li>
+  </ul>
+</div>
+
+<script>
+  //navbar dropdown about us
   $(document).ready(function() {
   $('.dropdown-toggle').dropdown();
 });
@@ -334,7 +192,4 @@ $(document).ready(function() {
       uni_modal("Search Request Report", "report/search.php");
     });
   });
-      </script>
-   </body>
-</html>
-
+</script>
