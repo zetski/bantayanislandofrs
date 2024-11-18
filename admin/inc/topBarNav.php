@@ -61,7 +61,7 @@ $new_reports_count = $new_reports_query->num_rows;
 </style>
 
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
+<nav class="main-header navbar navbar-expand navbar-light shadow text-lg">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
     <li class="nav-item">
