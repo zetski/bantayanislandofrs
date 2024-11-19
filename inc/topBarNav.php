@@ -1,9 +1,10 @@
 <style>
-  button[type="button"]{
+  button[type="button"] {
     background-color: transparent !important;
     margin-left: 15px;
     margin: -10px;
   }
+
   /* Sidebar styling with formal hover effect */
   .sidebar {
     position: fixed;
@@ -16,55 +17,66 @@
     z-index: 1000;
   }
 
-  /* Style for the About Us Dropdown */
-.nav-item .dropdown-menu {
-  background-color: #333333; /* Match sidebar background */
-  border: none;
-}
+  /* Navbar Dropdown - Show on Hover */
+  .nav-item .dropdown-menu {
+    display: none; /* Initially hide the dropdown */
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #333333; /* Dark background to match the sidebar */
+    border: none;
+    min-width: 160px;
+  }
 
-.nav-item .dropdown-menu .dropdown-item {
-  color: white; /* White text */
-}
+  .nav-item:hover .dropdown-menu {
+    display: block; /* Show the dropdown when hovering over the parent item */
+  }
 
-.nav-item .dropdown-menu .dropdown-item:hover {
-  background-color: #ff4600; /* Orange hover effect */
-}
+  .nav-item .dropdown-menu .dropdown-item {
+    color: white; /* White text */
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+  }
 
+  .nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #ff4600; /* Highlight color on hover */
+  }
 
-/* Sidebar dropdown styling */
-#sidebarAboutDropdown {
-  padding-top: 5px;
-  list-style: none;
-  padding-left: 20px; /* Indent the dropdown items */
-}
+  /* Sidebar dropdown styling */
+  #sidebarAboutDropdown {
+    padding-top: 5px;
+    list-style: none;
+    padding-left: 20px; /* Indent the dropdown items */
+  }
 
-#sidebarAboutDropdown li a {
-  color: #fff; /* White text */
-  text-decoration: none;
-  padding: 0.5rem 1rem;
-  display: block;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
+  #sidebarAboutDropdown li a {
+    color: #fff; /* White text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
 
-#sidebarAboutDropdown li a:hover {
-  background-color: #ff4600; /* Formal orange hover background */
-  color: #fff;
-}
+  #sidebarAboutDropdown li a:hover {
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff;
+  }
 
   .navbar-brand,
   .navbar-nav {
     margin-left: -70px; /* Adjust this value to move more or less */
   }
 
-  .navbar-brand img{
+  .navbar-brand img {
     border-radius: 50%;
   }
 
-  #navbarNav a:hover{
+  #navbarNav a:hover {
     background-color: #ff4600;
     color: #fff;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
+
   .sidebar.show {
     left: 0;
   }
@@ -129,14 +141,13 @@
             About Us
           </a>
           <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-          <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
-          <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
-          <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
-        </ul>
-</li>
-        <!-- <li class="nav-item"><a class="nav-link text-white" href="./?p=contact">Contact Us</a></li> -->
-         <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
-         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safetytips</li>
+            <li><a class="dropdown-item" href="./about/aboutB.php">Bantayan</a></li>
+            <li><a class="dropdown-item" href="./about/aboutS.php">Santa Fe</a></li>
+            <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
+        <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safety Tips</a></li>
       </ul>
       <div class="d-flex align-items-center">
         <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
@@ -162,9 +173,8 @@
         <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
-
     <li><a href="./?p=citizencharter">Citizen Charter</a></li>
-    <li><a href="./?p=safetytips">Safetytips</li>
+    <li><a href="./?p=safetytips">Safety Tips</a></li>
     <li><a href="./admin">Login</a></li>
   </ul>
 </div>
@@ -192,7 +202,6 @@
     $('#sidebarToggle').click(function() {
       $('#sidebarMenu').toggleClass('show');
     });
-
 
     // Modal for search report
     $('#search_report, #search_report_sidebar').click(function() {
