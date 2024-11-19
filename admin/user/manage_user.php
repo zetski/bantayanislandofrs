@@ -54,19 +54,10 @@ if(isset($_GET['id'])){
 
 				<div class="form-group">
 					<label for="password"><?= isset($meta['id']) ? "New" : "" ?> Password</label>
-					<input 
-						type="password" 
-						name="password" 
-						id="password" 
-						class="form-control" 
-						value="" 
-						<?= isset($meta['id']) && $meta['type'] == 1 ? 'disabled' : '' ?> 
-						autocomplete="off">
-					<?php if(isset($meta['id'])): ?>
-						<small>
-							<i><?= $meta['type'] == 1 ? "Password cannot be changed for an administrator account." : "Leave this blank if you don't want to change the password." ?></i>
-						</small>
-					<?php endif; ?>
+					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off">
+                    <?php if(isset($meta['id'])): ?>
+					<small><i>Leave this blank if you don't want to change the password.</i></small>
+                    <?php endif; ?>
 				</div>
                 <div class="form-group">
                     <label for="type" class="control-label">Type</label>
@@ -119,42 +110,24 @@ if(isset($_GET['id'])){
 		}
 	}
 	$('#manage-user').submit(function(e){
-        e.preventDefault();
-
-        // Password Validation
-        const password = $('#password').val();
-        const isEditing = "<?= isset($meta['id']) ? 'true' : 'false' ?>";
-        const userType = "<?= isset($meta['type']) ? $meta['type'] : '' ?>";
-
-        if (!isEditing || userType != 1) { // Only validate password if not editing or not an admin
-            if (password.length !== 8) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Invalid Password',
-                    text: 'Password must be exactly 8 characters long!',
-                });
-                return; // Prevent form submission
-            }
-        }
-
-        // Submit the form via AJAX
-        start_loader();
-        $.ajax({
-            url: _base_url_ + 'classes/Users.php?f=save',
-            data: new FormData($(this)[0]),
-            cache: false,
-            contentType: false,
-            processData: false,
-            method: 'POST',
-            type: 'POST',
-            success: function(resp) {
-                if (resp == 1) {
-                    location.href = './?page=user/list';
-                } else {
-                    $('#msg').html('<div class="alert alert-danger">Username already exists</div>');
-                    end_loader();
-                }
-            }
-        });
-    });
+		e.preventDefault();
+		start_loader()
+		$.ajax({
+			url:_base_url_+'classes/Users.php?f=save',
+			data: new FormData($(this)[0]),
+		    cache: false,
+		    contentType: false,
+		    processData: false,
+		    method: 'POST',
+		    type: 'POST',
+			success:function(resp){
+				if(resp ==1){
+					location.href='./?page=user/list'
+				}else{
+					$('#msg').html('<div class="alert alert-danger">Username already exists</div>')
+					end_loader()
+				}
+			}
+		})
+	})
 </script>
