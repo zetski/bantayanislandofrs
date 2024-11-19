@@ -97,6 +97,7 @@ if(isset($_GET['id'])){
 	}
 </style>
 
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 	// Display image function
 	function displayImg(input,_this) {
