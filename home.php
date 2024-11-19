@@ -9,7 +9,6 @@
     .section-content {
         padding: 2rem 1rem;
         text-align: center;
-        align-items: center;
     }
 
     .btn {
@@ -47,7 +46,7 @@
     }
 </style>
 
-<section class="section-content">
+<section class="section-content pt-5">
     <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
     <div>
         <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
