@@ -4,22 +4,31 @@
         margin: 0;
         padding: 0;
         line-height: 1.6;
+        background: url('path-to-your-image.jpg') no-repeat center center fixed;
+        background-size: cover;
+        color: #fff;
     }
 
     .section-content {
-        padding: 2rem 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh; /* Full viewport height */
         text-align: center;
+        padding: 2rem 1rem;
+        background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
     }
 
     .btn {
         color: #fff;
         margin-top: 20px;
-        padding: 10px 20px;
+        padding: 12px 30px;
         background-color: #f46000;
         border: none;
-        border-radius: 5px;
+        border-radius: 50px; /* Fully rounded corners */
         cursor: pointer;
-        font-size: 1rem;
+        font-size: 1.2rem;
         transition: all 0.3s ease-in-out;
     }
 
@@ -28,20 +37,15 @@
         box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
     }
 
-
     @media (min-width: 768px) {
-        .section-content {
-            padding: 4rem 2rem;
-        }
-
         .btn {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
         }
     }
 
     @media (min-width: 1024px) {
         .btn {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
         }
     }
 </style>
