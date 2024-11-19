@@ -9,6 +9,7 @@
     .section-content {
         padding: 2rem 1rem;
         text-align: center;
+        align-items: center;
     }
 
     .btn {
