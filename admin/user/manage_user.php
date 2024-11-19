@@ -54,7 +54,7 @@ if(isset($_GET['id'])){
 
 				<div class="form-group">
 					<label for="password"><?= isset($meta['id']) ? "New" : "" ?> Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off">
+					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" required>
                     <?php if(isset($meta['id'])): ?>
 					<small><i>Leave this blank if you don't want to change the password.</i></small>
                     <?php endif; ?>
@@ -96,22 +96,39 @@ if(isset($_GET['id'])){
 		border-radius: 100% 100%;
 	}
 </style>
+
 <script>
+	// Display image function
 	function displayImg(input,_this) {
 	    if (input.files && input.files[0]) {
 	        var reader = new FileReader();
 	        reader.onload = function (e) {
 	        	$('#cimg').attr('src', e.target.result);
 	        }
-
 	        reader.readAsDataURL(input.files[0]);
 	    }else{
 			$('#cimg').attr('src', "<?php echo validate_image(isset($meta['avatar']) ? $meta['avatar'] :'') ?>");
 		}
 	}
+
+	// Submit form with password validation
 	$('#manage-user').submit(function(e){
 		e.preventDefault();
-		start_loader()
+		var password = $('#password').val();
+		
+		// Check if password is exactly 8 characters
+		if(password.length !== 8) {
+			// Trigger SweetAlert if password length is not 8 characters
+			swal({
+				title: "Password Error",
+				text: "Password must be exactly 8 characters long.",
+				icon: "error",
+				button: "OK",
+			});
+			return; // Prevent form submission
+		}
+
+		start_loader();
 		$.ajax({
 			url:_base_url_+'classes/Users.php?f=save',
 			data: new FormData($(this)[0]),
@@ -121,13 +138,13 @@ if(isset($_GET['id'])){
 		    method: 'POST',
 		    type: 'POST',
 			success:function(resp){
-				if(resp ==1){
-					location.href='./?page=user/list'
+				if(resp == 1){
+					location.href='./?page=user/list';
 				}else{
-					$('#msg').html('<div class="alert alert-danger">Username already exists</div>')
-					end_loader()
+					$('#msg').html('<div class="alert alert-danger">Username already exists</div>');
+					end_loader();
 				}
 			}
-		})
-	})
+		});
+	});
 </script>
