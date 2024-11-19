@@ -10,15 +10,23 @@
     }
 
     .section-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100vh; /* Full viewport height */
-        text-align: center;
-        padding: 2rem 1rem;
-        background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 56px); /* Adjust height to account for navbar */
+    width: 100%; /* Take full width of the viewport */
+    padding: 2rem; /* Uniform padding */
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    box-sizing: border-box; /* Include padding in the total width and height */
+}
+
+@media (min-width: 992px) { /* For navbar-expand-lg breakpoint */
+    .section-content {
+        padding: 2rem 15%; /* Add side padding for larger screens */
     }
+}
 
     .btn {
         color: #fff;
