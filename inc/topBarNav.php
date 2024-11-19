@@ -2,7 +2,7 @@
   button[type="button"] {
     background-color: transparent !important;
     margin-left: 15px;
-    margin: -10px;
+    margin: 0;
   }
 
   /* Sidebar styling with formal hover effect */
@@ -19,15 +19,15 @@
 
   /* Navbar Dropdown - Show on Hover */
   .nav-item .dropdown-menu {
-    display: none; /* Initially hide the dropdown */
+    display: none; /* Hidden by default */
     position: absolute;
     left: 0;
     top: 100%;
-    background-color: #333333; /* Dark background to match the sidebar */
-    border: none;
-    min-width: 160px;
-  }
+}
 
+nav.navbar {
+    overflow: hidden;
+}
   .nav-item:hover .dropdown-menu {
     display: block; /* Show the dropdown when hovering over the parent item */
   }
@@ -64,7 +64,7 @@
 
   .navbar-brand,
   .navbar-nav {
-    margin-left: -70px; /* Adjust this value to move more or less */
+    margin-left: 0; /* Adjust this value to move more or less */
   }
 
   .navbar-brand img {
@@ -77,6 +77,13 @@
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
 
+  .sidebar {
+    position: fixed;
+    left: -250px; /* Sidebar is off-screen initially */
+    top: 0;
+    width: 250px;
+    height: 100%;
+}
   .sidebar.show {
     left: 0;
   }
