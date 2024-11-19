@@ -46,7 +46,7 @@
     }
 </style>
 
-<section class="section-content pt-5">
+<section class="section-content">
     <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
     <div>
         <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
