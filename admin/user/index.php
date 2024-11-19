@@ -33,7 +33,7 @@ foreach($user->fetch_array() as $k =>$v){
 				</div>
 				<div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email address" required>
             	</div>
 				<div class="form-group">
 					<label for="password">Password</label>
