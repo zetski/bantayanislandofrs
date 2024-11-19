@@ -28,14 +28,6 @@
         box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
     }
 
-    hr {
-        width: 8em;
-        height: 3px;
-        background-color: navy;
-        border: none;
-        margin: 20px auto;
-        opacity: 1;
-    }
 
     @media (min-width: 768px) {
         .section-content {
@@ -55,9 +47,6 @@
 </style>
 
 <section class="section-content">
-    <center>
-        <hr>
-    </center>
     <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
     <div>
         <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
