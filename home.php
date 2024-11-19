@@ -28,7 +28,7 @@
         border: none;
         border-radius: 50px; /* Fully rounded corners */
         cursor: pointer;
-        font-size: 1.2rem;
+        font-size: 10px;
         transition: all 0.3s ease-in-out;
     }
 
