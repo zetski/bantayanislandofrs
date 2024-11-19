@@ -4,7 +4,7 @@
         margin: 0;
         padding: 0;
         line-height: 1.6;
-        background: url('path-to-your-image.jpg') no-repeat center center fixed;
+        background: url('img/r7logo.png') no-repeat center center fixed;
         background-size: cover;
         color: #fff;
     }
