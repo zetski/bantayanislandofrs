@@ -185,72 +185,66 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
+    $(document).ready(function(){
+      end_loader();
+    });
+
+    // Automatically remove disallowed characters as they are typed
+    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    // Toggle password visibility
+    $('#toggle-password').on('click', function() {
+        let passwordField = $('#password');
+        let passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
+
+    // Disable inspect element and right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
     document.addEventListener('DOMContentLoaded', function() {
-      // Select form input elements and buttons to disable initially
-      const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password.php"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-      ];
+    // Initially disable the form fields and buttons
+    const formElements = [
+      document.querySelector('input[name="username"]'),
+      document.querySelector('input[name="password"]'),
+      document.querySelector('a[href="forgot/forgot-password.php"]'),
+      document.querySelector('a[href="<?php echo base_url ?>"]'),
+      document.querySelector('button[type="submit"]')	
+    ];
 
-      const recaptchaContainer = document.querySelector('.g-recaptcha');
+    formElements.forEach(el => el.disabled = true);
 
-      function disableElements() {
+    // Monitor reCAPTCHA state
+    function enableFormElements() {
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (recaptchaResponse.length > 0) {
+        formElements.forEach(el => el.disabled = false);
+      } else {
         formElements.forEach(el => el.disabled = true);
       }
+    }
 
-      function enableElements() {
-        formElements.forEach(el => el.disabled = false);
-      }
-
-      disableElements();
-
-      // Geolocation function
-      function requestLocation() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            // Success callback
-            function(position) {
-              console.log('Location access granted');
-              enableElements();
-            },
-            // Error callback
-            function(error) {
-              if (error.code === error.PERMISSION_DENIED) {
-                alert("Please allow location access to use this login page.");
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
-              } else {
-                alert("Error obtaining location. Please try again.");
-                disableElements();
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
-              }
-            }
-          );
-        } else {
-          alert("Geolocation is not supported by this browser.");
-          disableElements();
-        }
-      }
-
-      // reCAPTCHA callback
-      function checkRecaptcha() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (recaptchaResponse.length > 0) {
-          requestLocation();
-        } else {
-          disableElements();
-        }
-      }
-
-      // Bind checkRecaptcha to reCAPTCHA callback
-      window.enableRecaptcha = checkRecaptcha;
-    });
+    // Add event listener for reCAPTCHA changes
+    window.enableRecaptcha = enableFormElements; // Bind function to global scope
+  });
 </script>
 </body>
 </html>
