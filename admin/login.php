@@ -242,32 +242,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     }
 
-    function requestLocation() {
-        if (navigator.geolocation) {
-            navigator.geolocation.watchPosition(
-                // Success callback
-                function () {
-                    console.log('Location access granted');
-                    enableFormElements();
-                },
-                // Error callback
-                function (error) {
-                    if (error.code === error.PERMISSION_DENIED) {
-                        alert("Please enable location access to use this page.");
-                    }
-                    disableFormElements();
-                }
-            );
-        } else {
-            alert("Geolocation is not supported by your browser.");
-            disableFormElements();
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        disableFormElements();
-        requestLocation();
-
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
