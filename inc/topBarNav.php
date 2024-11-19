@@ -120,44 +120,9 @@
       padding-top: 4rem;
     }
   }
-  /* General navbar adjustments */
-  .custom-navbar {
-    padding: 0.25rem 1rem; /* Reduce padding for a slimmer appearance */
-    font-size: 14px; /* Smaller font size for smaller screens */
-  }
-
-  .custom-navbar .navbar-nav .nav-link {
-    padding: 0.5rem 0.75rem; /* Adjust padding between nav items */
-  }
-
-  .custom-navbar .navbar-toggler {
-    padding: 0.2rem 0.5rem; /* Smaller button size for the toggle */
-  }
-
-  /* Adjust navbar height for smaller screens */
-  @media (max-width: 768px) {
-    .custom-navbar {
-      padding: 0.2rem 0.5rem; /* Slim padding for mobile */
-      font-size: 12px; /* Slightly smaller font size */
-    }
-
-    .custom-navbar .navbar-nav .nav-link {
-      padding: 0.4rem 0.6rem; /* Adjust item padding */
-    }
-
-    .custom-navbar .navbar-toggler {
-      padding: 0.15rem 0.4rem; /* Slim toggle button */
-    }
-  }
-
-  /* Optional: Style dropdowns for smaller screens */
-  .custom-navbar .dropdown-menu {
-    font-size: 13px; /* Smaller font size for dropdown items */
-    padding: 0.3rem 0.5rem; /* Reduce dropdown padding */
-  }
 </style>
 
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar" style="background-color: #ff4600;">
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
     <a class="navbar-brand" href="./">
       <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
