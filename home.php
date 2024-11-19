@@ -1,66 +1,74 @@
 <style>
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        line-height: 1.6;
-        background: url('img/r7logo.png') no-repeat center center fixed;
-        background-size: cover;
-        color: #fff;
+        padding-top: 10px;
+        margin-top: 40px;
     }
-
-    .section-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: calc(100vh - 56px); /* Adjust height to account for navbar */
-    width: 100%; /* Take full width of the viewport */
-    padding: 2rem; /* Uniform padding */
-    text-align: center;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
-    box-sizing: border-box; /* Include padding in the total width and height */
-}
-
-@media (min-width: 992px) { /* For navbar-expand-lg breakpoint */
-    .section-content {
-        padding: 2rem 15%; /* Add side padding for larger screens */
+    .carousel-item>img {
+        object-fit: cover !important;
+        height: 20em; /* Adjust the height to your desired value */
     }
-}
-
-    .btn {
+    #carouselExampleControls .carousel-inner {
+        height: 20em !important; /* Ensure this matches the image height */
+    }
+    .btn{
         color: #fff;
-        margin-top: 20px;
-        padding: 12px 30px;
+        margin-left: 30px;
         background-color: #f46000;
-        border: none;
-        border-radius: 50px; /* Fully rounded corners */
-        cursor: pointer;
-        font-size: 1.2rem;
-        transition: all 0.3s ease-in-out;
     }
-
-    .btn:hover {
-        background-color: #d94c00;
-        box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    @media (min-width: 768px) {
-        .btn {
-            font-size: 1.4rem;
-        }
-    }
-
-    @media (min-width: 1024px) {
-        .btn {
-            font-size: 1.6rem;
-        }
+    .btn:focus, .btn:hover{
+        outline: none;
+        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
 </style>
-
-<section class="section-content">
-    <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
-    <div>
-        <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
+<section class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <?php 
+                            $upload_path = "uploads/banner";
+                            if (is_dir(base_app . $upload_path)): 
+                                $file = scandir(base_app . $upload_path);
+                                $_i = 0;
+                                foreach ($file as $img):
+                                    if (in_array($img, array('.', '..')))
+                                        continue;
+                                    $_i++;
+                        ?>
+                        <div class="carousel-item <?php echo $_i == 1 ? "active" : '' ?>">
+                            <img src="<?php echo validate_image($upload_path . '/' . $img) ?>" class="d-block w-100" alt="<?php echo $img ?>">
+                        </div>
+                        <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#carouselExampleControls" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center mt-n3">
+            <div class="col-lg-10 col-md-11 col-sm-11">
+                <div class="card card-outline rounded-0">
+                    <div class="card-body">
+                        <div class="container-fluid">
+                            <center>
+                                <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
+                            </center>
+                            <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
+                            <div>
+                                <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
