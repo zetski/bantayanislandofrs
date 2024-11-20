@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 20, 2024 at 04:21 AM
+-- Generation Time: Nov 14, 2024 at 02:04 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -17,6 +17,49 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+--
+-- Database: `login_db`
+--
+CREATE DATABASE IF NOT EXISTS `login_db` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `login_db`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admin`
+--
+
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `reset_token_hash` varchar(64) DEFAULT NULL,
+  `reset_token_expiry_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `reset_token_hash` (`reset_token_hash`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- Database: `ofrs_db`
 --
@@ -128,20 +171,6 @@ INSERT INTO `municipalities` (`id`, `name`, `logo`) VALUES
 (1, 'Bantayan', ''),
 (2, 'Santa Fe', ''),
 (3, 'Madridejos', '');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `officers`
---
-
-CREATE TABLE `officers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `position` varchar(255) NOT NULL,
-  `images` text NOT NULL,
-  `date_created` datetime DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -335,12 +364,6 @@ ALTER TABLE `municipalities`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `officers`
---
-ALTER TABLE `officers`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `request_list`
 --
 ALTER TABLE `request_list`
@@ -393,12 +416,6 @@ ALTER TABLE `inquiry_list`
 --
 ALTER TABLE `municipalities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `officers`
---
-ALTER TABLE `officers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `request_list`
@@ -588,7 +605,7 @@ CREATE TABLE `pma__recent` (
 --
 
 INSERT INTO `pma__recent` (`username`, `tables`) VALUES
-('root', '[{\"db\":\"ofrs_db\",\"table\":\"users\"},{\"db\":\"ofrs_db\",\"table\":\"officers\"}]');
+('root', '[{\"db\":\"ofrs_db\",\"table\":\"users\"}]');
 
 -- --------------------------------------------------------
 
@@ -695,7 +712,7 @@ CREATE TABLE `pma__userconfig` (
 --
 
 INSERT INTO `pma__userconfig` (`username`, `timevalue`, `config_data`) VALUES
-('root', '2024-11-20 03:21:31', '{\"Console\\/Mode\":\"collapse\"}');
+('root', '2024-11-14 01:03:15', '{\"Console\\/Mode\":\"collapse\"}');
 
 -- --------------------------------------------------------
 
