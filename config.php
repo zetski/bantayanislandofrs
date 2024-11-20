@@ -2,8 +2,15 @@
 //csp security
 header("Content-Security-Policy: default-src 'self';");
 ob_start();
+
+//set session cookie parameters
+ini_set('session.cookie_httponly', 1);
+
+//timezone
 ini_set('date.timezone','Asia/Manila');
 date_default_timezone_set('Asia/Manila');
+
+//start the session
 session_start();
 
 require_once('initialize.php');
