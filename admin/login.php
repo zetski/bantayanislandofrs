@@ -245,28 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
-  document.getElementById('login-frm').addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-
-    fetch('../Login.php?f=login', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'locked') {
-            alert(data.message); // Show lockout message
-        } else if (data.status === 'success') {
-            alert('Login successful!');
-            location.reload(); // Redirect or reload on success
-        } else {
-            alert(data.message); // Show invalid credentials message
-        }
-    })
-    .catch(err => console.error('Error:', err));
-});
 </script>
 </body>
 </html>
