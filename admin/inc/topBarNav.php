@@ -99,6 +99,13 @@ $new_reports_count = $new_reports_query->num_rows;
       </div>
     </li>
 
+    <!-- Email Message Icon -->
+    <!-- <li class="nav-item">
+      <a class="nav-link nav-icon" href="#">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </li> -->
+
     <!-- Vertical Line -->
     <li class="nav-item">
       <div class="navbar-separator"></div>
@@ -122,13 +129,3 @@ $new_reports_count = $new_reports_query->num_rows;
   </ul>
 </nav>
 <!-- /.navbar -->
-
-<?php if ($new_reports_count > 0): ?>
-  <script>
-    // Play notification sound
-    document.addEventListener('DOMContentLoaded', function () {
-      const audio = new Audio('<?php echo base_url . '../assets/sound/danger.mp3'; ?>');
-      audio.play().catch(error => console.log('Notification sound error:', error));
-    });
-  </script>
-<?php endif; ?>
