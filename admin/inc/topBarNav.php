@@ -129,3 +129,23 @@ $new_reports_count = $new_reports_query->num_rows;
   </ul>
 </nav>
 <!-- /.navbar -->
+
+<script>
+  // Check if there are new reports
+  const newReportsCount = <?php echo $new_reports_count; ?>;
+  
+  // If there are new reports, play the notification sound
+  if (newReportsCount > 0) {
+    // Play the sound
+    var audio = new Audio('<?php echo base_url('../sounds/danger.mp3'); ?>'); // Path to your sound file
+    audio.play();
+  }
+
+  // Play sound on clicking the notification icon (optional)
+  document.getElementById('notificationDropdown').addEventListener('click', function() {
+    if (newReportsCount > 0) {
+      var audio = new Audio('<?php echo base_url('assets/sounds/notification_sound.mp3'); ?>');
+      audio.play();
+    }
+  });
+</script>
