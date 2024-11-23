@@ -127,7 +127,7 @@ $new_reports_count = $new_reports_query->num_rows;
   <script>
     // Play notification sound
     document.addEventListener('DOMContentLoaded', function () {
-      const audio = new Audio('<?php echo base_url . '/assets/sound/danger.mp3'; ?>');
+      const audio = new Audio('<?php echo base_url . '../assets/sound/danger.mp3'; ?>');
       audio.play().catch(error => console.log('Notification sound error:', error));
     });
   </script>
