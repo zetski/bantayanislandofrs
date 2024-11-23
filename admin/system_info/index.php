@@ -111,13 +111,21 @@
             <form action="" id="officers-frm" enctype="multipart/form-data">
                 <div id="officers-msg" class="form-group"></div>
                 <div class="form-group">
-                    <label for="officer_name" class="control-label">Officer Name</label>
-                    <input type="text" class="form-control form-control-sm" name="officer_name" id="officer_name" placeholder="Enter officer name">
-                </div>
-                <div class="form-group">
-                    <label for="officer_position" class="control-label">Position</label>
-                    <input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer position">
-                </div>
+					<label for="officer_lastname" class="control-label">Last Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_lastname" id="officer_lastname" placeholder="Enter officer's last name">
+				</div>
+				<div class="form-group">
+					<label for="officer_firstname" class="control-label">First Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_firstname" id="officer_firstname" placeholder="Enter officer's first name">
+				</div>
+				<div class="form-group">
+					<label for="officer_middlename" class="control-label">Middle Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name (optional)">
+				</div>
+				<div class="form-group">
+					<label for="officer_position" class="control-label">Position</label>
+					<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
+				</div>
                 <div class="form-group">
                     <label for="officer_images" class="control-label">Officer Images</label>
                     <div class="custom-file">
