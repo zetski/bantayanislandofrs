@@ -245,6 +245,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
+  $(document).ready(function(){
+    $('#login-frm').on('submit', function(e) {
+        e.preventDefault(); // Prevent default form submission
+
+        $.post('path_to_your_login_backend.php', $(this).serialize(), function(response) {
+            const res = JSON.parse(response);
+            if (res.status === 'timeout') {
+                alert(res.message); // Inform the user about the timeout
+            } else if (res.status === 'incorrect') {
+                alert(res.message); // Invalid credentials
+            } else if (res.status === 'success') {
+                window.location.href = 'dashboard.php'; // Redirect on success
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>
