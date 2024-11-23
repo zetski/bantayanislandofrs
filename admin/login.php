@@ -245,25 +245,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
   });
-  $(document).ready(function(){
-    $('#login-frm').on('submit', function(e) {
-        e.preventDefault(); // Prevent default form submission
-
-        const loginUrl = _base_url_ + "classes/Login.php?f=login"; // Correct endpoint for login handling
-
-        $.post(loginUrl, $(this).serialize(), function(response) {
-            const res = JSON.parse(response);
-
-            if (res.status === 'timeout') {
-                alert(res.message); // Timeout alert
-            } else if (res.status === 'failed') {
-                alert(res.message + ` (${res.attempts_left} attempts remaining)`); // Login failed alert
-            } else if (res.status === 'success') {
-                window.location.href = 'dashboard.php'; // Redirect to dashboard on success
-            }
-        });
-    });
-});
 </script>
 </body>
 </html>
