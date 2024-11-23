@@ -15,35 +15,34 @@ class Login extends DBConnection {
 	public function index(){
 		echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
 	}
-	public function login(){
+	public function login() {
 		session_start(); // Ensure session is started
-		extract($_POST);
 	
-		// Initialize or fetch login attempt data
+		// Initialize session-based attempt tracking
 		if (!isset($_SESSION['login_attempts'])) {
 			$_SESSION['login_attempts'] = 0;
-			$_SESSION['last_attempt_time'] = null;
+			$_SESSION['last_attempt_time'] = 0;
 		}
 	
-		// Check if user is currently timed out
-		if ($_SESSION['login_attempts'] >= 3) {
-			$timeoutDuration = 180; // 3 minutes in seconds
-			$timeSinceLastAttempt = time() - $_SESSION['last_attempt_time'];
+		$current_time = time();
 	
-			if ($timeSinceLastAttempt < $timeoutDuration) {
-				$remainingTime = $timeoutDuration - $timeSinceLastAttempt;
-				return json_encode(array(
+		// Check for timeout
+		if ($_SESSION['login_attempts'] >= 3) {
+			$time_since_last_attempt = $current_time - $_SESSION['last_attempt_time'];
+			if ($time_since_last_attempt < 180) { // 3 minutes timeout
+				$remaining_time = 180 - $time_since_last_attempt;
+				return json_encode([
 					'status' => 'timeout',
-					'message' => "Too many failed attempts. Try again after $remainingTime seconds."
-				));
+					'message' => 'Too many failed attempts. Try again in ' . ceil($remaining_time) . ' seconds.'
+				]);
 			} else {
-				// Reset attempts after timeout duration
+				// Reset attempts after timeout period
 				$_SESSION['login_attempts'] = 0;
-				$_SESSION['last_attempt_time'] = null;
 			}
 		}
 	
-		// Process login as usual
+		// Process login logic
+		extract($_POST);
 		$stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
 		$stmt->bind_param('s', $username);
 		$stmt->execute();
@@ -51,11 +50,12 @@ class Login extends DBConnection {
 	
 		if ($result->num_rows > 0) {
 			$user = $result->fetch_assoc();
-			$storedHash = $user['password'];
 	
-			if ((strlen($storedHash) == 32 && md5($password) === $storedHash) ||
-				password_verify($password, $storedHash)) {
-				// Successful login: set session data
+			if (password_verify($password, $user['password'])) {
+				// Reset attempts on success
+				$_SESSION['login_attempts'] = 0;
+	
+				// Set user data in session
 				foreach ($user as $k => $v) {
 					if (!is_numeric($k) && $k != 'password') {
 						$this->settings->set_userdata($k, $v);
@@ -63,19 +63,20 @@ class Login extends DBConnection {
 				}
 				$this->settings->set_userdata('login_type', 1);
 	
-				// Reset login attempts on success
-				$_SESSION['login_attempts'] = 0;
-				$_SESSION['last_attempt_time'] = null;
-	
-				return json_encode(array('status' => 'success'));
+				return json_encode(['status' => 'success']);
 			}
 		}
 	
-		// Increment failed login attempts
-		$_SESSION['login_attempts'] += 1;
-		$_SESSION['last_attempt_time'] = time();
+		// Failed login: Increment attempts
+		$_SESSION['login_attempts']++;
+		$_SESSION['last_attempt_time'] = $current_time;
 	
-		return json_encode(array('status' => 'incorrect', 'message' => 'Invalid credentials.'));
+		$remaining_attempts = 3 - $_SESSION['login_attempts'];
+		return json_encode([
+			'status' => 'failed',
+			'message' => 'Invalid username or password.',
+			'attempts_left' => max($remaining_attempts, 0)
+		]);
 	}
 	public function logout(){
 		if($this->settings->sess_des()){
