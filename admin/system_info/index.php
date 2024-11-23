@@ -23,6 +23,12 @@
 			object-fit: cover;
 			border-radius: 100% 100%;
 		}
+		img.officer-img {
+			height: 10vh;
+			width: 10vh;
+			object-fit: cover;
+			border-radius: 100%;
+		}
 	</style>
 
 	<div class="col-lg-12">
@@ -101,8 +107,93 @@
 			</div>
 		</div>
 	</div>
-
+<!-- Officer Management Information Card -->
+<div class="card card-outline rounded-0 card-primary mt-3">
+	<div class="card-header">
+		<h5 class="card-title">Officer Management Information</h5>
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Image</th>
+						<th>Last Name</th>
+						<th>First Name</th>
+						<th>Middle Name</th>
+						<th>Position</th>
+						<th>Date Created</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+					// Fetch officers from the database
+					$officers = $conn->query("SELECT * FROM officers ORDER BY date_created DESC");
+					while($row = $officers->fetch_assoc()):
+					?>
+					<tr>
+						<td><?php echo $row['id'] ?></td>
+						<td>
+							<img src="<?php echo validate_image($row['image']) ?>" alt="Officer Image" class="officer-img img-thumbnail">
+						</td>
+						<td><?php echo $row['lastname'] ?></td>
+						<td><?php echo $row['firstname'] ?></td>
+						<td><?php echo $row['middlename'] ?></td>
+						<td><?php echo $row['position'] ?></td>
+						<td><?php echo date("M d, Y", strtotime($row['date_created'])) ?></td>
+						<td>
+							<div class="btn-group">
+								<a href="edit_officer.php?id=<?php echo $row['id'] ?>" class="btn btn-sm btn-primary">Edit</a>
+								<button type="button" class="btn btn-sm btn-danger delete-officer" data-id="<?php echo $row['id'] ?>">Delete</button>
+							</div>
+						</td>
+					</tr>
+					<?php endwhile; ?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer">
+		<a href="add_officer.php" class="btn btn-sm btn-success">Add New Officer</a>
+	</div>
+</div>
 	<script>
+		// Delete officer functionality
+		$(document).on('click', '.delete-officer', function(){
+			let id = $(this).data('id');
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "This action cannot be undone!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					$.ajax({
+						url: _base_url_ + 'classes/Master.php?f=delete_officer',
+						method: 'POST',
+						data: { id: id },
+						dataType: 'json',
+						success: function(resp) {
+							if(resp.status == 'success'){
+								Swal.fire('Deleted!', 'The officer has been deleted.', 'success');
+								location.reload();
+							} else {
+								Swal.fire('Error!', 'An error occurred while deleting.', 'error');
+							}
+						},
+						error: function(err) {
+							console.error(err);
+							Swal.fire('Error!', 'An error occurred while deleting.', 'error');
+						}
+					});
+				}
+			});
+		});
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
