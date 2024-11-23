@@ -71,7 +71,7 @@
 							<input type="file" class="custom-file-input rounded-circle" id="customFile3" name="banners[]" multiple accept=".png,.jpg,.jpeg" onchange="displayImg3(this,$(this))">
 							<label class="custom-file-label" for="customFile3">Choose file</label>
 						</div>
-						<small><i>Choose to upload new banner images</i></small>
+						<small><i> to upload new banner images</i></small>
 					</div>
 					
 					<?php 
@@ -102,72 +102,7 @@
 		</div>
 	</div>
 
-	    <!-- Officers Management Section -->
-		<div class="card card-outline rounded-0 card-danger mt-3">
-        <div class="card-header">
-            <h5 class="card-title">Officers Management</h5>
-        </div>
-        <div class="card-body">
-            <form action="" id="officers-frm" enctype="multipart/form-data">
-                <div id="officers-msg" class="form-group"></div>
-                <div class="form-group">
-                    <label for="officer_name" class="control-label">Officer Name</label>
-                    <input type="text" class="form-control form-control-sm" name="officer_name" id="officer_name" placeholder="Enter officer name">
-                </div>
-                <div class="form-group">
-                    <label for="officer_position" class="control-label">Position</label>
-                    <input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer position">
-                </div>
-                <div class="form-group">
-                    <label for="officer_images" class="control-label">Officer Images</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" multiple accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
-                        <label class="custom-file-label" for="officer_images">Choose files</label>
-                    </div>
-                </div>
-                <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
-                <div class="form-group">
-                    <button class="btn btn-sm btn-primary" type="submit">Save Officer</button>
-                </div>
-            </form>
-            <hr>
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="officers-table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Position</th>
-                            <th>Images</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Officers data will be loaded here dynamically -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
 	<script>
-		function previewOfficerImages(input) {
-        const previewContainer = $('#officer-images-preview');
-        previewContainer.html(''); // Clear previous previews
-        if (input.files) {
-            Array.from(input.files).forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const img = $('<img>')
-                        .attr('src', e.target.result)
-                        .css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
-                        .addClass('img-thumbnail');
-                    previewContainer.append(img);
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-    }
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
