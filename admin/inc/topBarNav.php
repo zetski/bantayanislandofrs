@@ -81,7 +81,9 @@ $new_reports_count = $new_reports_query->num_rows;
       <a class="nav-link nav-icon" href="#" id="notificationDropdown" data-toggle="dropdown">
         <i class="fas fa-bell"></i>
         <?php if($new_reports_count > 0): ?>
-          <span class="badge-notification"><?php echo $new_reports_count; ?></span>
+          <span class="badge-notification" style="display: <?php echo ($new_reports_count > 0) ? 'inline-block' : 'none'; ?>;">
+            <?php echo $new_reports_count; ?>
+          </span>
         <?php endif; ?>
       </a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
@@ -125,10 +127,42 @@ $new_reports_count = $new_reports_query->num_rows;
 
 <?php if ($new_reports_count > 0): ?>
   <script>
-    // Play notification sound
-    document.addEventListener('DOMContentLoaded', function () {
-      const audio = new Audio('<?php echo base_url . '../assets/sound/danger.mp3'; ?>');
-      audio.play().catch(error => console.log('Notification sound error:', error));
-    });
-  </script>
+  let previousCount = 0;
+
+  function checkNewReports() {
+    fetch('<?php echo base_url; ?>new_reports_count.php')
+      .then(response => response.json())
+      .then(data => {
+        const newReportsCount = data.new_reports_count;
+
+        // If new reports are detected and the count has increased, play the sound
+        if (newReportsCount > previousCount) {
+          const audio = new Audio('<?php echo base_url; ?>../assets/sound/danger.mp3');
+          audio.play().catch(error => console.log('Notification sound error:', error));
+        }
+
+        // Update the UI badge dynamically
+        const notificationBadge = document.querySelector('.badge-notification');
+        if (notificationBadge) {
+          if (newReportsCount > 0) {
+            notificationBadge.textContent = newReportsCount;
+            notificationBadge.style.display = 'inline-block';
+          } else {
+            notificationBadge.style.display = 'none';
+          }
+        }
+
+        // Update the previous count
+        previousCount = newReportsCount;
+      })
+      .catch(error => console.error('Error fetching new reports count:', error));
+  }
+
+  // Check for new reports every 30 seconds (adjust as needed)
+  setInterval(checkNewReports, 30000);
+
+  // Initial check on page load
+  document.addEventListener('DOMContentLoaded', checkNewReports);
+</script>
+
 <?php endif; ?>
