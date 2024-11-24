@@ -129,3 +129,39 @@ $new_reports_count = $new_reports_query->num_rows;
   </ul>
 </nav>
 <!-- /.navbar -->
+<script>
+  // Notification sound
+  const notificationSound = new Audio('<?php echo base_url; ?>../assets/sounds/danger.mp3');
+  let previousCount = <?php echo $new_reports_count; ?>; // Initialize with the current count
+
+  function checkNewReports() {
+    $.ajax({
+      url: '<?php echo base_url; ?>../assets/ajax/check_new_reports.php', // Create this endpoint
+      method: 'POST',
+      data: {
+        municipality: '<?php echo $admin_municipality; ?>'
+      },
+      dataType: 'json',
+      success: function(response) {
+        if (response.new_count > previousCount) {
+          // Play sound when there are new reports
+          notificationSound.play();
+        }
+        previousCount = response.new_count;
+
+        // Update the badge dynamically
+        if (response.new_count > 0) {
+          $('#notificationDropdown .badge-notification').text(response.new_count).show();
+        } else {
+          $('#notificationDropdown .badge-notification').hide();
+        }
+      },
+      error: function(err) {
+        console.error("Error checking new reports:", err);
+      }
+    });
+  }
+
+  // Check for new reports every 15 seconds
+  setInterval(checkNewReports, 15000);
+</script>
