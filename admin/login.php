@@ -10,7 +10,7 @@ $user_ip = $_SERVER['REMOTE_ADDR'];
 // Check if the user's IP address matches any allowed IPs
 if (!in_array($user_ip, $allowed_ips)) {
     http_response_code(404); // Set the 404 status code
-    include('../404.html'); // Include the 404 page content
+    include('./404.html'); // Include the 404 page content
     exit();
 }
 // Set HTTP security headers
