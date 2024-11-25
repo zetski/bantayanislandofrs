@@ -1,59 +1,54 @@
 <style>
   .error-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #e8f0fe; /* Soft blue background */
-  font-family: 'Arial', sans-serif;
-}
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('./img/bfp.jpg') no-repeat center center/cover; /* Replace with your image */
+    font-family: 'Arial', sans-serif;
+  }
 
-.error-container {
-  text-align: center;
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
+  .error-container {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9); /* White background with slight transparency */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
 
-.error-code {
-  font-size: 96px;
-  font-weight: bold;
-  color: #1a73e8; /* Blue color */
-  margin: 0;
-}
+  .error-code {
+    font-size: 96px;
+    font-weight: bold;
+    color: #1a73e8; /* Blue color */
+    margin: 0;
+  }
 
-.error-text {
-  font-size: 24px;
-  font-weight: 500;
-  color: #333;
-  margin: 10px 0;
-}
+  .error-text {
+    font-size: 24px;
+    font-weight: 500;
+    color: #333;
+    margin: 10px 0 20px;
+  }
 
-.error-message {
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
-}
+  .return-link {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #1a73e8; /* Blue button */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+  }
 
-.return-link {
-  color: #1a73e8;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.return-link:hover {
-  text-decoration: underline;
-}
-
+  .return-link:hover {
+    background-color: #1558b0; /* Darker blue on hover */
+  }
 </style>
+
 <div class="error-page">
   <div class="error-container">
     <h1 class="error-code">404</h1>
     <p class="error-text">Page Not Found</p>
-    <p class="error-message">
-      We could not find the page you were looking for. Meanwhile, you may 
-      <a href="../" class="return-link">return to dashboard</a> or try using the search form.
-    </p>
+    <a href="../" class="return-link">Return to Dashboard</a>
   </div>
 </div>
