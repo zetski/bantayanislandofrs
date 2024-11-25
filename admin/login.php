@@ -10,6 +10,7 @@ if (!in_array($client_ip, $allowed_ips)) {
     error_log("Unauthorized access attempt from IP: $client_ip");
     header("HTTP/1.1 403 Forbidden");
     echo "Access denied.";
+    include('../404.html');
     exit;
 }
 // Set HTTP security headers
