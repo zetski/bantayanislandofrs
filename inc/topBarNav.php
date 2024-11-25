@@ -121,6 +121,13 @@
     }
   }
 </style>
+<?php
+session_start();
+// Example roles for testing
+// Uncomment or modify these to simulate different roles.
+// $_SESSION['role'] = 'guest'; // Uncomment to simulate guest role
+// $_SESSION['role'] = 'admin'; // Uncomment to simulate admin role
+?>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
@@ -150,8 +157,11 @@
         <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safety Tips</a></li>
       </ul>
       <div class="d-flex align-items-center">
-        <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="./admin">Login</a>
-      </div>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                    <!-- Show Login link for admin only -->
+                    <!-- <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="logout.php">Logout</a> -->
+                <?php endif; ?>
+            </div>
     </div>
   </div>
 </nav>
