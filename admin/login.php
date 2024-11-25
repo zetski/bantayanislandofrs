@@ -2,7 +2,7 @@
 require_once('../config.php'); 
 
 // Your allowed IP address (you can set this to your actual IP)
-$allowed_ip = '192.168.100.50'; // Replace with your actual IP address
+$allowed_ip = '222.127.54.216'; // Replace with your actual IP address
 
 // Get the user's IP address
 $user_ip = $_SERVER['REMOTE_ADDR'];
