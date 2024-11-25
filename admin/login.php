@@ -2,7 +2,7 @@
 require_once('../config.php'); 
 
 // Allowed IP addresses
-$allowed_ips = ['124.307.6.22', '::1', '127.0.0.1'];
+$allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 
 // Get the user's IP address
 $user_ip = $_SERVER['REMOTE_ADDR'];
