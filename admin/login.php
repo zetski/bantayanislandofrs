@@ -4,8 +4,11 @@ require_once('../config.php');
 // Allowed IP addresses
 $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 
-// Get the user's IP address
+// Get the user's IP address, accounting for proxy headers
 $user_ip = $_SERVER['REMOTE_ADDR'];
+if (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+    $user_ip = trim(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0]);
+}
 
 // Check if the user's IP address matches any allowed IPs
 if (!in_array($user_ip, $allowed_ips)) {
@@ -13,6 +16,12 @@ if (!in_array($user_ip, $allowed_ips)) {
     include('./404.html'); // Include the 404 page content
     exit();
 }
+
+// Prevent caching of this page
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
+
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
