@@ -1,6 +1,20 @@
 <?php 
 require_once('../config.php'); 
 
+// Your allowed IP address (you can set this to your actual IP)
+$allowed_ip = '192.168.100.50'; // Replace with your actual IP address
+
+// Get the user's IP address
+$user_ip = $_SERVER['REMOTE_ADDR'];
+
+// Check if the user's IP matches the allowed IP
+if ($user_ip !== $allowed_ip) {
+    // If not, deny access and optionally redirect
+    header('HTTP/1.1 403 Forbidden');
+    echo 'Access denied. You are not allowed to access this page.';
+    exit;
+}
+
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
