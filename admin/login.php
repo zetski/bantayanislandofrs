@@ -1,6 +1,17 @@
 <?php 
 require_once('../config.php'); 
+// allowed IP addresses
+$allowed_ips = ['124.217.6.22', '127.0.0.1', '192.168.100.50'];
 
+// Check the client's IP address
+$client_ip = $_SERVER['REMOTE_ADDR'];
+if (!in_array($client_ip, $allowed_ips)) {
+    // Log unauthorized access attempts
+    error_log("Unauthorized access attempt from IP: $client_ip");
+    header("HTTP/1.1 403 Forbidden");
+    echo "Access denied.";
+    exit;
+}
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
