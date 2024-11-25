@@ -1,6 +1,19 @@
 <?php 
 require_once('../config.php'); 
 
+// Allowed IP addresses
+$allowed_ips = ['192.168.100.50', '::1', '127.0.0.1'];
+
+// Get the user's IP address
+$user_ip = $_SERVER['REMOTE_ADDR'];
+
+// Check if the user's IP address matches any allowed IPs
+if (!in_array($user_ip, $allowed_ips)) {
+    http_response_code(404); // Set the 404 status code
+    include('../404.html'); // Include the 404 page content
+    exit();
+}
+
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
