@@ -162,25 +162,25 @@
 	<script>
 		//officers function
 		$('#officers-frm').submit(function(e) {
-			e.preventDefault();
+			e.preventDefault(); // Prevent default form submission
+			console.log("Form submission started...");
+
 			var formData = new FormData(this);
+
 			$.ajax({
-				url: _base_url_ + 'classes/Master.php?f=save_officer',
+				url: 'classes/Master.php?f=save_officer', // Replace with actual endpoint
 				method: 'POST',
 				data: formData,
 				contentType: false,
 				processData: false,
-				dataType: 'json',
 				success: function(resp) {
-					if (resp.status == 'success') {
-						location.reload(); // Or update the officers table dynamically
-					} else {
-						alert_toast(resp.error || "An error occurred", "error");
-					}
+					console.log("Response:", resp);
+				},
+				error: function(xhr, status, error) {
+					console.error("Error:", status, error);
 				}
 			});
 		});
-
 		function delete_officer(id) {
 			Swal.fire({
 				title: 'Are you sure?',
