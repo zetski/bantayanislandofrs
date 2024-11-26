@@ -127,12 +127,12 @@
 					<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
 				</div>
                 <div class="form-group">
-                    <label for="officer_images" class="control-label">Officer Images</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" multiple accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
-                        <label class="custom-file-label" for="officer_images">Choose files</label>
-                    </div>
-                </div>
+					<label for="officer_images" class="control-label">Officer Image</label>
+					<div class="custom-file">
+						<input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
+						<label class="custom-file-label" for="officer_images">Choose file</label>
+					</div>
+				</div>
                 <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
                 <div class="form-group">
                     <button class="btn btn-sm btn-primary" type="submit" id="save-officer-btn">Save Officer</button>
@@ -294,6 +294,21 @@
 					});
 				}
 			});
+		}
+		function previewOfficerImages(input) {
+			const previewContainer = $('#officer-images-preview');
+			previewContainer.html(''); // Clear previous previews
+			if (input.files && input.files[0]) {
+				const reader = new FileReader();
+				reader.onload = function (e) {
+					const img = $('<img>')
+						.attr('src', e.target.result)
+						.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+						.addClass('img-thumbnail');
+					previewContainer.append(img);
+				};
+				reader.readAsDataURL(input.files[0]);
+			}
 		}
 		// end of officers code
 		

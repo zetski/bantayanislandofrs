@@ -442,14 +442,16 @@ Class Master extends DBConnection {
 
         // Insert or update officer record
         if (isset($id) && !empty($id)) {
-            $sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, images = ? WHERE id = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images, $id);
-        } else {
-            $sql = "INSERT INTO officers (lastname, firstname, middlename, position, images) VALUES (?, ?, ?, ?, ?)";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
-        }
+			// Update officer with single image field
+			$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, image = ? WHERE id = ?";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $image, $id);
+		} else {
+			// Insert new officer with single image field
+			$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
+			$stmt = $this->conn->prepare($sql);
+			$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $image);
+		}
 
         if ($stmt->execute()) {
 			$resp['status'] = 'success';
