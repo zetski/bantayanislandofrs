@@ -150,12 +150,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?php echo base_url ?>admin/?page=officers_management" class="nav-link nav-officers">
-                                <i class="fas fa-user-tie nav-icon"></i>
-                                <p>Officers Management</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="<?php echo base_url ?>admin/?page=system_info/event_info" class="nav-link nav-system_info_event_info">
                                 <i class="fas fa-calendar-alt nav-icon"></i>
                                 <p>Event</p>
