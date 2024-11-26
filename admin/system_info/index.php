@@ -296,7 +296,7 @@
 			});
 		}
 		function previewOfficerImages(input) {
-			const previewContainer = $('#officer-images');
+			const previewContainer = $('#officer-images-preview');
 			previewContainer.html(''); // Clear previous previews
 			if (input.files) {
 				Array.from(input.files).forEach((file) => {
