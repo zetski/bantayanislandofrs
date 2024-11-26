@@ -166,7 +166,7 @@
         method: 'GET',
         dataType: 'json',
         success: function(response) {
-            let tableBody = $('#officersTable tbody');
+            let tableBody = $('#officers-table tbody');
             tableBody.empty(); // Clear existing rows
             response.forEach(officer => {
                 tableBody.append(`
@@ -181,10 +181,13 @@
                     </tr>
                 `);
             });
+        },
+		error: function (err) {
+            console.error("Failed to load officers:", err);
         }
     });
 }
-$('#saveOfficerForm').submit(function(e) {
+$('#officers-frm').submit(function (e) {
     e.preventDefault();
     $.ajax({
         url: 'classes/Master.php?action=save_officer',
@@ -193,14 +196,16 @@ $('#saveOfficerForm').submit(function(e) {
         processData: false,
         contentType: false,
         dataType: 'json',
-        success: function(response) {
+        success: function (response) {
             if (response.status === 'success') {
                 alert(response.msg);
-                loadOfficers(); // Reload table
-                $('#officerModal').modal('hide'); // Close modal
+                loadOfficers();
             } else {
-                alert(response.msg);
+				$('#officers-msg').html(`<div class="alert alert-danger">${response.msg}</div>`);
             }
+        },
+        error: function (err) {
+            console.error("Error saving officer:", err);
         }
     });
 });

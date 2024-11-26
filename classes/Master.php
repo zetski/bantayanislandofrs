@@ -416,7 +416,13 @@ Class Master extends DBConnection {
 	//officers functions
 	function save_officer() {
 		extract($_POST);
-	
+		
+		// Escape input variables to prevent SQL injection
+		$lastname = $this->conn->real_escape_string($officer_lastname);
+		$firstname = $this->conn->real_escape_string($officer_firstname);
+		$middlename = $this->conn->real_escape_string($officer_middlename);
+		$position = $this->conn->real_escape_string($officer_position);
+		
 		// Prepare image uploads
 		$image_paths = [];
 		if (!empty($_FILES['officer_images']['name'][0])) {
@@ -424,7 +430,7 @@ Class Master extends DBConnection {
 			if (!is_dir(base_app . $upload_path)) {
 				mkdir(base_app . $upload_path, 0777, true);
 			}
-	
+			
 			foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
 				$file_name = time() . "_" . $_FILES['officer_images']['name'][$key];
 				$file_path = $upload_path . $file_name;
@@ -433,18 +439,18 @@ Class Master extends DBConnection {
 				}
 			}
 		}
-	
+		
 		$images = implode(",", $image_paths); // Convert array to string for saving
 		$data = "`lastname` = '{$lastname}', `firstname` = '{$firstname}', `middlename` = '{$middlename}', `position` = '{$position}', `image` = '{$images}'";
-	
+		
 		if (empty($id)) {
 			$sql = "INSERT INTO `officers` SET {$data}";
 		} else {
 			$sql = "UPDATE `officers` SET {$data} WHERE id = '{$id}'";
 		}
-	
+		
 		$save = $this->conn->query($sql);
-	
+		
 		if ($save) {
 			$resp['status'] = 'success';
 			$resp['msg'] = empty($id) ? "New officer successfully saved." : "Officer details successfully updated.";
@@ -452,7 +458,7 @@ Class Master extends DBConnection {
 			$resp['status'] = 'failed';
 			$resp['msg'] = $this->conn->error;
 		}
-	
+		
 		if ($resp['status'] == 'success') {
 			$this->settings->set_flashdata('success', $resp['msg']);
 		}
@@ -475,7 +481,7 @@ Class Master extends DBConnection {
 	}
 
 	function get_officers() {
-		$qry = $this->conn->query("SELECT * FROM `officers` ORDER BY `name` ASC");
+		$qry = $this->conn->query("SELECT * FROM `officers` ORDER BY `lastname` ASC");
 		$data = [];
 		while ($row = $qry->fetch_assoc()) {
 			$data[] = $row;
