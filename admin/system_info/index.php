@@ -216,7 +216,7 @@ $(document).ready(function () {
     <div class="card card-outline rounded-0 card-danger">
         <div class="card-header">
             <h5 class="card-title">Officers Management</h5>
-            <button class="btn btn-primary btn-sm float-right" id="new-officer">Add New Officer</button>
+            <button class="btn btn-primary btn-sm float-right" id="new-officer">CreateOfficer</button>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-striped">
