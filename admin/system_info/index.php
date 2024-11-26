@@ -1,4 +1,4 @@
-	<?php if($_settings->chk_flashdata('success')): ?>
+<?php if($_settings->chk_flashdata('success')): ?>
 	<script>
 		alert_toast("<?php echo $_settings->flashdata('success') ?>",'success');
 	</script>
@@ -102,7 +102,219 @@
 		</div>
 	</div>
 
+	 <!-- Officers Management Section -->
+	 <div class="card card-outline rounded-0 card-danger mt-3">
+        <div class="card-header">
+            <h5 class="card-title">Officers Management</h5>
+        </div>
+        <div class="card-body">
+            <form action="" id="officers-frm" method="POST" enctype="multipart/form-data">
+                <div id="officers-msg" class="form-group"></div>
+                <div class="form-group">
+					<label for="officer_lastname" class="control-label">Last Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_lastname" id="officer_lastname" placeholder="Enter officer's last name">
+				</div>
+				<div class="form-group">
+					<label for="officer_firstname" class="control-label">First Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_firstname" id="officer_firstname" placeholder="Enter officer's first name">
+				</div>
+				<div class="form-group">
+					<label for="officer_middlename" class="control-label">Middle Name</label>
+					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name (optional)">
+				</div>
+				<div class="form-group">
+					<label for="officer_position" class="control-label">Position</label>
+					<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
+				</div>
+                <div class="form-group">
+                    <label for="officer_images" class="control-label">Officer Images</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" multiple accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
+                        <label class="custom-file-label" for="officer_images">Choose files</label>
+                    </div>
+                </div>
+                <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
+                <div class="form-group">
+                    <button class="btn btn-sm btn-primary" type="submit" id="save-officer-btn">Save Officer</button>
+                </div>
+            </form>
+            <hr>
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="officers-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Position</th>
+                            <th>Images</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Officers data will be loaded here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 	<script>
+		//officers function
+		$('#officers-frm').submit(function (e) {
+			e.preventDefault(); // Prevent default form submission
+
+			Swal.fire({
+				title: 'Saving Officer...',
+				text: 'Please wait while we process your request.',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading(); // Show loading spinner
+				}
+			});
+
+			var formData = new FormData(this);
+
+			$.ajax({
+				url: '../classes/Master.php?f=save_officer',
+				method: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function (resp) {
+					Swal.close(); // Close the loading spinner
+					try {
+						var response = JSON.parse(resp); // Parse the response
+						if (response.status === "success") {
+							Swal.fire({
+								icon: 'success',
+								title: 'Officer Saved',
+								text: 'The officer has been successfully saved!',
+								timer: 1000,
+								showConfirmButton: false
+							}).then(() => {
+								$('#officers-frm')[0].reset(); // Reset the form
+								location.reload(); // Reload the page to reflect changes
+							});
+						} else {
+							Swal.fire({
+								icon: 'error',
+								title: 'Save Failed',
+								text: response.error || 'An error occurred while saving the officer.',
+							});
+						}
+					} catch (err) {
+						console.error("Response parsing failed:", err, resp);
+						Swal.fire({
+							icon: 'error',
+							title: 'Unexpected Error',
+							text: 'The server returned an invalid response. Please check the console for details.',
+						});
+					}
+				},
+				error: function (xhr, status, error) {
+					Swal.close(); // Close the loading spinner
+					console.error("AJAX Error:", status, error, xhr.responseText);
+					Swal.fire({
+						icon: 'error',
+						title: 'Submission Failed',
+						text: 'An error occurred during submission.',
+					});
+				}
+			});
+		});
+
+		// Dynamically load officers (optional if needed)
+		function loadOfficers() {
+			$.ajax({
+				url: '../classes/Master.php?f=get_officers',
+				method: 'GET',
+				success: function (resp) {
+					$('#officers-table tbody').html(resp); // Populate table
+				},
+				error: function () {
+					alert("Failed to load officers.");
+				}
+			});
+		}
+
+		function delete_officer(id) {
+			Swal.fire({
+				title: 'Are you sure?',
+				text: "This action cannot be undone!",
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					Swal.fire({
+						title: 'Deleting Officer...',
+						allowOutsideClick: false,
+						didOpen: () => {
+							Swal.showLoading(); // Show loading spinner
+						}
+					});
+
+					$.ajax({
+						url: '../classes/Master.php?f=delete_officer',
+						method: 'POST',
+						data: { id: id },
+						dataType: 'json',
+						success: function (resp) {
+							if (resp.status === 'success') {
+								Swal.fire({
+									icon: 'success',
+									title: 'Deleted!',
+									text: 'The officer has been successfully deleted.',
+									timer: 2000,
+									showConfirmButton: false
+								}).then(() => {
+									$('#officer-row-' + id).fadeOut('slow', function () {
+										$(this).remove();
+									});
+								});
+							} else {
+								Swal.fire({
+									icon: 'error',
+									title: 'Delete Failed',
+									text: resp.error || 'An error occurred while deleting the officer.',
+								});
+							}
+						},
+						error: function (xhr, status, error) {
+							console.error("AJAX Error:", status, error, xhr.responseText);
+							Swal.fire({
+								icon: 'error',
+								title: 'Deletion Failed',
+								text: 'An error occurred during the deletion process.',
+							});
+						}
+					});
+				}
+			});
+		}
+		// end of officers code
+		
+		function previewOfficerImages(input) {
+        const previewContainer = $('#officer-images-preview');
+        previewContainer.html(''); // Clear previous previews
+        if (input.files) {
+            Array.from(input.files).forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const img = $('<img>')
+                        .attr('src', e.target.result)
+                        .css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+                        .addClass('img-thumbnail');
+                    previewContainer.append(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
 				var reader = new FileReader();
@@ -147,7 +359,7 @@
 		function delete_img(path) {
     start_loader();
     $.ajax({
-        url: _base_url_ + 'classes/Master.php?f=delete_img',
+        url: _base_url_ + '../classes/Master.php?f=delete_img',
         data: { path: path },
         method: 'POST',
         dataType: "json",
