@@ -502,6 +502,25 @@ Class Master extends DBConnection {
         return json_encode($resp);
     }
 
+	public function get_officers() {
+		$sql = "SELECT * FROM officers";
+		$result = $this->conn->query($sql);
+	
+		if ($result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				echo '<tr id="officer-row-' . $row['id'] . '">
+						<td>' . $row['id'] . '</td>
+						<td>' . $row['lastname'] . ', ' . $row['firstname'] . '</td>
+						<td>' . $row['position'] . '</td>
+						<td><img src="' . base_url . $row['images'] . '" alt="Officer Image" width="50"></td>
+						<td><button class="btn btn-danger" onclick="delete_officer(' . $row['id'] . ')">Delete</button></td>
+					</tr>';
+			}
+		} else {
+			echo '<tr><td colspan="5">No officers found.</td></tr>';
+		}
+	}
+
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
