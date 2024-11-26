@@ -474,6 +474,15 @@ Class Master extends DBConnection {
 		return json_encode($resp);
 	}
 
+	function get_officers() {
+		$qry = $this->conn->query("SELECT * FROM `officers` ORDER BY `name` ASC");
+		$data = [];
+		while ($row = $qry->fetch_assoc()) {
+			$data[] = $row;
+		}
+		return json_encode($data);
+	}
+
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
@@ -565,6 +574,9 @@ switch ($action) {
 	break;
 	case 'delete_officer';
 	echo $Master->delete_officer();
+	break;
+	case 'get_officers';
+	echo $Master->get_officers();
 	break;
 	case 'restore_request': // Add this case for restoring requests
         echo $Master->restore_request();

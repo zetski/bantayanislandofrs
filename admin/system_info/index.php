@@ -160,6 +160,50 @@
 </div>
 
 	<script>
+		function loadOfficers() {
+    $.ajax({
+        url: 'classes/Master.php?action=get_officers',
+        method: 'GET',
+        dataType: 'json',
+        success: function(response) {
+            let tableBody = $('#officersTable tbody');
+            tableBody.empty(); // Clear existing rows
+            response.forEach(officer => {
+                tableBody.append(`
+                    <tr>
+                        <td>${officer.name}</td>
+                        <td>${officer.position}</td>
+                        <td><img src="${officer.image}" alt="Officer Image" height="50"></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-officer" data-id="${officer.id}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-officer" data-id="${officer.id}">Delete</button>
+                        </td>
+                    </tr>
+                `);
+            });
+        }
+    });
+}
+$('#saveOfficerForm').submit(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: 'classes/Master.php?action=save_officer',
+        method: 'POST',
+        data: new FormData(this),
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                alert(response.msg);
+                loadOfficers(); // Reload table
+                $('#officerModal').modal('hide'); // Close modal
+            } else {
+                alert(response.msg);
+            }
+        }
+    });
+});
 		function previewOfficerImages(input) {
         const previewContainer = $('#officer-images-preview');
         previewContainer.html(''); // Clear previous previews
