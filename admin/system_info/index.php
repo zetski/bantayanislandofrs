@@ -227,6 +227,7 @@ $(document).ready(function () {
                         <th>Firstname</th>
                         <th>Middlename</th>
                         <th>Position</th>
+						<th>Image</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -242,6 +243,7 @@ $(document).ready(function () {
                         <td><?php echo $row['firstname']; ?></td>
                         <td><?php echo $row['middlename']; ?></td>
                         <td><?php echo $row['position']; ?></td>
+						<td><?php echo $row['image'];?></td>
                         <td>
                             <button class="btn btn-sm btn-info edit-officer" data-id="<?php echo $row['id']; ?>">Edit</button>
                             <button class="btn btn-sm btn-danger delete-officer" data-id="<?php echo $row['id']; ?>">Delete</button>
