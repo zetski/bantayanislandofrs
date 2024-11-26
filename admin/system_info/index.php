@@ -259,7 +259,7 @@ $(document).ready(function () {
 <script>
 $(document).ready(function(){
     $('#new-officer').click(function(){
-        uni_modal('Add New Officer', 'officers/manage_officer.php');
+        uni_modal('Add New Officer', './syste_info/manage_officer.php');
     });
 
     $('.edit-officer').click(function(){
