@@ -412,84 +412,6 @@ Class Master extends DBConnection {
 		}
 		return json_encode($resp);
 	}
-
-	//officers functions
-	function save_officer() {
-		extract($_POST);
-		
-		// Escape input variables to prevent SQL injection
-		$lastname = $this->conn->real_escape_string($officer_lastname);
-		$firstname = $this->conn->real_escape_string($officer_firstname);
-		$middlename = $this->conn->real_escape_string($officer_middlename);
-		$position = $this->conn->real_escape_string($officer_position);
-		
-		// Prepare image uploads
-		$image_paths = [];
-		if (!empty($_FILES['officer_images']['name'][0])) {
-			$upload_path = "../uploads/";
-			if (!is_dir(base_app . $upload_path)) {
-				mkdir(base_app . $upload_path, 0777, true);
-			}
-			
-			foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
-				$file_name = time() . "_" . $_FILES['officer_images']['name'][$key];
-				$file_path = $upload_path . $file_name;
-				if (move_uploaded_file($tmp_name, base_app . $file_path)) {
-					$image_paths[] = $file_path;
-				}
-			}
-		}
-		
-		$images = implode(",", $image_paths); // Convert array to string for saving
-		$data = "`lastname` = '{$lastname}', `firstname` = '{$firstname}', `middlename` = '{$middlename}', `position` = '{$position}', `image` = '{$images}'";
-		
-		if (empty($id)) {
-			$sql = "INSERT INTO `officers` SET {$data}";
-		} else {
-			$sql = "UPDATE `officers` SET {$data} WHERE id = '{$id}'";
-		}
-		
-		$save = $this->conn->query($sql);
-		
-		if ($save) {
-			$resp['status'] = 'success';
-			$resp['msg'] = empty($id) ? "New officer successfully saved." : "Officer details successfully updated.";
-		} else {
-			$resp['status'] = 'failed';
-			$resp['msg'] = "SQL Error: " . $this->conn->error;
-   			error_log($sql); 
-		}
-		
-		if ($resp['status'] == 'success') {
-			$this->settings->set_flashdata('success', $resp['msg']);
-		}
-		return json_encode($resp);
-	}
-
-	function delete_officer() {
-		extract($_POST);
-	
-		$qry = $this->conn->query("DELETE FROM `officers` WHERE id = '{$id}'");
-		if ($qry) {
-			$resp['status'] = 'success';
-			$resp['msg'] = "Officer successfully deleted.";
-		} else {
-			$resp['status'] = 'failed';
-			$resp['msg'] = $this->conn->error;
-		}
-	
-		return json_encode($resp);
-	}
-
-	function get_officers() {
-		$qry = $this->conn->query("SELECT * FROM `officers` ORDER BY `lastname` ASC");
-		$data = [];
-		while ($row = $qry->fetch_assoc()) {
-			$data[] = $row;
-		}
-		return json_encode($data);
-	}
-
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
@@ -575,15 +497,6 @@ switch ($action) {
 	break;
 	case 'delete_permanently';
 	echo $Master->delete_permanently();
-	break;
-	case 'save_officer';
-	echo $Master->save_officer();
-	break;
-	case 'delete_officer';
-	echo $Master->delete_officer();
-	break;
-	case 'get_officers';
-	echo $Master->get_officers();
 	break;
 	case 'restore_request': // Add this case for restoring requests
         echo $Master->restore_request();
