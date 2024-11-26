@@ -420,7 +420,7 @@ Class Master extends DBConnection {
 		error_log("FILES Data: " . json_encode($_FILES));
         extract($_POST);
         $officer_images = [];
-        $upload_path = '../uploads/';
+        $upload_path = '../uploads/officers/';
         
         // Ensure upload directory exists
         if (!is_dir(base_app . $upload_path)) {
