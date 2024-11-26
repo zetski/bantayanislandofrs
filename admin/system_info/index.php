@@ -129,7 +129,7 @@
                 <div class="form-group">
 					<label for="officer_images" class="control-label">Officer Image</label>
 					<div class="custom-file">
-					<input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" multiple accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
+						<input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
 						<label class="custom-file-label" for="officer_images">Choose file</label>
 					</div>
 				</div>
@@ -296,7 +296,7 @@
 			});
 		}
 		function previewOfficerImages(input) {
-			const previewContainer = $('#officer-images-preview');
+			const previewContainer = $('#officer-images');
 			previewContainer.html(''); // Clear previous previews
 			if (input.files) {
 				Array.from(input.files).forEach((file) => {
