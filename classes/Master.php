@@ -456,7 +456,8 @@ Class Master extends DBConnection {
 			$resp['msg'] = empty($id) ? "New officer successfully saved." : "Officer details successfully updated.";
 		} else {
 			$resp['status'] = 'failed';
-			$resp['msg'] = $this->conn->error;
+			$resp['msg'] = "SQL Error: " . $this->conn->error;
+   			error_log($sql); 
 		}
 		
 		if ($resp['status'] == 'success') {
