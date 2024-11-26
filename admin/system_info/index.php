@@ -162,35 +162,64 @@
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
-			e.preventDefault(); // Prevent form from submitting normally
-			console.log("Submitting the officer form...");
+			e.preventDefault(); // Prevent default form submission
+
+			Swal.fire({
+				title: 'Saving Officer...',
+				text: 'Please wait while we process your request.',
+				allowOutsideClick: false,
+				didOpen: () => {
+					Swal.showLoading(); // Show loading spinner
+				}
+			});
 
 			var formData = new FormData(this);
 
 			$.ajax({
-				url: 'classes/Master.php?f=save_officer', // Replace with actual endpoint
+				url: 'classes/Master.php?f=save_officer',
 				method: 'POST',
 				data: formData,
 				contentType: false,
 				processData: false,
 				success: function (resp) {
+					Swal.close(); // Close the loading spinner
 					try {
-						var response = JSON.parse(resp); // Ensure JSON response
+						var response = JSON.parse(resp); // Parse the response
 						if (response.status === "success") {
-							alert("Officer saved successfully!");
-							$('#officers-frm')[0].reset(); // Reset form
-							loadOfficers(); // Refresh table
+							Swal.fire({
+								icon: 'success',
+								title: 'Officer Saved',
+								text: 'The officer has been successfully saved!',
+								timer: 2000,
+								showConfirmButton: false
+							}).then(() => {
+								$('#officers-frm')[0].reset(); // Reset the form
+								location.reload(); // Reload the page to reflect changes
+							});
 						} else {
-							alert(response.error || "Failed to save officer.");
+							Swal.fire({
+								icon: 'error',
+								title: 'Save Failed',
+								text: response.error || 'An error occurred while saving the officer.',
+							});
 						}
 					} catch (err) {
-						console.error("Parsing error:", err, resp);
-						alert("Unexpected error occurred!");
+						console.error("Response parsing failed:", err, resp);
+						Swal.fire({
+							icon: 'error',
+							title: 'Unexpected Error',
+							text: 'The server returned an invalid response. Please check the console for details.',
+						});
 					}
 				},
 				error: function (xhr, status, error) {
-					console.error("AJAX Error:", status, error);
-					alert("Failed to submit the form. Check console for details.");
+					Swal.close(); // Close the loading spinner
+					console.error("AJAX Error:", status, error, xhr.responseText);
+					Swal.fire({
+						icon: 'error',
+						title: 'Submission Failed',
+						text: 'An error occurred during submission. Please check the console for details.',
+					});
 				}
 			});
 		});
@@ -208,10 +237,11 @@
 				}
 			});
 		}
+
 		function delete_officer(id) {
 			Swal.fire({
 				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
+				text: "This action cannot be undone!",
 				icon: 'warning',
 				showCancelButton: true,
 				confirmButtonColor: '#3085d6',
@@ -219,19 +249,47 @@
 				confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 				if (result.isConfirmed) {
+					Swal.fire({
+						title: 'Deleting Officer...',
+						allowOutsideClick: false,
+						didOpen: () => {
+							Swal.showLoading(); // Show loading spinner
+						}
+					});
+
 					$.ajax({
-						url: _base_url_ + 'classes/Master.php?f=delete_officer',
+						url: 'classes/Master.php?f=delete_officer',
 						method: 'POST',
 						data: { id: id },
 						dataType: 'json',
-						success: function(resp) {
-							if (resp.status == 'success') {
-								$('#officer-row-' + id).fadeOut('slow', function() {
-									$(this).remove();
+						success: function (resp) {
+							if (resp.status === 'success') {
+								Swal.fire({
+									icon: 'success',
+									title: 'Deleted!',
+									text: 'The officer has been successfully deleted.',
+									timer: 2000,
+									showConfirmButton: false
+								}).then(() => {
+									$('#officer-row-' + id).fadeOut('slow', function () {
+										$(this).remove();
+									});
 								});
 							} else {
-								alert_toast(resp.error || "An error occurred", "error");
+								Swal.fire({
+									icon: 'error',
+									title: 'Delete Failed',
+									text: resp.error || 'An error occurred while deleting the officer.',
+								});
 							}
+						},
+						error: function (xhr, status, error) {
+							console.error("AJAX Error:", status, error, xhr.responseText);
+							Swal.fire({
+								icon: 'error',
+								title: 'Deletion Failed',
+								text: 'An error occurred during the deletion process.',
+							});
 						}
 					});
 				}

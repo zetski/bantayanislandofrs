@@ -415,6 +415,9 @@ Class Master extends DBConnection {
 
 	// Save Officer Function
     public function save_officer() {
+		error_log("Save Officer Function Called");
+		error_log("POST Data: " . json_encode($_POST));
+		error_log("FILES Data: " . json_encode($_FILES));
         extract($_POST);
         $officer_images = [];
         $upload_path = '../uploads/';
@@ -449,15 +452,16 @@ Class Master extends DBConnection {
         }
 
         if ($stmt->execute()) {
-            $resp['status'] = 'success';
-            if (!isset($id)) $resp['id'] = $this->conn->insert_id;
-        } else {
-            $resp['status'] = 'failed';
-            $resp['error'] = $stmt->error;
-        }
-
-        return json_encode($resp);
-    }
+			$resp['status'] = 'success';
+			if (!isset($id)) $resp['id'] = $this->conn->insert_id;
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = "Database Error: " . $stmt->error;
+		}
+	
+		error_log("Response: " . json_encode($resp));
+		return json_encode($resp);
+	}
 
     // Delete Officer Function
     public function delete_officer() {
