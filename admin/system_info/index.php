@@ -205,3 +205,86 @@ $(document).ready(function () {
     });
 });
 	</script>
+
+<?php if ($_settings->chk_flashdata('success')): ?>
+<script>
+    alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success');
+</script>
+<?php endif; ?>
+
+<div class="col-lg-12">
+    <div class="card card-outline rounded-0 card-danger">
+        <div class="card-header">
+            <h5 class="card-title">Officers Management</h5>
+            <button class="btn btn-primary btn-sm float-right" id="new-officer">Add New Officer</button>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Lastname</th>
+                        <th>Firstname</th>
+                        <th>Middlename</th>
+                        <th>Position</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $i = 1;
+                    $qry = $conn->query("SELECT * FROM officers ORDER BY date_created DESC");
+                    while ($row = $qry->fetch_assoc()):
+                    ?>
+                    <tr>
+                        <td><?php echo $i++; ?></td>
+                        <td><?php echo $row['lastname']; ?></td>
+                        <td><?php echo $row['firstname']; ?></td>
+                        <td><?php echo $row['middlename']; ?></td>
+                        <td><?php echo $row['position']; ?></td>
+                        <td>
+                            <button class="btn btn-sm btn-info edit-officer" data-id="<?php echo $row['id']; ?>">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-officer" data-id="<?php echo $row['id']; ?>">Delete</button>
+                        </td>
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+    $('#new-officer').click(function(){
+        uni_modal('Add New Officer', 'officers/manage_officer.php');
+    });
+
+    $('.edit-officer').click(function(){
+        uni_modal('Edit Officer', 'officers/manage_officer.php?id=' + $(this).data('id'));
+    });
+
+    $('.delete-officer').click(function(){
+        _conf('Are you sure to delete this officer?', 'delete_officer', [$(this).data('id')]);
+    });
+
+    $('table').dataTable();
+});
+
+function delete_officer(id){
+    start_loader();
+    $.ajax({
+        url: _base_url_ + 'classes/Master.php?f=delete_officer',
+        method: 'POST',
+        data: {id: id},
+        success: function(resp){
+            if (resp == 1) {
+                alert_toast("Officer successfully deleted", 'success');
+                setTimeout(function(){
+                    location.reload();
+                }, 1500);
+            }
+        }
+    });
+}
+</script>
