@@ -106,7 +106,7 @@
     <div class="card card-outline rounded-0 card-primary">
         <div class="card-header">
             <h5 class="card-title">Officers Management</h5>
-            <button class="btn btn-primary btn-sm float-right" id="add_officer">Add Officer</button>
+            <button class="btn btn-primary btn-sm float-right" id="add_officer">Create Officer</button>
         </div>
         <div class="card-body">
             <table class="table table-bordered table-hover">
