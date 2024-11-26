@@ -412,6 +412,94 @@ Class Master extends DBConnection {
 		}
 		return json_encode($resp);
 	}
+
+	// Save Officer Function
+    public function save_officer() {
+		error_log("Save Officer Function Called");
+		error_log("POST Data: " . json_encode($_POST));
+		error_log("FILES Data: " . json_encode($_FILES));
+        extract($_POST);
+        $officer_images = [];
+        $upload_path = '../uploads/';
+        
+        // Ensure upload directory exists
+        if (!is_dir(base_app . $upload_path)) {
+            mkdir(base_app . $upload_path, 0777, true);
+        }
+
+        // Handle uploaded images
+        if (isset($_FILES['officer_images']['tmp_name'])) {
+            foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
+                $file_name = time() . '_' . $_FILES['officer_images']['name'][$key];
+                $target_file = base_app . $upload_path . $file_name;
+                if (move_uploaded_file($tmp_name, $target_file)) {
+                    $officer_images[] = $upload_path . $file_name;
+                }
+            }
+        }
+
+        $images = json_encode($officer_images);
+
+        // Insert or update officer record
+        if (isset($id) && !empty($id)) {
+            $sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, images = ? WHERE id = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images, $id);
+        } else {
+            $sql = "INSERT INTO officers (lastname, firstname, middlename, position, images) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
+        }
+
+        if ($stmt->execute()) {
+			$resp['status'] = 'success';
+			if (!isset($id)) $resp['id'] = $this->conn->insert_id;
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = "Database Error: " . $stmt->error;
+		}
+	
+		error_log("Response: " . json_encode($resp));
+		return json_encode($resp);
+	}
+
+    // Delete Officer Function
+    public function delete_officer() {
+        extract($_POST);
+
+        // Fetch officer details for cleanup
+        $sql = "SELECT images FROM officers WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $officer = $result->fetch_assoc();
+
+        if ($officer && !empty($officer['images'])) {
+            $images = json_decode($officer['images'], true);
+            foreach ($images as $img_path) {
+                $full_path = base_app . $img_path;
+                if (is_file($full_path)) {
+                    unlink($full_path);
+                }
+            }
+        }
+
+        // Delete officer from database
+        $sql = "DELETE FROM officers WHERE id = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+
+        if ($stmt->execute()) {
+            $resp['status'] = 'success';
+        } else {
+            $resp['status'] = 'failed';
+            $resp['error'] = $stmt->error;
+        }
+
+        return json_encode($resp);
+    }
+
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
@@ -462,6 +550,15 @@ $Master = new Master();
 $action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
 $sysset = new SystemSettings();
 switch ($action) {
+	case 'save_officer':
+        echo $Master->save_officer();
+        break;
+    case 'delete_officer':
+        echo $Master->delete_officer();
+        break;
+	case 'get_officers':
+		echo $Master->get_officers();
+		break;
 	case 'delete_img':
 		echo $Master->delete_img();
 	break;
