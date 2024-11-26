@@ -108,7 +108,7 @@
             <h5 class="card-title">Officers Management</h5>
         </div>
         <div class="card-body">
-            <form action="" id="officers-frm" enctype="multipart/form-data">
+            <form action="" id="officers-frm" method="POST" enctype="multipart/form-data">
                 <div id="officers-msg" class="form-group"></div>
                 <div class="form-group">
 					<label for="officer_lastname" class="control-label">Last Name</label>
@@ -135,7 +135,7 @@
                 </div>
                 <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary" type="submit">Save Officer</button>
+                    <button id="save-officer-btn" type="submit">Save Officer</button>
                 </div>
             </form>
             <hr>
