@@ -218,7 +218,7 @@
 					Swal.fire({
 						icon: 'error',
 						title: 'Submission Failed',
-						text: 'An error occurred during submission. Please check the console for details.',
+						text: 'An error occurred during submission.',
 					});
 				}
 			});
