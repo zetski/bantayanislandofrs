@@ -6,7 +6,7 @@ if (isset($_SESSION['role'])) {
         header("Location: index.php");
         exit;
     } elseif ($_SESSION['role'] === 'admin') {
-        header("Location: ./choose_access.php");
+        header("Location: admin/login.php");
         exit;
     }
 }
