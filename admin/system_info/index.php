@@ -102,50 +102,6 @@
 		</div>
 	</div>
 
-	<div class="col-lg-12">
-    <div class="card card-outline rounded-0 card-primary">
-        <div class="card-header">
-            <h5 class="card-title">Officers Management</h5>
-            <button class="btn btn-primary btn-sm float-right" id="add_officer">Create Officer</button>
-        </div>
-        <div class="card-body">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Date Created</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    $officers = $conn->query("SELECT * FROM officers ORDER BY date_created DESC");
-                    $i = 1;
-                    while ($row = $officers->fetch_assoc()):
-                    ?>
-                    <tr>
-                        <td><?php echo $i++; ?></td>
-                        <td>
-                            <img src="<?php echo validate_image($row['image']); ?>" alt="Officer Image" class="img-thumbnail" style="width: 50px; height: 50px;">
-                        </td>
-                        <td><?php echo $row['firstname'] . ' ' . $row['lastname']; ?></td>
-                        <td><?php echo $row['position']; ?></td>
-                        <td><?php echo date("M d, Y h:i A", strtotime($row['date_created'])); ?></td>
-                        <td>
-                            <button class="btn btn-sm btn-warning edit_officer" data-id="<?php echo $row['id']; ?>">Edit</button>
-                            <button class="btn btn-sm btn-danger delete_officer" data-id="<?php echo $row['id']; ?>">Delete</button>
-                        </td>
-                    </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
 	<script>
 		function displayImg(input,_this) {
 			if (input.files && input.files[0]) {
