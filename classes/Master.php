@@ -556,6 +556,9 @@ switch ($action) {
     case 'delete_officer':
         echo $Master->delete_officer();
         break;
+	case 'get_officers':
+		echo $Master->get_officers();
+		break;
 	case 'delete_img':
 		echo $Master->delete_img();
 	break;
