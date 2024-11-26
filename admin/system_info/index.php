@@ -135,7 +135,7 @@
                 </div>
                 <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
                 <div class="form-group">
-                    <button id="save-officer-btn" type="submit">Save Officer</button>
+                    <button class="btn btn-sm btn-primary" type="submit">Save Officer</button>
                 </div>
             </form>
             <hr>
