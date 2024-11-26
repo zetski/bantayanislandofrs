@@ -190,7 +190,7 @@
 								icon: 'success',
 								title: 'Officer Saved',
 								text: 'The officer has been successfully saved!',
-								timer: 2000,
+								timer: 1000,
 								showConfirmButton: false
 							}).then(() => {
 								$('#officers-frm')[0].reset(); // Reset the form
