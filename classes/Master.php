@@ -417,7 +417,7 @@ Class Master extends DBConnection {
     public function save_officer() {
         extract($_POST);
         $officer_images = [];
-        $upload_path = 'uploads/officers/';
+        $upload_path = '../uploads/';
         
         // Ensure upload directory exists
         if (!is_dir(base_app . $upload_path)) {
