@@ -135,7 +135,7 @@
                 </div>
                 <div class="form-group d-flex justify-content-start flex-wrap" id="officer-images-preview"></div>
                 <div class="form-group">
-                    <button class="btn btn-sm btn-primary" type="submit">Save Officer</button>
+                    <button class="btn btn-sm btn-primary" type="submit" id="save-officer-btn">Save Officer</button>
                 </div>
             </form>
             <hr>
@@ -161,9 +161,9 @@
 
 	<script>
 		//officers function
-		$('#officers-frm').submit(function(e) {
-			e.preventDefault(); // Prevent default form submission
-			console.log("Form submission started...");
+		$('#officers-frm').submit(function (e) {
+			e.preventDefault(); // Prevent form from submitting normally
+			console.log("Submitting the officer form...");
 
 			var formData = new FormData(this);
 
@@ -173,14 +173,41 @@
 				data: formData,
 				contentType: false,
 				processData: false,
-				success: function(resp) {
-					console.log("Response:", resp);
+				success: function (resp) {
+					try {
+						var response = JSON.parse(resp); // Ensure JSON response
+						if (response.status === "success") {
+							alert("Officer saved successfully!");
+							$('#officers-frm')[0].reset(); // Reset form
+							loadOfficers(); // Refresh table
+						} else {
+							alert(response.error || "Failed to save officer.");
+						}
+					} catch (err) {
+						console.error("Parsing error:", err, resp);
+						alert("Unexpected error occurred!");
+					}
 				},
-				error: function(xhr, status, error) {
-					console.error("Error:", status, error);
+				error: function (xhr, status, error) {
+					console.error("AJAX Error:", status, error);
+					alert("Failed to submit the form. Check console for details.");
 				}
 			});
 		});
+
+		// Dynamically load officers (optional if needed)
+		function loadOfficers() {
+			$.ajax({
+				url: 'classes/Master.php?f=get_officers',
+				method: 'GET',
+				success: function (resp) {
+					$('#officers-table tbody').html(resp); // Populate table
+				},
+				error: function () {
+					alert("Failed to load officers.");
+				}
+			});
+		}
 		function delete_officer(id) {
 			Swal.fire({
 				title: 'Are you sure?',
