@@ -164,6 +164,29 @@
 		$('#officers-frm').submit(function (e) {
 			e.preventDefault(); // Prevent default form submission
 
+			// Client-side validation
+			let valid = true;
+			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_position'];
+			requiredFields.forEach(function (selector) {
+				const field = $(selector);
+				if (field.val().trim() === '') {
+					field.addClass('is-invalid'); // Highlight the field with an error
+					valid = false;
+				} else {
+					field.removeClass('is-invalid'); // Remove error highlight
+				}
+			});
+
+			if (!valid) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Validation Error',
+					text: 'Please fill in all required fields.',
+				});
+				return; // Exit function if validation fails
+			}
+
+			// Proceed with the AJAX request if validation passes
 			Swal.fire({
 				title: 'Saving Officer...',
 				text: 'Please wait while we process your request.',
