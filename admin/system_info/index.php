@@ -216,7 +216,8 @@
 								timer: 1000,
 								showConfirmButton: false
 							}).then(() => {
-								$('#officers-frm')[0].reset(); // Reset the form
+								$('#officers-frm')[0].reset();
+								loadOfficers(); // Reset the form
 
 								// Dynamically add the new officer to the table
 								var newRow = `
@@ -269,13 +270,45 @@
 				url: '../classes/Master.php?f=get_officers',
 				method: 'GET',
 				success: function (resp) {
-					$('#officers-table tbody').html(resp); // Populate table
+					try {
+						const data = JSON.parse(resp);
+						if (data.status === 'success') {
+							let tableRows = '';
+							data.officers.forEach(officer => {
+								tableRows += `
+									<tr id="officer-row-${officer.id}">
+										<td>${officer.id}</td>
+										<td>${officer.lastname} ${officer.firstname} ${officer.middlename}</td>
+										<td>${officer.position}</td>
+										<td><img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
+										<td>
+											<button class="btn btn-sm btn-danger" onclick="delete_officer(${officer.id})">
+												<i class="fa fa-trash"></i> Delete
+											</button>
+										</td>
+									</tr>
+								`;
+							});
+							$('#officers-table tbody').html(tableRows); // Update the table body
+						} else {
+							$('#officers-table tbody').html('<tr><td colspan="5" class="text-center">No officers found.</td></tr>');
+						}
+					} catch (err) {
+						console.error('Error parsing officers data:', err, resp);
+						$('#officers-table tbody').html('<tr><td colspan="5" class="text-center">Error loading data.</td></tr>');
+					}
 				},
-				error: function () {
-					alert("Failed to load officers.");
+				error: function (xhr, status, error) {
+					console.error('Failed to fetch officers:', error);
+					$('#officers-table tbody').html('<tr><td colspan="5" class="text-center">Failed to load data.</td></tr>');
 				}
 			});
 		}
+
+		// Call this function on page load
+		$(document).ready(function () {
+			loadOfficers();
+		});
 
 		function delete_officer(id) {
 			Swal.fire({

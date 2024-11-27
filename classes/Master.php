@@ -513,22 +513,22 @@ Class Master extends DBConnection {
     }
 
 	public function get_officers() {
-		$sql = "SELECT * FROM officers";
-		$result = $this->conn->query($sql);
+		$sql = "SELECT id, lastname, firstname, middlename, position, image FROM officers ORDER BY id ASC";
+		$query = $this->conn->query($sql);
 	
-		if ($result->num_rows > 0) {
-			while ($row = $result->fetch_assoc()) {
-				echo '<tr id="officer-row-' . $row['id'] . '">
-						<td>' . $row['id'] . '</td>
-						<td>' . $row['lastname'] . ', ' . $row['firstname'] . $row['middlename'] .'</td>
-						<td>' . $row['position'] . '</td>
-						<td><img src="' . base_url . $row['image'] . '" alt="Officer Image" width="50"></td>
-						<td><button class="btn btn-danger" onclick="delete_officer(' . $row['id'] . ')">Delete</button></td>
-					</tr>';
-			}
-		} else {
-			echo '<tr><td colspan="5">No officers found.</td></tr>';
+		$officers = [];
+		while ($row = $query->fetch_assoc()) {
+			$officers[] = [
+				'id' => $row['id'],
+				'lastname' => $row['lastname'],
+				'firstname' => $row['firstname'],
+				'middlename' => $row['middlename'],
+				'position' => $row['position'],
+				'image' => validate_image($row['image']) // Assuming validate_image handles URL validation
+			];
 		}
+	
+		echo json_encode(['status' => 'success', 'officers' => $officers]);
 	}
 
 	function save_inquiry(){
