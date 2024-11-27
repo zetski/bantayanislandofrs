@@ -477,11 +477,10 @@ Class Master extends DBConnection {
 
     // Delete Officer Function
     public function delete_officer() {
-		error_log("delete_officer called with ID: " . ($_POST['id'] ?? 'No ID'));
         extract($_POST);
 
         // Fetch officer details for cleanup
-        $sql = "SELECT images FROM officers WHERE id = ?";
+        $sql = "SELECT image FROM officers WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param('i', $id);
         $stmt->execute();
