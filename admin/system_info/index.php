@@ -340,8 +340,8 @@
 									icon: 'success',
 									title: 'Deleted!',
 									text: 'The officer has been successfully deleted.',
-									timer: 1000,
-									showConfirmButton: false
+									confirmButtonText: 'OK', // Show the OK button
+									showConfirmButton: true // Ensure button is visible
 								}).then(() => {
 									$('#officer-row-' + id).fadeOut('slow', function () {
 										$(this).remove();
@@ -367,6 +367,7 @@
 				}
 			});
 		}
+
 		function previewOfficerImages(input) {
 			const previewContainer = $('#officer-images-preview');
 			previewContainer.html(''); // Clear previous previews
