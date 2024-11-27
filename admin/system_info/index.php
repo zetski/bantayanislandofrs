@@ -3,7 +3,8 @@
 		alert_toast("<?php echo $_settings->flashdata('success') ?>",'success');
 	</script>
 	<?php endif;?>
-
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<style>
 		img#cimg{
 			height: 15vh;
@@ -159,6 +160,20 @@
     </div>
 </div>
 
+<!-- Modal for viewing image -->
+<div id="imageModal" class="modal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Image Preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" class="img-fluid" alt="Preview" />
+      </div>
+    </div>
+  </div>
+</div>
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
@@ -327,8 +342,13 @@
 					reader.onload = function (e) {
 						const img = $('<img>')
 							.attr('src', e.target.result)
-							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
-							.addClass('img-thumbnail');
+							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px', cursor: 'pointer' })
+							.addClass('img-thumbnail')
+							.on('click', function () {
+								// When image is clicked, show it in the modal
+								$('#modalImage').attr('src', e.target.result);
+								$('#imageModal').modal('show');
+							});
 						previewContainer.append(img);
 					};
 					reader.readAsDataURL(file);
