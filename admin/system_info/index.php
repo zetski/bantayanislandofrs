@@ -296,14 +296,20 @@
 			});
 		}
 		function previewOfficerImages(input) {
-			const previewContainer = document.getElementById('officer-images-preview');
-			previewContainer.innerHTML = ''; // Clear previous previews
-			if (input.files && input.files[0]) {
-				const reader = new FileReader();
-				reader.onload = function (e) {
-					previewContainer.innerHTML = `<img src="${e.target.result}" style="width:100px; height:100px; object-fit:cover; margin:5px;" class="img-thumbnail">`;
-				};
-				reader.readAsDataURL(input.files[0]);
+			const previewContainer = $('#officer-images-preview');
+			previewContainer.html(''); // Clear previous previews
+			if (input.files) {
+				Array.from(input.files).forEach((file) => {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const img = $('<img>')
+							.attr('src', e.target.result)
+							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+							.addClass('img-thumbnail');
+						previewContainer.append(img);
+					};
+					reader.readAsDataURL(file);
+				});
 			}
 		}
 		// end of officers code
