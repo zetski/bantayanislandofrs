@@ -318,23 +318,6 @@
 				}
 			});
 		}
-		function previewOfficerImages(input) {
-			const previewContainer = $('#officer-images-preview');
-			previewContainer.html(''); // Clear previous previews
-			if (input.files) {
-				Array.from(input.files).forEach((file) => {
-					const reader = new FileReader();
-					reader.onload = function (e) {
-						const img = $('<img>')
-							.attr('src', e.target.result)
-							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
-							.addClass('img-thumbnail');
-						previewContainer.append(img);
-					};
-					reader.readAsDataURL(file);
-				});
-			}
-		}
 		// end of officers code
 
 		function displayImg(input,_this) {
