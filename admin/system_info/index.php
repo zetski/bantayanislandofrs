@@ -147,21 +147,7 @@
                             <th>Name</th>
                             <th>Position</th>
                             <th>Images</th>
-                            <td>
-								<div class="dropdown">
-									<button class="btn btn-sm btn-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
-										Actions
-									</button>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="javascript:void(0)" onclick="editOfficer(${officer.id})">
-											<i class="fa fa-edit"></i> Edit
-										</a>
-										<a class="dropdown-item text-danger" href="javascript:void(0)" onclick="delete_officer(${officer.id})">
-											<i class="fa fa-trash"></i> Delete
-										</a>
-									</div>
-								</div>
-							</td>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
