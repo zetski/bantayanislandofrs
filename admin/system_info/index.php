@@ -340,8 +340,8 @@
 									icon: 'success',
 									title: 'Deleted!',
 									text: 'The officer has been successfully deleted.',
-									timer: 2000,
-									showConfirmButton: false
+									confirmButtonText: 'OK',
+									showConfirmButton: true
 								}).then(() => {
 									$('#officer-row-' + id).fadeOut('slow', function () {
 										$(this).remove();
