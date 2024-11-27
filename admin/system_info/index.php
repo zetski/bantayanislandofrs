@@ -129,7 +129,7 @@
                 <div class="form-group">
 					<label for="officer_images" class="control-label">Officer Image</label>
 					<div class="custom-file">
-						<input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" accept=".png,.jpg,.jpeg" onclick="previewOfficerImages(this)">
+						<input type="file" class="custom-file-input" id="officer_images" name="officer_images[]" accept=".png,.jpg,.jpeg" onchange="previewOfficerImages(this)">
 						<label class="custom-file-label" for="officer_images">Choose file</label>
 					</div>
 				</div>
@@ -159,20 +159,6 @@
     </div>
 </div>
 
-<!-- Modal for viewing image -->
-<div id="imageModal" class="modal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Image Preview</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body text-center">
-        <img id="modalImage" src="" class="img-fluid" alt="Preview" />
-      </div>
-    </div>
-  </div>
-</div>
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
@@ -341,13 +327,8 @@
 					reader.onload = function (e) {
 						const img = $('<img>')
 							.attr('src', e.target.result)
-							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px', cursor: 'pointer' })
-							.addClass('img-thumbnail')
-							.on('click', function () {
-								// When image is clicked, show it in the modal
-								$('#modalImage').attr('src', e.target.result);
-								$('#imageModal').modal('show');
-							});
+							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+							.addClass('img-thumbnail');
 						previewContainer.append(img);
 					};
 					reader.readAsDataURL(file);
