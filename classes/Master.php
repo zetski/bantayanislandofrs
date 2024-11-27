@@ -423,54 +423,56 @@ Class Master extends DBConnection {
 			]);
 			return;
 		}
+	
 		error_log("Save Officer Function Called");
 		error_log("POST Data: " . json_encode($_POST));
 		error_log("FILES Data: " . json_encode($_FILES));
-        extract($_POST);
-        $officer_images = [];
-        $upload_path = '../uploads/officers/';
-        
-        // Ensure upload directory exists
-        if (!is_dir(base_app . $upload_path)) {
-            mkdir(base_app . $upload_path, 0777, true);
-        }
-
-        // Handle uploaded images
-        if (isset($_FILES['officer_images']['tmp_name'])) {
-            foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
-                $file_name = time() . '_' . $_FILES['officer_images']['name'][$key];
-                $target_file = base_app . $upload_path . $file_name;
-                if (move_uploaded_file($tmp_name, $target_file)) {
-                    $officer_images[] = $upload_path . $file_name;
-                }
-            }
-        }
-
-        $images = json_encode($officer_images);
-
-        // Insert or update officer record
-        if (isset($id) && !empty($id)) {
-			// Update officer with single image field
-			$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, image = ? WHERE id = ?";
-			$stmt = $this->conn->prepare($sql);
-			$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $image, $id);
-		} else {
-			// Insert new officer with single image field
-			$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
-			$stmt = $this->conn->prepare($sql);
-			$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $image);
-		}
-
-        if ($stmt->execute()) {
-			$resp['status'] = 'success';
-			if (!isset($id)) $resp['id'] = $this->conn->insert_id;
-		} else {
-			$resp['status'] = 'failed';
-			$resp['error'] = "Database Error: " . $stmt->error;
+		extract($_POST);
+	
+		$officer_images = [];
+		$upload_path = '../uploads/officers/';
+	
+		// Ensure upload directory exists
+		if (!is_dir(base_app . $upload_path)) {
+			mkdir(base_app . $upload_path, 0777, true);
 		}
 	
-		error_log("Response: " . json_encode($resp));
-		return json_encode($resp);
+		// Handle uploaded images
+		if (isset($_FILES['officer_images']['tmp_name'])) {
+			foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
+				$file_name = time() . '_' . $_FILES['officer_images']['name'][$key];
+				$target_file = base_app . $upload_path . $file_name;
+				if (move_uploaded_file($tmp_name, $target_file)) {
+					$officer_images[] = $upload_path . $file_name;
+				}
+			}
+		}
+	
+		$images = json_encode($officer_images);
+	
+		// Insert officer record
+		$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
+	
+		if ($stmt->execute()) {
+			$response = [
+				'status' => 'success',
+				'id' => $this->conn->insert_id,
+				'lastname' => $officer_lastname,
+				'firstname' => $officer_firstname,
+				'middlename' => $officer_middlename,
+				'position' => $officer_position,
+				'image' => $officer_images ? base_url . $officer_images[0] : ''  // Return the first image URL
+			];
+		} else {
+			$response = [
+				'status' => 'failed',
+				'error' => "Database Error: " . $stmt->error
+			];
+		}
+	
+		echo json_encode($response); // Return the response with officer data
 	}
 
     // Delete Officer Function
