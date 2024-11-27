@@ -199,7 +199,7 @@
 			var formData = new FormData(this);
 
 			$.ajax({
-				url: '../classes/Master.php?f=save_officer',
+				url: './classes/Master.php?f=save_officer',
 				method: 'POST',
 				data: formData,
 				contentType: false,
@@ -250,7 +250,7 @@
 		// Dynamically load officers (optional if needed)
 		function loadOfficers() {
 			$.ajax({
-				url: '../classes/Master.php?f=get_officers',
+				url: './classes/Master.php?f=get_officers',
 				method: 'GET',
 				success: function (resp) {
 					$('#officers-table tbody').html(resp); // Populate table
@@ -281,7 +281,7 @@
 					});
 
 					$.ajax({
-						url: '../classes/Master.php?f=delete_officer',
+						url: './classes/Master.php?f=delete_officer',
 						method: 'POST',
 						data: { id: id },
 						dataType: 'json',
