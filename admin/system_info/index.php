@@ -217,7 +217,19 @@
 								showConfirmButton: false
 							}).then(() => {
 								$('#officers-frm')[0].reset(); // Reset the form
-								location.reload(); // Reload the page to reflect changes
+
+								// Add new officer data dynamically
+								const newOfficerRow = `
+									<tr id="officer-row-${response.data.id}">
+										<td>${response.data.id}</td>
+										<td>${response.data.lastname}, ${response.data.firstname} ${response.data.middlename}</td>
+										<td>${response.data.position}</td>
+										<td><img src="${response.data.image}" class="img-thumbnail" alt="Officer Image" style="height: 50px; width: 50px; object-fit: cover;"></td>
+										<td>
+											<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.data.id})">Delete</button>
+										</td>
+									</tr>`;
+								$('#officers-table tbody').append(newOfficerRow); // Append new row to the table
 							});
 						} else {
 							Swal.fire({
@@ -248,18 +260,35 @@
 		});
 
 		// Dynamically load officers (optional if needed)
+		$(document).ready(function () {
+			loadOfficers();
+		});
+
 		function loadOfficers() {
 			$.ajax({
 				url: '../classes/Master.php?f=get_officers',
 				method: 'GET',
+				dataType: 'json',
 				success: function (resp) {
-					$('#officers-table tbody').html(resp); // Populate table
+					const rows = resp.map(officer => `
+						<tr id="officer-row-${officer.id}">
+							<td>${officer.id}</td>
+							<td>${officer.lastname}, ${officer.firstname} ${officer.middlename}</td>
+							<td>${officer.position}</td>
+							<td><img src="${officer.image}" class="img-thumbnail" alt="Officer Image" style="height: 50px; width: 50px; object-fit: cover;"></td>
+							<td>
+								<button class="btn btn-sm btn-danger" onclick="delete_officer(${officer.id})">Delete</button>
+							</td>
+						</tr>
+					`);
+					$('#officers-table tbody').html(rows.join(''));
 				},
 				error: function () {
 					alert("Failed to load officers.");
 				}
 			});
 		}
+
 
 		function delete_officer(id) {
 			Swal.fire({
