@@ -518,9 +518,9 @@ Class Master extends DBConnection {
 			while ($row = $result->fetch_assoc()) {
 				echo '<tr id="officer-row-' . $row['id'] . '">
 						<td>' . $row['id'] . '</td>
-						<td>' . $row['lastname'] . ', ' . $row['firstname'] . '</td>
+						<td>' . $row['lastname'] . ', ' . $row['firstname'] . $row['middlename'] .'</td>
 						<td>' . $row['position'] . '</td>
-						<td><img src="' . base_url . $row['images'] . '" alt="Officer Image" width="50"></td>
+						<td><img src="' . base_url . $row['image'] . '" alt="Officer Image" width="50"></td>
 						<td><button class="btn btn-danger" onclick="delete_officer(' . $row['id'] . ')">Delete</button></td>
 					</tr>';
 			}
