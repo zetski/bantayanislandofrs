@@ -226,20 +226,10 @@
 										<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
 										<td>${response.position}</td>
 										<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
-										<td align="center">
-											<button type="button" class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-												Action
-												<span class="sr-only">Toggle Dropdown</span>
+										<td>
+											<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.id})">
+												<i class="fa fa-trash"></i> Delete
 											</button>
-											<div class="dropdown-menu" role="menu">
-												<a class="dropdown-item" href="javascript:void(0)" onclick="editOfficer(<?php echo $row['id'] ?>)">
-													<span class="fa fa-edit text-primary"></span> Edit
-												</a>
-												<div class="dropdown-divider"></div>
-												<a class="dropdown-item text-danger delete_data" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>">
-													<span class="fa fa-trash text-danger"></span> Delete
-												</a>
-											</div>
 										</td>
 									</tr>
 								`;
