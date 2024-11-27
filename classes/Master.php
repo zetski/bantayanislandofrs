@@ -430,7 +430,7 @@ Class Master extends DBConnection {
 		extract($_POST);
 	
 		$officer_images = [];
-		$upload_path = '../uploads/officers/';
+		$upload_path = 'uploads/officers';
 	
 		// Ensure upload directory exists
 		if (!is_dir(base_app . $upload_path)) {
