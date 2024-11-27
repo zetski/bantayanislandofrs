@@ -419,7 +419,7 @@ Class Master extends DBConnection {
 		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
 			echo json_encode([
 				'status' => 'failed',
-				'error' => 'Last Name, First Name, and Position are required fields.'
+				'error' => 'Last Name, First Name, Middle Name and Position are required fields.'
 			]);
 			return;
 		}
