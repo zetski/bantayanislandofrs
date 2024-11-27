@@ -199,7 +199,7 @@
 			var formData = new FormData(this);
 
 			$.ajax({
-				url: './classes/Master.php?f=save_officer',
+				url: '../classes/Master.php?f=save_officer',
 				method: 'POST',
 				data: formData,
 				contentType: false,
@@ -217,19 +217,7 @@
 								showConfirmButton: false
 							}).then(() => {
 								$('#officers-frm')[0].reset(); // Reset the form
-
-								// Add new officer data dynamically
-								const newOfficerRow = `
-									<tr id="officer-row-${response.data.id}">
-										<td>${response.data.id}</td>
-										<td>${response.data.lastname}, ${response.data.firstname} ${response.data.middlename}</td>
-										<td>${response.data.position}</td>
-										<td><img src="${response.data.image}" class="img-thumbnail" alt="Officer Image" style="height: 50px; width: 50px; object-fit: cover;"></td>
-										<td>
-											<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.data.id})">Delete</button>
-										</td>
-									</tr>`;
-								$('#officers-table tbody').append(newOfficerRow); // Append new row to the table
+								location.reload(); // Reload the page to reflect changes
 							});
 						} else {
 							Swal.fire({
@@ -262,7 +250,7 @@
 		// Dynamically load officers (optional if needed)
 		function loadOfficers() {
 			$.ajax({
-				url: './classes/Master.php?f=get_officers',
+				url: '../classes/Master.php?f=get_officers',
 				method: 'GET',
 				success: function (resp) {
 					$('#officers-table tbody').html(resp); // Populate table
@@ -293,7 +281,7 @@
 					});
 
 					$.ajax({
-						url: './classes/Master.php?f=delete_officer',
+						url: '../classes/Master.php?f=delete_officer',
 						method: 'POST',
 						data: { id: id },
 						dataType: 'json',
@@ -329,6 +317,23 @@
 					});
 				}
 			});
+		}
+		function previewOfficerImages(input) {
+			const previewContainer = $('#officer-images-preview');
+			previewContainer.html(''); // Clear previous previews
+			if (input.files) {
+				Array.from(input.files).forEach((file) => {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const img = $('<img>')
+							.attr('src', e.target.result)
+							.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
+							.addClass('img-thumbnail');
+						previewContainer.append(img);
+					};
+					reader.readAsDataURL(file);
+				});
+			}
 		}
 		// end of officers code
 
