@@ -282,9 +282,6 @@
 										<td>${officer.position}</td>
 										<td><img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
-											<button class="btn btn-sm btn-primary" onclick="edit_officer(${officer.id})">
-												<i class="fa fa-edit"></i> Edit
-											</button>
 											<button class="btn btn-sm btn-danger" onclick="delete_officer(${officer.id})">
 												<i class="fa fa-trash"></i> Delete
 											</button>
