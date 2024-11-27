@@ -416,7 +416,7 @@ Class Master extends DBConnection {
 	// Save Officer Function
     public function save_officer() {
 		extract($_POST);
-		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_position)) {
+		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
 			echo json_encode([
 				'status' => 'failed',
 				'error' => 'Last Name, First Name, and Position are required fields.'
