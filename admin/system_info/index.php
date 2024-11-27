@@ -213,8 +213,8 @@
 								icon: 'success',
 								title: 'Officer Saved',
 								text: 'The officer has been successfully saved!',
-								timer: 1000,
-								showConfirmButton: false
+								confirmButtonText: 'OK', // Show OK button
+								showConfirmButton: true // Ensure the button is visible
 							}).then(() => {
 								$('#officers-frm')[0].reset();
 								loadOfficers(); // Reset the form
@@ -234,7 +234,6 @@
 									</tr>
 								`;
 								$('#officers-table tbody').append(newRow); // Append to the table
-
 							});
 						} else {
 							Swal.fire({
@@ -263,6 +262,7 @@
 				}
 			});
 		});
+
 
 		// Dynamically load officers (optional if needed)
 		function loadOfficers() {
