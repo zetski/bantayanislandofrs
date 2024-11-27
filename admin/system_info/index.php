@@ -216,7 +216,8 @@
 								timer: 1000,
 								showConfirmButton: false
 							}).then(() => {
-								$('#officers-frm')[0].reset(); // Reset the form
+								$('#officers-frm')[0].reset();
+								loadOfficers(); // Reset the form
 
 								// Dynamically add the new officer to the table
 								var newRow = `
