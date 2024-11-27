@@ -120,7 +120,7 @@
 				</div>
 				<div class="form-group">
 					<label for="officer_middlename" class="control-label">Middle Name</label>
-					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name (optional)">
+					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name">
 				</div>
 				<div class="form-group">
 					<label for="officer_position" class="control-label">Position</label>
