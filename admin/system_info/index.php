@@ -199,7 +199,7 @@
 			var formData = new FormData(this);
 
 			$.ajax({
-				url: '../classes/Master.php?f=save_officer',
+				url: './classes/Master.php?f=save_officer',
 				method: 'POST',
 				data: formData,
 				contentType: false,
@@ -260,35 +260,18 @@
 		});
 
 		// Dynamically load officers (optional if needed)
-		$(document).ready(function () {
-		loadOfficers();
-	});
-
-	function loadOfficers() {
-		$.ajax({
-			url: '../classes/Master.php?f=get_officers',
-			method: 'GET',
-			dataType: 'json',
-			success: function (resp) {
-				const rows = resp.map(officer => `
-					<tr id="officer-row-${officer.id}">
-						<td>${officer.id}</td>
-						<td>${officer.lastname}, ${officer.firstname} ${officer.middlename}</td>
-						<td>${officer.position}</td>
-						<td><img src="${officer.image}" class="img-thumbnail" alt="Officer Image" style="height: 50px; width: 50px; object-fit: cover;"></td>
-						<td>
-							<button class="btn btn-sm btn-danger" onclick="delete_officer(${officer.id})">Delete</button>
-						</td>
-					</tr>
-				`);
-				$('#officers-table tbody').html(rows.join(''));
-			},
-			error: function () {
-				alert("Failed to load officers.");
-			}
-		});
-	}
-
+		function loadOfficers() {
+			$.ajax({
+				url: './classes/Master.php?f=get_officers',
+				method: 'GET',
+				success: function (resp) {
+					$('#officers-table tbody').html(resp); // Populate table
+				},
+				error: function () {
+					alert("Failed to load officers.");
+				}
+			});
+		}
 
 		function delete_officer(id) {
 			Swal.fire({
@@ -310,7 +293,7 @@
 					});
 
 					$.ajax({
-						url: '../classes/Master.php?f=delete_officer',
+						url: './classes/Master.php?f=delete_officer',
 						method: 'POST',
 						data: { id: id },
 						dataType: 'json',
