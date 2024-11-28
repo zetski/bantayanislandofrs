@@ -453,7 +453,7 @@ Class Master extends DBConnection {
 		// Insert officer record
 		$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
+		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $image);
 	
 		if ($stmt->execute()) {
 			$response = [
