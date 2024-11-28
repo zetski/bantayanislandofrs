@@ -15,7 +15,7 @@ $error = ""; // Initialize error message
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Sanitize and validate the email
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $email = strtolower(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL));
     
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error = "Please enter a valid email.";
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: login.php");
                 exit;
             } else {
-                $error = "Admin email not found.";
+                $error = "Admin email not found. Please ensure the role column is set to 'admin'.";
             }
             
             $stmt->close();
