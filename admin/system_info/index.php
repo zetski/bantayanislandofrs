@@ -159,7 +159,101 @@
     </div>
 </div>
 
+<!-- modal -->
+<div class="modal fade" id="editOfficerModal" tabindex="-1" aria-labelledby="editOfficerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editOfficerModalLabel">Edit Officer</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="edit-officer-form" method="POST" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div id="edit-officer-msg" class="form-group"></div>
+                    <input type="hidden" id="edit_officer_id" name="officer_id">
+                    <div class="form-group">
+                        <label for="edit_officer_lastname" class="control-label">Last Name</label>
+                        <input type="text" class="form-control" id="edit_officer_lastname" name="officer_lastname" placeholder="Enter officer's last name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_officer_firstname" class="control-label">First Name</label>
+                        <input type="text" class="form-control" id="edit_officer_firstname" name="officer_firstname" placeholder="Enter officer's first name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_officer_middlename" class="control-label">Middle Name</label>
+                        <input type="text" class="form-control" id="edit_officer_middlename" name="officer_middlename" placeholder="Enter officer's middle name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_officer_position" class="control-label">Position</label>
+                        <input type="text" class="form-control" id="edit_officer_position" name="officer_position" placeholder="Enter officer's position">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit_officer_image" class="control-label">Officer Image</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="edit_officer_image" name="officer_image" accept=".png,.jpg,.jpeg">
+                            <label class="custom-file-label" for="edit_officer_image">Choose file</label>
+                        </div>
+                        <img id="edit_officer_image_preview" class="mt-3 img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 	<script>
+		$('#edit-officer-form').submit(function (e) {
+			e.preventDefault();
+
+			const formData = new FormData(this);
+
+			Swal.fire({
+				title: 'Saving Changes...',
+				allowOutsideClick: false,
+				didOpen: () => Swal.showLoading(),
+			});
+
+			$.ajax({
+				url: '../classes/Master.php?f=update_officer',
+				method: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function (resp) {
+					Swal.close();
+					const response = JSON.parse(resp);
+					if (response.status === 'success') {
+						Swal.fire({
+							icon: 'success',
+							title: 'Officer Updated',
+							text: 'Officer details updated successfully.',
+						}).then(() => {
+							$('#editOfficerModal').modal('hide');
+							loadOfficers(); // Reload officer table
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Update Failed',
+							text: response.error || 'An error occurred while updating officer details.',
+						});
+					}
+				},
+				error: function () {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An unexpected error occurred.',
+					});
+				}
+			});
+		});
+		
 		//officers function
 		$('#officers-frm').submit(function (e) {
 			e.preventDefault(); // Prevent default form submission
@@ -377,6 +471,90 @@
 				}
 			});
 		}
+
+		function edit_officer(id) {
+			$.ajax({
+				url: '../classes/Master.php?f=get_officer_details', // Backend function to fetch officer details
+				method: 'GET',
+				data: { id: id },
+				success: function (resp) {
+					const data = JSON.parse(resp);
+					if (data.status === 'success') {
+						const officer = data.officer;
+						$('#edit_officer_id').val(officer.id);
+						$('#edit_officer_lastname').val(officer.lastname);
+						$('#edit_officer_firstname').val(officer.firstname);
+						$('#edit_officer_middlename').val(officer.middlename);
+						$('#edit_officer_position').val(officer.position);
+						$('#edit_officer_image_preview').attr('src', officer.image);
+
+						$('#editOfficerModal').modal('show');
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Failed to load officer details.',
+						});
+					}
+				},
+				error: function () {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An unexpected error occurred while fetching officer details.',
+					});
+				}
+			});
+		}
+		b. Submit Edited Data:
+		javascript
+		Copy code
+		$('#edit-officer-form').submit(function (e) {
+			e.preventDefault();
+
+			const formData = new FormData(this);
+
+			Swal.fire({
+				title: 'Saving Changes...',
+				allowOutsideClick: false,
+				didOpen: () => Swal.showLoading(),
+			});
+
+			$.ajax({
+				url: '../classes/Master.php?f=update_officer',
+				method: 'POST',
+				data: formData,
+				contentType: false,
+				processData: false,
+				success: function (resp) {
+					Swal.close();
+					const response = JSON.parse(resp);
+					if (response.status === 'success') {
+						Swal.fire({
+							icon: 'success',
+							title: 'Officer Updated',
+							text: 'Officer details updated successfully.',
+						}).then(() => {
+							$('#editOfficerModal').modal('hide');
+							loadOfficers(); // Reload officer table
+						});
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Update Failed',
+							text: response.error || 'An error occurred while updating officer details.',
+						});
+					}
+				},
+				error: function () {
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An unexpected error occurred.',
+					});
+				}
+			});
+		});
 
 		function previewOfficerImages(input) {
 			const previewContainer = $('#officer-images-preview');
