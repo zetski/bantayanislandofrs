@@ -120,7 +120,7 @@
 				</div>
 				<div class="form-group">
 					<label for="officer_middlename" class="control-label">Middle Name</label>
-					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name">
+					<input type="text" class="form-control form-control-sm" name="officer_middlename" id="officer_middlename" placeholder="Enter officer's middle name (optional)">
 				</div>
 				<div class="form-group">
 					<label for="officer_position" class="control-label">Position</label>
@@ -214,7 +214,7 @@
 
 			// Client-side validation
 			let valid = true;
-			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
+			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_position'];
 			requiredFields.forEach(function (selector) {
 				const field = $(selector);
 				if (field.val().trim() === '') {
