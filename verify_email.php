@@ -5,6 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 require_once('config.php'); // Ensure the config file path is correct
+require 'phpmailer/class.phpmailer.php';
+require 'phpmailer/class.smtp.php'; // Load PHPMailer classes
 
 // Check if session is not active, then start the session
 if (session_status() == PHP_SESSION_NONE) {
@@ -28,9 +30,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $result = $stmt->get_result();
             
             if ($result && $result->num_rows > 0) {
-                $_SESSION['email_verified'] = true;
-                header("Location: login.php");
-                exit;
+                // Generate OTP
+                $otp = random_int(100000, 999999);
+
+                // Store OTP in session for validation
+                $_SESSION['otp'] = $otp;
+                $_SESSION['email'] = $email;
+
+                // Send the OTP using PHPMailer
+                $mail = new PHPMailer();
+
+                try {
+                    //Server settings
+                    $mail->isSMTP();
+                    $mail->Host       = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                    $mail->SMTPAuth   = true;
+                    $mail->Username   = 'bantayanbfp@gmail.com'; // Your Gmail address
+                    $mail->Password   = 'otrj ptcg karr ogdd';  // Your Gmail app password
+                    $mail->SMTPSecure = 'tls';  // Encryption: 'tls' or 'ssl'
+                    $mail->Port       = 587;    // Port for TLS connection
+
+                    //Recipients
+                    $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan Island BFP');
+                    $mail->addAddress($email);     // Add a recipient
+
+                    // Content
+                    $mail->isHTML(true);
+                    $mail->Subject = 'Your OTP for Admin Verification';
+                    $mail->Body    = "Hi, your OTP for email verification is: <strong>$otp</strong>. <br>Please use this OTP to verify your email.";
+
+                    // Send mail
+                    if ($mail->send()) {
+                        // Redirect to OTP verification page
+                        header("Location: verify_otp.php");
+                        exit;
+                    } else {
+                        $error = "Failed to send OTP. Mailer Error: " . $mail->ErrorInfo;
+                    }
+                } catch (Exception $e) {
+                    $error = "Error in sending OTP: " . $mail->ErrorInfo;
+                }
             } else {
                 $error = "Admin email not found.";
             }
@@ -149,7 +188,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form action="verify_email.php" method="post">
             <label for="email">Enter Admin Email:</label>
             <input type="email" id="email" name="email" placeholder="Enter your admin email" required>
-            <button type="submit">Verify Email</button>
+            <button type="submit">Send OTP</button>
         </form>
         <?php if ($error) { echo "<p>$error</p>"; } ?>
     </div>
