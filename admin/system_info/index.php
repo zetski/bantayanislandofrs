@@ -147,7 +147,7 @@
                             <th>Name</th>
                             <th>Position</th>
                             <th>Images</th>
-                            <th>Actions</th>
+                            <th>Lihok</th>
                         </tr>
                     </thead>
                     <tbody>
