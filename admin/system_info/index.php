@@ -162,10 +162,7 @@
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
-		e.preventDefault();
-
-		const isEdit = !!$('#officer_id').length; // Check if editing
-		const url = isEdit ? '../classes/Master.php?f=update_officer' : '../classes/Master.php?f=save_officer';
+			e.preventDefault(); // Prevent default form submission
 
 			// Client-side validation
 			let valid = true;
@@ -381,80 +378,6 @@
 			});
 		}
 
-		function edit_officer(id) {
-		$.ajax({
-			url: '../classes/Master.php?f=get_officer',
-			method: 'POST',
-			data: { id: id },
-			success: function (resp) {
-				try {
-					const data = JSON.parse(resp);
-					if (data.status === 'success') {
-						const officer = data.officer;
-						// Populate the form fields with officer details
-						$('#officer_lastname').val(officer.lastname);
-						$('#officer_firstname').val(officer.firstname);
-						$('#officer_middlename').val(officer.middlename);
-						$('#officer_position').val(officer.position);
-
-						// Clear and show the image preview
-						const previewContainer = $('#officer-images-preview');
-						previewContainer.html('');
-						if (officer.image) {
-							const img = $('<img>')
-								.attr('src', officer.image)
-								.css({ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' })
-								.addClass('img-thumbnail');
-							previewContainer.append(img);
-						}
-
-						// Add hidden input for officer ID
-						if (!$('#officer_id').length) {
-							$('<input>').attr({
-								type: 'hidden',
-								id: 'officer_id',
-								name: 'officer_id',
-								value: id
-							}).appendTo('#officers-frm');
-						} else {
-							$('#officer_id').val(id);
-						}
-
-						// Scroll to form and focus
-						$('html, body').animate({ scrollTop: $('#officers-frm').offset().top }, 500);
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: 'Error',
-							text: data.error || 'Unable to fetch officer details.'
-						});
-					}
-				} catch (err) {
-					console.error('Error parsing officer data:', err, resp);
-					Swal.fire({
-						icon: 'error',
-						title: 'Error',
-						text: 'An unexpected error occurred. Please try again later.'
-					});
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error('Failed to fetch officer details:', status, error, xhr.responseText);
-				Swal.fire({
-					icon: 'error',
-					title: 'Error',
-					text: 'Failed to retrieve officer data.'
-				});
-			}
-		});
-	}
-
-	// Reset form after saving or canceling edit
-	$('#officers-frm').on('reset', function () {
-		$('#officer_id').remove(); // Remove hidden ID input for edit
-		$('#officer-images-preview').html(''); // Clear image previews
-	});
-	
 		function previewOfficerImages(input) {
 			const previewContainer = $('#officer-images-preview');
 			previewContainer.html(''); // Clear previous previews
