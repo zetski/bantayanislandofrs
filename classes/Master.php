@@ -549,6 +549,31 @@ Class Master extends DBConnection {
 		}
 	}
 	
+	public function update_officer() {
+		extract($_POST);
+	
+		$officer_image = $_FILES['officer_image']['name'] ? time() . '_' . $_FILES['officer_image']['name'] : null;
+	
+		if ($officer_image) {
+			move_uploaded_file($_FILES['officer_image']['tmp_name'], base_app . '../uploads/' . $officer_image);
+		}
+	
+		$image_sql = $officer_image ? ", image = ?" : "";
+		$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ? $image_sql WHERE id = ?";
+		$stmt = $this->conn->prepare($sql);
+	
+		if ($officer_image) {
+			$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_image, $officer_id);
+		} else {
+			$stmt->bind_param('ssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_id);
+		}
+	
+		if ($stmt->execute()) {
+			echo json_encode(['status' => 'success']);
+		} else {
+			echo json_encode(['status' => 'failed', 'error' => $stmt->error]);
+		}
+	}	
 
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
@@ -611,6 +636,9 @@ switch ($action) {
 		break;
 	case 'get_officer_details':
 		echo $Master->get_officer_details();
+		break;
+	case 'update_officer':
+		echo $Master->update_officer();
 		break;
 	case 'delete_img':
 		echo $Master->delete_img();

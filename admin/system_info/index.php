@@ -460,6 +460,52 @@
 			});
 		}
 
+		$('#edit-officer-form').submit(function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    Swal.fire({
+        title: 'Saving Changes...',
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+    });
+
+    $.ajax({
+        url: '../classes/Master.php?f=update_officer',
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            Swal.close();
+            const response = JSON.parse(resp);
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Officer Updated',
+                    text: 'Officer details updated successfully.',
+                }).then(() => {
+                    $('#editOfficerModal').modal('hide');
+                    loadOfficers(); // Reload officer table
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Update Failed',
+                    text: response.error || 'An error occurred while updating officer details.',
+                });
+            }
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'An unexpected error occurred.',
+            });
+        }
+    });
+});
 		function previewOfficerImages(input) {
 			const previewContainer = $('#officer-images-preview');
 			previewContainer.html(''); // Clear previous previews
