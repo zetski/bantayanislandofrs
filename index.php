@@ -27,7 +27,7 @@ if (!isset($_SESSION['role'])) {
         include '404.html';
     }else{
     if(is_dir($page))
-        include $page.'/index.php';
+        include $page.'/index';
     else
         include $page.'.php';
 
