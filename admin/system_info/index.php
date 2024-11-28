@@ -159,53 +159,6 @@
     </div>
 </div>
 
-<!-- modal -->
-<div class="modal fade" id="editOfficerModal" tabindex="-1" aria-labelledby="editOfficerModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editOfficerModalLabel">Edit Officer</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <form id="edit-officer-form" method="POST" enctype="multipart/form-data">
-                <div class="modal-body">
-                    <div id="edit-officer-msg" class="form-group"></div>
-                    <input type="hidden" id="edit_officer_id" name="officer_id">
-                    <div class="form-group">
-                        <label for="edit_officer_lastname" class="control-label">Last Name</label>
-                        <input type="text" class="form-control" id="edit_officer_lastname" name="officer_lastname" placeholder="Enter officer's last name">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_officer_firstname" class="control-label">First Name</label>
-                        <input type="text" class="form-control" id="edit_officer_firstname" name="officer_firstname" placeholder="Enter officer's first name">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_officer_middlename" class="control-label">Middle Name</label>
-                        <input type="text" class="form-control" id="edit_officer_middlename" name="officer_middlename" placeholder="Enter officer's middle name">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_officer_position" class="control-label">Position</label>
-                        <input type="text" class="form-control" id="edit_officer_position" name="officer_position" placeholder="Enter officer's position">
-                    </div>
-                    <div class="form-group">
-                        <label for="edit_officer_image" class="control-label">Officer Image</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="edit_officer_image" name="officer_image" accept=".png,.jpg,.jpeg">
-                            <label class="custom-file-label" for="edit_officer_image">Choose file</label>
-                        </div>
-                        <img id="edit_officer_image_preview" class="mt-3 img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
@@ -329,20 +282,20 @@
 										<td>${officer.position}</td>
 										<td><img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
-											<div class="btn-group">
-												<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													Actions
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#" onclick="edit_officer(${officer.id})">
-														<i class="fa fa-edit"></i> Edit
-													</a>
-													<a class="dropdown-item text-danger" href="#" onclick="delete_officer(${officer.id})">
-														<i class="fa fa-trash"></i> Delete
-													</a>
-												</div>
+										<div class="btn-group">
+											<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+												Actions
+											</button>
+											<div class="dropdown-menu">
+												<a class="dropdown-item" href="#" onclick="edit_officer(${officer.id})">
+													<i class="fa fa-edit"></i> Edit
+												</a>
+												<a class="dropdown-item text-danger" href="#" onclick="delete_officer(${officer.id})">
+													<i class="fa fa-trash"></i> Delete
+												</a>
 											</div>
-										</td>
+										</div>
+									</td>
 									</tr>
 								`;
 							});
