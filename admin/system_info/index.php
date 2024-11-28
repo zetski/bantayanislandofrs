@@ -226,21 +226,7 @@
 										<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
 										<td>${response.position}</td>
 										<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
-										<td>
-											<div class="btn-group">
-												<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-													Actions
-												</button>
-												<div class="dropdown-menu">
-													<a class="dropdown-item" href="#" onclick="edit_officer(${officer.id})">
-														<i class="fa fa-edit"></i> Edit
-													</a>
-													<a class="dropdown-item text-danger" href="#" onclick="delete_officer(${officer.id})">
-														<i class="fa fa-trash"></i> Delete
-													</a>
-												</div>
-											</div>
-										</td>
+										
 									</tr>
 								`;
 								$('#officers-table tbody').append(newRow); // Append to the table
