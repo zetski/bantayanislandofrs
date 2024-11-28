@@ -4,7 +4,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-require_once('../config.php'); // Ensure the config file path is correct
+require_once('../../config.php'); // Ensure the config file path is correct
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php'; // Load PHPMailer classes
 
