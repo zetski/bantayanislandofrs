@@ -213,26 +213,26 @@
 			e.preventDefault(); // Prevent default form submission
 
 			// Client-side validation
-			// let valid = true;
-			// const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
-			// requiredFields.forEach(function (selector) {
-			// 	const field = $(selector);
-			// 	if (field.val().trim() === '') {
-			// 		field.addClass('is-invalid'); // Highlight the field with an error
-			// 		valid = false;
-			// 	} else {
-			// 		field.removeClass('is-invalid'); // Remove error highlight
-			// 	}
-			// });
+			let valid = true;
+			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
+			requiredFields.forEach(function (selector) {
+				const field = $(selector);
+				if (field.val().trim() === '') {
+					field.addClass('is-invalid'); // Highlight the field with an error
+					valid = false;
+				} else {
+					field.removeClass('is-invalid'); // Remove error highlight
+				}
+			});
 
-			// if (!valid) {
-			// 	Swal.fire({
-			// 		icon: 'error',
-			// 		title: 'Validation Error',
-			// 		text: 'Please fill in all required fields.',
-			// 	});
-			// 	return; // Exit function if validation fails
-			// }
+			if (!valid) {
+				Swal.fire({
+					icon: 'error',
+					title: 'Validation Error',
+					text: 'Please fill in all required fields.',
+				});
+				return; // Exit function if validation fails
+			}
 
 			// Proceed with the AJAX request if validation passes
 			Swal.fire({
