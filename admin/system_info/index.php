@@ -268,19 +268,14 @@
 								loadOfficers(); // Reset the form
 
 								// Dynamically add the new officer to the table
-								// var newRow = `
-								// 	<tr id="officer-row-${response.id}">
-								// 		<td>${response.id}</td>
-								// 		<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
-								// 		<td>${response.position}</td>
-								// 		<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
-								// 		<td>
-								// 			<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.id})">
-								// 				<i class="fa fa-trash"></i> Delete
-								// 			</button>
-								// 		</td>
-								// 	</tr>
-								// `;
+								var newRow = `
+									<tr id="officer-row-${response.id}">
+										<td>${response.id}</td>
+										<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
+										<td>${response.position}</td>
+										<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
+									</tr>
+								`;
 								$('#officers-table tbody').append(newRow); // Append to the table
 							});
 						} else {
