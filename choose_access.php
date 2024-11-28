@@ -3,10 +3,10 @@ session_start();
 if (isset($_SESSION['role'])) {
     // Redirect based on role if already logged in
     if ($_SESSION['role'] === 'guest') {
-        header("Location: index.php");
+        header("Location: index");
         exit;
     } elseif ($_SESSION['role'] === 'admin') {
-        header("Location: admin/login.php");
+        header("Location: admin/login");
         exit;
     }
 }
@@ -55,7 +55,7 @@ if (isset($_SESSION['role'])) {
 <body>
     <div class="container">
         <h2>Welcome to the Bantayan BFP</h2>
-        <button class="btn guest-btn" onclick="window.location.href='./set_guest.php'">Continue as Guest</button>
+        <button class="btn guest-btn" onclick="window.location.href='./set_guest'">Continue as Guest</button>
         <button class="btn admin-btn" onclick="window.location.href='./admin'">Login as Admin</button>
     </div>
 </body>
