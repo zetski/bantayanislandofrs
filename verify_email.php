@@ -50,47 +50,96 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify Admin Email</title>
     <style>
-        /* Styling for the page */
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
+            font-family: 'Roboto', Arial, sans-serif;
+            background: linear-gradient(135deg, #6d83f3, #b29df8);
+            color: #333;
         }
+
         .container {
             text-align: center;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            background-color: #fff;
-            max-width: 400px;
-            width: 90%;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            background: #fff;
+            max-width: 420px;
+            width: 100%;
         }
+
         h2 {
             margin-bottom: 20px;
+            font-size: 1.8em;
+            color: #444;
         }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: #555;
+        }
+
         input[type="email"] {
-            padding: 10px;
+            padding: 12px;
             width: 100%;
-            margin-bottom: 15px;
-            font-size: 16px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
         }
+
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #6d83f3;
+            box-shadow: 0 0 5px rgba(109, 131, 243, 0.5);
+        }
+
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 12px 25px;
+            font-size: 1em;
             border: none;
             color: #fff;
             background-color: #007bff;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
         p {
+            margin-top: 15px;
+            font-size: 0.9em;
             color: red;
+        }
+
+        @media (max-width: 500px) {
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.5em;
+            }
+
+            input[type="email"],
+            button {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
@@ -99,7 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h2>Admin Email Verification</h2>
         <form action="verify_email.php" method="post">
             <label for="email">Enter Admin Email:</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" placeholder="Enter your admin email" required>
             <button type="submit">Verify Email</button>
         </form>
         <?php if ($error) { echo "<p>$error</p>"; } ?>
