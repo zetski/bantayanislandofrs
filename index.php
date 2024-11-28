@@ -23,7 +23,7 @@ if (!isset($_SESSION['role'])) {
 <?php require_once('inc/topBarNav.php') ?>
 <?php $page = isset($_GET['p']) ? $_GET['p'] : 'home';  ?>
 <?php 
-    if(!file_exists($page."./index") && !is_dir($page)){
+    if(!file_exists($page.".php") && !is_dir($page)){
         include '404.html';
     }else{
     if(is_dir($page))
