@@ -531,6 +531,25 @@ Class Master extends DBConnection {
 		echo json_encode(['status' => 'success', 'officers' => $officers]);
 	}
 
+	public function get_officer_details() {
+		extract($_GET);
+	
+		$sql = "SELECT id, lastname, firstname, middlename, position, image FROM officers WHERE id = ?";
+		$stmt = $this->conn->prepare($sql);
+		$stmt->bind_param('i', $id);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		$officer = $result->fetch_assoc();
+	
+		if ($officer) {
+			$officer['image'] = validate_image($officer['image']); // Ensure image URL is valid
+			echo json_encode(['status' => 'success', 'officer' => $officer]);
+		} else {
+			echo json_encode(['status' => 'failed', 'error' => 'Officer not found.']);
+		}
+	}
+	
+
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
@@ -589,6 +608,9 @@ switch ($action) {
         break;
 	case 'get_officers':
 		echo $Master->get_officers();
+		break;
+	case 'get_officer_details':
+		echo $Master->get_officer_details();
 		break;
 	case 'delete_img':
 		echo $Master->delete_img();
