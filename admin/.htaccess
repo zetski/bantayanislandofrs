@@ -3,5 +3,6 @@ Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$    /index.php/$2/?page=$1   [L]
 </IfModule>
