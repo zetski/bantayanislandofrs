@@ -65,7 +65,7 @@ class Login extends DBConnection {
 	}
 	public function logout(){
 		if($this->settings->sess_des()){
-			redirect('admin/login.php');
+			redirect('admin/login');
 		}
 	}
 	function login_user(){
