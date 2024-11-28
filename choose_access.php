@@ -3,7 +3,7 @@ session_start();
 if (isset($_SESSION['role'])) {
     // Redirect based on role if already logged in
     if ($_SESSION['role'] === 'guest') {
-        header("Location: index.php");
+        header("Location: ./index");
         exit;
     } elseif ($_SESSION['role'] === 'admin') {
         header("Location: admin/login.php");
