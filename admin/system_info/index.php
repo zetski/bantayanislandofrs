@@ -214,7 +214,7 @@
 
 			// Client-side validation
 			let valid = true;
-			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_position'];
+			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
 			requiredFields.forEach(function (selector) {
 				const field = $(selector);
 				if (field.val().trim() === '') {
