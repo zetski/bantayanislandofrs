@@ -4,7 +4,7 @@ require_once('config.php');
 
 // Check if user role is already set, otherwise redirect to gateway
 if (!isset($_SESSION['role'])) {
-    header("Location: ./choose_access.php"); // Redirect to the new gateway page
+    header("Location: ./choose_access"); // Redirect to the new gateway page
     exit;
 }
 ?>
