@@ -370,7 +370,7 @@
 											</button>
 											<div class="dropdown-menu">
 												<a class="dropdown-item" href="#" onclick="edit_officer(${officer.id})">
-													<i class="fa fa-edit"></i> Edit
+													<i class="fa fa-edit"></i> dit
 												</a>
 												<a class="dropdown-item text-danger" href="#" onclick="delete_officer(${officer.id})">
 													<i class="fa fa-trash"></i> Delete
