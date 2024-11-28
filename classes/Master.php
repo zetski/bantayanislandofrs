@@ -472,8 +472,6 @@ Class Master extends DBConnection {
 			];
 		}
 	
-		error_log(json_encode($response));
-
 		echo json_encode($response); // Return the response with officer data
 	}
 
