@@ -6,7 +6,7 @@ if (isset($_SESSION['role'])) {
         header("Location: ./index");
         exit;
     } elseif ($_SESSION['role'] === 'admin') {
-        header("Location: admin/login");
+        header("Location: admin/login.php");
         exit;
     }
 }
