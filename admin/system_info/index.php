@@ -228,7 +228,7 @@
 										<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
 											<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.id})">
-												<i class="fa fa-trash"></i> Wad a
+												<i class="fa fa-trash"></i> Delete
 											</button>
 										</td>
 									</tr>
@@ -283,7 +283,7 @@
 										<td><img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
 											<button class="btn btn-sm btn-danger" onclick="delete_officer(${officer.id})">
-												<i class="fa fa-trash"></i> Wad a
+												<i class="fa fa-trash"></i> Delete
 											</button>
 										</td>
 									</tr>
