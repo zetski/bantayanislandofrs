@@ -29,7 +29,7 @@ if (!isset($_SESSION['role'])) {
     if(is_dir($page))
         include $page.'/index.php';
     else
-        include $page.'';
+        include $page.'.php';
 
     }
 ?>
