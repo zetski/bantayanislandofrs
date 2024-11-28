@@ -210,106 +210,62 @@
 	<script>
 		//officers function
 		$('#officers-frm').submit(function (e) {
-			e.preventDefault(); // Prevent default form submission
+    e.preventDefault();
 
-			// Client-side validation
-			let valid = true;
-			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
-			requiredFields.forEach(function (selector) {
-				const field = $(selector);
-				if (field.val().trim() === '') {
-					field.addClass('is-invalid'); // Highlight the field with an error
-					valid = false;
-				} else {
-					field.removeClass('is-invalid'); // Remove error highlight
-				}
-			});
+    let formData = new FormData(this);
+    Swal.fire({
+        title: 'Saving Officer...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
 
-			if (!valid) {
-				Swal.fire({
-					icon: 'error',
-					title: 'Validation Error',
-					text: 'Please fill in all required fields.',
-				});
-				return; // Exit function if validation fails
-			}
-
-			// Proceed with the AJAX request if validation passes
-			Swal.fire({
-				title: 'Saving Officer...',
-				text: 'Please wait while we process your request.',
-				allowOutsideClick: false,
-				didOpen: () => {
-					Swal.showLoading(); // Show loading spinner
-				}
-			});
-
-			var formData = new FormData(this);
-
-			$.ajax({
-				url: '../classes/Master.php?f=save_officer',
-				method: 'POST',
-				data: formData,
-				contentType: false,
-				processData: false,
-				success: function (resp) {
-					Swal.close(); // Close the loading spinner
-					try {
-						var response = JSON.parse(resp); // Parse the response
-						if (response.status === "success") {
-							Swal.fire({
-								icon: 'success',
-								title: 'Officer Saved',
-								text: 'The officer has been successfully saved!',
-								confirmButtonText: 'OK', // Show OK button
-								showConfirmButton: true // Ensure the button is visible
-							}).then(() => {
-								$('#officers-frm')[0].reset();
-								loadOfficers(); // Reset the form
-
-								// Dynamically add the new officer to the table
-								// var newRow = `
-								// 	<tr id="officer-row-${response.id}">
-								// 		<td>${response.id}</td>
-								// 		<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
-								// 		<td>${response.position}</td>
-								// 		<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
-								// 		<td>
-								// 			<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.id})">
-								// 				<i class="fa fa-trash"></i> Delete
-								// 			</button>
-								// 		</td>
-								// 	</tr>
-								// `;
-								$('#officers-table tbody').append(newRow); // Append to the table
-							});
-						} else {
-							Swal.fire({
-								icon: 'error',
-								title: 'Save Failed',
-								text: response.error || 'An error occurred while saving the officer.',
-							});
-						}
-					} catch (err) {
-						console.error("Response parsing failed:", err, resp);
-						Swal.fire({
-							icon: 'error',
-							title: 'Unexpected Error',
-							text: 'The server returned an invalid response. Please check the console for details.',
-						});
-					}
-				},
-				error: function (xhr, status, error) {
-					Swal.close(); // Close the loading spinner
-					console.error("AJAX Error:", status, error, xhr.responseText);
-					Swal.fire({
-						icon: 'error',
-						title: 'Submission Failed',
-						text: 'An error occurred during submission.',
-					});
-				}
-			});
-		});
+    $.ajax({
+        url: '../classes/Master.php?f=save_officer',
+        method: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (resp) {
+            Swal.close();
+            try {
+                let response = JSON.parse(resp);
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Officer Saved',
+                        text: 'The officer has been successfully saved!',
+                    }).then(() => {
+                        $('#officers-frm')[0].reset(); // Reset the form
+                        $('#officer_image').val('');  // Clear the file input
+                        loadOfficers(); // Reload officers table
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Save Failed',
+                        text: response.error || 'An error occurred.',
+                    });
+                }
+            } catch (err) {
+                console.error('Response parsing failed:', err);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Unexpected Error',
+                    text: 'The server returned an invalid response.',
+                });
+            }
+        },
+        error: function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Submission Failed',
+                text: 'An error occurred during submission.',
+            });
+        }
+    });
+});
 
 		function edit_officer(id) {
 			$.ajax({

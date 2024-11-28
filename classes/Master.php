@@ -438,23 +438,28 @@ Class Master extends DBConnection {
 		}
 	
 		// Handle uploaded images
-		if (isset($_FILES['officer_images']['tmp_name'])) {
-			foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
-				$file_name = time() . '_' . $_FILES['officer_images']['name'][$key];
-				$target_file = base_app . $upload_path . $file_name;
-				if (move_uploaded_file($tmp_name, $target_file)) {
-					$officer_images[] = $upload_path . $file_name;
-				}
+		if (isset($_FILES['officer_image']) && $_FILES['officer_image']['tmp_name'] != '') {
+			$file_name = time() . '_' . basename($_FILES['officer_image']['name']);
+			$target_file = base_app . $upload_path . $file_name;
+		
+			if (move_uploaded_file($_FILES['officer_image']['tmp_name'], $target_file)) {
+				$officer_image = $upload_path . $file_name; // Save the uploaded image path
+			} else {
+				echo json_encode([
+					'status' => 'failed',
+					'error' => 'Failed to upload the image.'
+				]);
+				return;
 			}
+		} else {
+			$officer_image = ''; // No image uploaded
 		}
-	
-		$images = json_encode($officer_images);
-	
+		
 		// Insert officer record
 		$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
-	
+		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_image);
+		
 		if ($stmt->execute()) {
 			$response = [
 				'status' => 'success',
@@ -463,7 +468,7 @@ Class Master extends DBConnection {
 				'firstname' => $officer_firstname,
 				'middlename' => $officer_middlename,
 				'position' => $officer_position,
-				'image' => $officer_images ? base_url . $officer_images[0] : ''  // Return the first image URL
+				'image' => $officer_image ? base_url . $officer_image : '' // Return the image URL
 			];
 		} else {
 			$response = [
@@ -471,8 +476,8 @@ Class Master extends DBConnection {
 				'error' => "Database Error: " . $stmt->error
 			];
 		}
-	
-		echo json_encode($response); // Return the response with officer data
+		
+		echo json_encode($response);
 	}
 
     // Delete Officer Function
