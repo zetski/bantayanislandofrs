@@ -377,6 +377,49 @@
 				}
 			});
 		}
+		function edit_officer(id) {
+			// Fetch officer details
+			$.ajax({
+				url: '../classes/Master.php?f=get_officer',
+				method: 'POST',
+				data: { id: id },
+				dataType: 'json',
+				success: function (resp) {
+					if (resp.status === 'success') {
+						const officer = resp.officer;
+						$('#officer_lastname').val(officer.lastname);
+						$('#officer_firstname').val(officer.firstname);
+						$('#officer_middlename').val(officer.middlename);
+						$('#officer_position').val(officer.position);
+
+						// Clear old images and show the current image
+						$('#officer-images-preview').html(`
+							<div class="position-relative">
+								<img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="100">
+							</div>
+						`);
+
+						// Update the form action for editing
+						$('#officers-frm').attr('data-id', officer.id);
+						$('#save-officer-btn').text('Update Officer');
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: 'Error',
+							text: 'Failed to load officer details.',
+						});
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error("AJAX Error:", status, error);
+					Swal.fire({
+						icon: 'error',
+						title: 'Error',
+						text: 'An error occurred while fetching officer details.',
+					});
+				}
+			});
+		}
 
 		function previewOfficerImages(input) {
 			const previewContainer = $('#officer-images-preview');
