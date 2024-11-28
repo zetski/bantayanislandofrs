@@ -415,14 +415,14 @@ Class Master extends DBConnection {
 
 	// Save Officer Function
     public function save_officer() {
-		extract($_POST);
-		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
-			echo json_encode([
-				'status' => 'failed',
-				'error' => 'Last Name, First Name, Middle Name and Position are required fields.'
-			]);
-			return;
-		}
+		// extract($_POST);
+		// if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
+		// 	echo json_encode([
+		// 		'status' => 'failed',
+		// 		'error' => 'Last Name, First Name, Middle Name and Position are required fields.'
+		// 	]);
+		// 	return;
+		// }
 	
 		error_log("Save Officer Function Called");
 		error_log("POST Data: " . json_encode($_POST));
