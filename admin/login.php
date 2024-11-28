@@ -119,12 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
-        background-size: cover; /* Ensure the image covers the entire background */
-        background-position: center; /* Center the image */
-        background-repeat: no-repeat; /* Prevent repeating the image */
+        background-size: cover; 
+        background-position: center;
+        background-repeat: no-repeat; 
         backdrop-filter: contrast(1);
-        height: 100vh; /* Ensure body takes full viewport height */
-        margin: 0; /* Remove default margin */
+        height: 100vh; 
+        margin: 0;
     }
     #page-title {
         text-shadow: 6px 4px 7px black;
@@ -132,9 +132,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         color: #fff4f4 !important;
     }
     .login-box {
-        margin: auto; /* Center the login box */
-        max-width: 400px; /* Set a max width for the login box */
-        width: 90%; /* Allow it to be responsive */
+        margin: auto; 
+        max-width: 400px; 
+        width: 90%; 
     }
 
     /* Media queries for responsive design */
