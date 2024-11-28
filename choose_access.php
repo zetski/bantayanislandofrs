@@ -16,7 +16,8 @@ if (isset($_SESSION['role'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choose Access</title>
+    <link rel="icon" href="img/r7logo.png" type="image/png">
+    <title>Oline Fire Reporting System</title>
     <style>
         /* Basic styles for the gateway page */
         body {
