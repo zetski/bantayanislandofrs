@@ -531,80 +531,6 @@ Class Master extends DBConnection {
 		echo json_encode(['status' => 'success', 'officers' => $officers]);
 	}
 
-	public function get_officer() {
-		extract($_POST);
-	
-		if (empty($id)) {
-			echo json_encode(['status' => 'failed', 'error' => 'Officer ID is required.']);
-			return;
-		}
-	
-		$sql = "SELECT id, lastname, firstname, middlename, position, image FROM officers WHERE id = ?";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bind_param('i', $id);
-		$stmt->execute();
-		$result = $stmt->get_result();
-		$officer = $result->fetch_assoc();
-	
-		if ($officer) {
-			echo json_encode([
-				'status' => 'success',
-				'officer' => [
-					'id' => $officer['id'],
-					'lastname' => $officer['lastname'],
-					'firstname' => $officer['firstname'],
-					'middlename' => $officer['middlename'],
-					'position' => $officer['position'],
-					'image' => validate_image($officer['image']) // Optional image validation
-				]
-			]);
-		} else {
-			echo json_encode(['status' => 'failed', 'error' => 'Officer not found.']);
-		}
-	}
-	
-	public function update_officer() {
-		extract($_POST);
-	
-		if (empty($id) || empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
-			echo json_encode(['status' => 'failed', 'error' => 'All fields are required.']);
-			return;
-		}
-	
-		$officer_images = [];
-		$upload_path = '../uploads/';
-	
-		// Ensure upload directory exists
-		if (!is_dir(base_app . $upload_path)) {
-			mkdir(base_app . $upload_path, 0777, true);
-		}
-	
-		// Handle new image upload
-		if (isset($_FILES['officer_images']['tmp_name'])) {
-			foreach ($_FILES['officer_images']['tmp_name'] as $key => $tmp_name) {
-				$file_name = time() . '_' . $_FILES['officer_images']['name'][$key];
-				$target_file = base_app . $upload_path . $file_name;
-				if (move_uploaded_file($tmp_name, $target_file)) {
-					$officer_images[] = $upload_path . $file_name;
-				}
-			}
-		}
-	
-		$images = !empty($officer_images) ? json_encode($officer_images) : null;
-	
-		// Update officer record
-		$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, image = COALESCE(?, image) WHERE id = ?";
-		$stmt = $this->conn->prepare($sql);
-		$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images, $id);
-	
-		if ($stmt->execute()) {
-			echo json_encode(['status' => 'success']);
-		} else {
-			echo json_encode(['status' => 'failed', 'error' => "Database Error: " . $stmt->error]);
-		}
-	}
-	
-
 	function save_inquiry(){
 		$_POST['message'] = addslashes(htmlspecialchars($_POST['message']));
 		extract($_POST);
@@ -664,12 +590,6 @@ switch ($action) {
 	case 'get_officers':
 		echo $Master->get_officers();
 		break;
-	case 'get_officer':
-		echo $Master->get_officer();
-		break;
-	case 'update_officer':
-		echo $Maste->update_officer();
-		break;	
 	case 'delete_img':
 		echo $Master->delete_img();
 	break;
