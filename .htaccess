@@ -18,5 +18,5 @@
     # Route non-existent files through index.php (optional for routing)
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(.*)$ index.php?page=$1 [L,QSA]
+    RewriteRule ^(.*)$ choose_access.php?page=$1 [L,QSA]
 </IfModule>
