@@ -56,7 +56,7 @@ if (isset($_SESSION['role'])) {
     <div class="container">
         <h2>Welcome to the Bantayan BFP</h2>
         <button class="btn guest-btn" onclick="window.location.href='./set_guest'">Continue as Guest</button>
-        <button class="btn admin-btn" onclick="window.location.href='./admin'">Login as Admin</button>
+        <button class="btn admin-btn" onclick="window.location.href='./verify_email'">Login as Admin</button>
     </div>
 </body>
 </html>
