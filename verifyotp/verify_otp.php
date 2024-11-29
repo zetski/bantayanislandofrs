@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_SESSION['otp_email'];
 
         // Check the OTP and expiry in the database
-        $stmt = $conn->prepare("SELECT otp_code, otp_expiry FROM users WHERE email = ?");
+        $stmt = $con->prepare("SELECT otp_code, otp_expiry FROM users WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
         $result = $stmt->get_result();
