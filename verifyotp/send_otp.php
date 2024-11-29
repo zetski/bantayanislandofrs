@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows > 0) {
         $otp = rand(100000, 999999); // Generate a 6-digit OTP
-        $_SESSION['otp'] = $otp; // Store OTP in session
+        $_SESSION['otp_code'] = $otp; // Store OTP in session
         $_SESSION['otp_email'] = $email; // Store the email to validate later
 
         // Send OTP using PHPMailer
