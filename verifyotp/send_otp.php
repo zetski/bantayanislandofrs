@@ -26,12 +26,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'your-email@gmail.com'; // Your email
-            $mail->Password = 'your-email-password'; // Your app password
+            $mail->Username = 'bantayanbfp@gmail.com'; // Your email
+            $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->Port = 587;
 
-            $mail->setFrom('your-email@gmail.com', 'Bantayan BFP');
+            $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Your OTP Code';
