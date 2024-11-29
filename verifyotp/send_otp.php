@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('./config.php'); // Include database connection
+require_once('../initialize.php'); // Include database connection
 require 'vendor/autoload.php'; // Include PHPMailer if using Composer
 
 use PHPMailer\PHPMailer\PHPMailer;
