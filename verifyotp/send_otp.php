@@ -43,16 +43,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-            header("Location: ../verify_otp");
+            $_SESSION['otp_email'] = $email; // Save email in session
+            header("Location: ../verify_otp.php");
             exit;
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
+            error_log($error_message); // Log errors
         }
     } else {
         $error_message = "Email not found in our records!";
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
