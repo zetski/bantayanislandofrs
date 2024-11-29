@@ -2,11 +2,11 @@
 session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $entered_otp = $_POST['otp'];
+    $entered_otp = $_POST['otp_code'];
 
     // Validate OTP
-    if (isset($_SESSION['otp']) && $_SESSION['otp_email']) {
-        if ($entered_otp == $_SESSION['otp']) {
+    if (isset($_SESSION['otp_code']) && $_SESSION['otp_email']) {
+        if ($entered_otp == $_SESSION['otp_code']) {
             // OTP verified successfully
             $_SESSION['role'] = 'admin'; // Assign the admin role
             header("Location: login.php"); // Redirect to login page
