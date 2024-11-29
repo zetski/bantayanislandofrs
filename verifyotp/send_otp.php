@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../initialize.php'); // Include database connection
+require_once('../../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
