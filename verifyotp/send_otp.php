@@ -10,8 +10,8 @@ require 'phpmailer/class.smtp.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
-    // Verify if the email exists in the admin database
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ? AND role = 'admin'");
+    // Verify if the email exists in the database
+    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Error sending OTP: {$mail->ErrorInfo}";
         }
     } else {
-        echo "Email not found in admin records!";
+        echo "Email not found in our records!";
     }
 }
 ?>
