@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-            header("Location: ../verify_otp.php"); // Redirect to OTP verification page
+            header("Location: ../verify_otp.php"); 
             exit;
         } catch (Exception $e) {
             echo "Error sending OTP: {$mail->ErrorInfo}";
