@@ -18,8 +18,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows > 0) {
         $otp = rand(100000, 999999); // Generate a 6-digit OTP
-        $_SESSION['otp_code'] = $otp; // Store OTP in session
-        $_SESSION['otp_email'] = $email; // Store the email to validate later
+        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60)); // Set expiry to current time + 3 minutes
+
+        // Update OTP and expiry in the database
+        $update_stmt = $conn->prepare("UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?");
+        $update_stmt->bind_param("sss", $otp, $otp_expiry, $email);
+        $update_stmt->execute();
 
         // Send OTP using PHPMailer
         $mail = new PHPMailer(true);
@@ -36,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Your OTP Code';
-            $mail->Body = "<p>Your OTP is: <strong>$otp</strong></p>";
+            $mail->Body = "<p>Your OTP is: <strong>$otp</strong></p>
+                          <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-            header("Location: ../verify_otp"); // Redirect to OTP verification page
+            header("Location: ../verify_otp.php"); // Redirect to OTP verification page
             exit;
         } catch (Exception $e) {
             echo "Error sending OTP: {$mail->ErrorInfo}";
