@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->SMTPAuth = true;
             $mail->Username = 'bantayanbfp@gmail.com'; // Your email
             $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
             $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
