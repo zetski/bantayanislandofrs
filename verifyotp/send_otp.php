@@ -49,7 +49,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
             error_log($error_message); // Log errors
-            echo $error_message;
         }
     } else {
         $error_message = "Email not found in our records!";
