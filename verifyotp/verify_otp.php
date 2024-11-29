@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('../initialize.php'); // Include your database connection
+// require_once('../initialize.php'); // Include your database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entered_otp = $_POST['otp'];
