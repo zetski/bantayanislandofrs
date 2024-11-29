@@ -4,6 +4,9 @@ require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
+// use PHPMailer\PHPMailer\PHPMailer;
+// use PHPMailer\PHPMailer\Exception;
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
@@ -47,21 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Error sending OTP: {$mail->ErrorInfo}";
         }
     } else {
-        // Use a SweetAlert2 alert for "Email not found"
-        echo "
-            <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Email not found in our records!',
-                });
-            </script>
-        ";
+        echo "Email not found in our records!";
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
