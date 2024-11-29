@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->Body = "<p>Your OTP is: <strong>$otp</strong></p>";
 
             $mail->send();
-            header("Location: ./verify_otp.php"); // Redirect to OTP verification page
+            header("Location: ./verifyotp/verify_otp"); // Redirect to OTP verification page
             exit;
         } catch (Exception $e) {
             echo "Error sending OTP: {$mail->ErrorInfo}";
