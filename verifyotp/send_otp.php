@@ -4,8 +4,7 @@ require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
-// use PHPMailer\PHPMailer\PHPMailer;
-// use PHPMailer\PHPMailer\Exception;
+$error_message = ""; // Variable to hold the error message
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -44,13 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-            header("Location: ../verify_otp.php"); 
+            header("Location: ../verify_otp.php");
             exit;
         } catch (Exception $e) {
-            echo "Error sending OTP: {$mail->ErrorInfo}";
+            $error_message = "Error sending OTP: {$mail->ErrorInfo}";
         }
     } else {
-        echo "Email not found in our records!";
+        $error_message = "Email not found in our records!";
     }
 }
 ?>
@@ -61,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send OTP</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -167,16 +167,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Send OTP</button>
         </form>
-        <?php
-        // Display errors or success messages dynamically
-        if (isset($error)) {
-            echo "<p class='error'>$error</p>";
-        }
-        if (isset($success)) {
-            echo "<p class='success'>$success</p>";
-        }
-        ?>
     </div>
+
+    <?php if (!empty($error_message)) : ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: '<?php echo $error_message; ?>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    <?php endif; ?>
 </body>
 </html>
-
