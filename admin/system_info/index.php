@@ -126,6 +126,10 @@
 					<label for="officer_position" class="control-label">Position</label>
 					<input type="text" class="form-control form-control-sm" name="officer_position" id="officer_position" placeholder="Enter officer's position">
 				</div>
+				<div class="form-group">
+					<label for="officer_district" class="control-label">District</label>
+					<input type="text" class="form-control form-control-sm" name="officer_district" id="officer_district" placeholder="Enter officer's district">
+				</div>
                 <div class="form-group">
 					<label for="officer_images" class="control-label">Officer Image</label>
 					<div class="custom-file">
@@ -146,6 +150,7 @@
                             <th>#</th>
                             <th>Name</th>
                             <th>Position</th>
+							<th>District</th>
                             <th>Images</th>
                             <th>Actions</th>
                         </tr>
@@ -189,6 +194,10 @@
                         <label for="edit_officer_position" class="control-label">Position</label>
                         <input type="text" class="form-control" id="edit_officer_position" name="officer_position" placeholder="Enter officer's position">
                     </div>
+					<div class="form-group">
+                        <label for="edit_officer_district" class="control-label">District</label>
+                        <input type="text" class="form-control" id="edit_officer_district" name="officer_district" placeholder="Enter officer's district">
+                    </div>
                     <div class="form-group">
                         <label for="edit_officer_image" class="control-label">Officer Image</label>
                         <div class="custom-file">
@@ -214,7 +223,7 @@
 
 			// Client-side validation
 			let valid = true;
-			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position'];
+			const requiredFields = ['#officer_lastname', '#officer_firstname', '#officer_middlename', '#officer_position', '#officer_district'];
 			requiredFields.forEach(function (selector) {
 				const field = $(selector);
 				if (field.val().trim() === '') {
@@ -273,6 +282,7 @@
 										<td>${response.id}</td>
 										<td>${response.lastname} ${response.firstname} ${response.middlename}</td>
 										<td>${response.position}</td>
+										<td>${response.district}</td>
 										<td><img src="${response.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
 											<button class="btn btn-sm btn-danger" onclick="delete_officer(${response.id})">
@@ -325,6 +335,7 @@
 						$('#edit_officer_firstname').val(officer.firstname);
 						$('#edit_officer_middlename').val(officer.middlename);
 						$('#edit_officer_position').val(officer.position);
+						$('#edit_officer_district').val(officer.district);
 						$('#edit_officer_image_preview').attr('src', officer.image);
 
 						$('#editOfficerModal').modal('show');
@@ -362,6 +373,7 @@
 										<td>${officer.id}</td>
 										<td>${officer.lastname} ${officer.firstname} ${officer.middlename}</td>
 										<td>${officer.position}</td>
+										<td>${officer.district}</td>
 										<td><img src="${officer.image}" alt="Officer Image" class="img-thumbnail" width="50" height="50"></td>
 										<td>
 										<div class="btn-group">
