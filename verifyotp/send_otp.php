@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once('../initialize.php'); // Include database connection
-require 'vendor/autoload.php'; // Include PHPMailer if using Composer
+require 'phpmailer/class.phpmailer.php';
+require 'phpmailer/class.smtp.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
