@@ -9,7 +9,7 @@ if(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
     $link = "https"; 
 else
     $link = "http"; 
-$link .= "://bantayan-bfp.com/admin/login"; 
+$link .= "://"; 
 $link .= $_SERVER['HTTP_HOST']; 
 $link .= $_SERVER['REQUEST_URI'];
 if(!isset($_SESSION['userdata']) && !strpos($link, 'login.php')){
