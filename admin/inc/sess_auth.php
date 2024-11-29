@@ -31,7 +31,7 @@ if (isset($_SESSION['userdata']) && strpos($link, 'login') !== false) {
 $module = array('', 'admin', 'tutor');
 
 // Deny access if user type doesn't match the expected role
-if (isset($_SESSION['userdata']) && (strpos($link, 'index') !== false || strpos($link, 'admin/') !== false) && $_SESSION['userdata']['login_type'] != 1) {
+if (isset($_SESSION['userdata']) && (strpos($link, 'index') !== false || strpos($link, 'admin/login') !== false) && $_SESSION['userdata']['login_type'] != 1) {
     echo "<script>alert('Access Denied!');location.replace('" . base_url . $module[$_SESSION['userdata']['login_type']] . "');</script>";
     exit;
 }
