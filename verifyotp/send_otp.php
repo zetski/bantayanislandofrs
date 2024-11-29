@@ -35,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->SMTPAuth = true;
             $mail->Username = 'bantayanbfp@gmail.com'; // Your email
             $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
-            $mail->SMTPSecure = 'tls';
+            $mail->SMTPSecure = 'tls';  // Set 'tls' directly, no constant
             $mail->Port = 587;
 
             $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
@@ -58,7 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
