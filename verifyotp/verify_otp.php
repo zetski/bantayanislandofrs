@@ -183,7 +183,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 confirmButtonText: 'OK'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location = './verifyotp/verify_otp';  // Redirect to OTP verification page
+                    window.location = './verifyotp/verify_otp';  
                 }
             });
         </script>
