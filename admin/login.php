@@ -185,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
         </form>
         <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>" disabled>Go to Website</a>
+          <a href="./choose_access" disabled>Go to Website</a>
         </p>
       </div>
     </div>
