@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 } else {
                     $error = "OTP has expired. Please request a new one.";
+                    $redirect = true; // Flag to trigger redirect
                 }
             } else {
                 $error = "Invalid OTP. Please try again.";
@@ -41,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         $error = "No OTP session found or session expired.";
+        $redirect = true; // Flag to trigger redirect
     }
 }
 ob_end_flush();
@@ -155,6 +157,11 @@ ob_end_flush();
                 title: 'Error',
                 text: '<?php echo $error; ?>',
                 confirmButtonText: 'OK'
+            }).then((result) => {
+                <?php if (isset($redirect) && $redirect) : ?>
+                    // Redirect to Send OTP page if redirect flag is set
+                    window.location.href = 'https://bantayan-bfp.com/send_otp';
+                <?php endif; ?>
             });
         </script>
     <?php endif; ?>
