@@ -111,11 +111,11 @@ ob_end_flush();
             font-size: 14px;
             font-weight: 500;
             color: #444444;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
             text-align: left;
         }
 
-        input[type="text"] {
+        input[type="email"] {
             padding: 10px 15px;
             font-size: 14px;
             border: 1px solid #cccccc;
@@ -124,7 +124,7 @@ ob_end_flush();
             outline: none;
         }
 
-        input[type="text"]:focus {
+        input[type="email"]:focus {
             border-color: #007bff;
         }
 
