@@ -8,6 +8,7 @@ require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
 $error_message = ""; // Variable to hold the error message
+$otp_sent = false;   // Flag to track OTP sending status
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -47,21 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->send();
             $_SESSION['otp_email'] = $email; // Save email in session
-
-            // Redirect to the next page with SweetAlert success message
-            echo "<script>
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'OTP Sent',
-                        text: 'The OTP has been successfully sent to your email.',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location = './verifyotp/verify_otp';  // Redirect to OTP verification page
-                        }
-                    });
-                  </script>";
-            exit;
+            $otp_sent = true; // Set the flag
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
             error_log($error_message); // Log errors
@@ -187,7 +174,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </form>
     </div>
 
-    <?php if (!empty($error_message)) : ?>
+    <?php if ($otp_sent): ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'OTP Sent',
+                text: 'The OTP has been successfully sent to your email.',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location = './verifyotp/verify_otp';  // Redirect to OTP verification page
+                }
+            });
+        </script>
+    <?php elseif (!empty($error_message)): ?>
         <script>
             Swal.fire({
                 icon: 'error',
