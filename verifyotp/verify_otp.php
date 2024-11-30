@@ -1,4 +1,5 @@
 <?php
+ob_start();
 session_start();
 require_once('../initialize.php'); // Include your database connection
 
@@ -25,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (strtotime($otp_expiry) >= time()) {
                     // OTP verified successfully
                     $_SESSION['role'] = 'admin'; // Assign the admin role
-                    header("Location: ./admin/login"); // Redirect to login page
+                    header("Location: https://bantayan-bfp.com/admin/login.php");
                     exit;
                 } else {
                     $error = "OTP has expired. Please request a new one.";
@@ -40,6 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "No OTP session found or session expired.";
     }
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
