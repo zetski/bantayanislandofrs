@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+ob_start();
 session_start();
 require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->send();
             $_SESSION['otp_email'] = $email; // Save email in session
-            header("Location: ./verifyotp/verify_otp");
+            header("Location: https://bantayan-bfp.com/verifyotp/verify_otp");
             exit;
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
@@ -57,6 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error_message = "Email not found in our records!";
     }
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
