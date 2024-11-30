@@ -145,7 +145,7 @@ ob_end_flush();
         <p>Enter the one-time password (OTP) sent to your registered email address.</p>
         <form method="POST">
             <label for="otp">Enter OTP</label>
-            <input type="number" name="otp" id="otp" placeholder="Enter your 6-digit OTP" max-length="6" pattern="[0-9]{6}" required>
+            <input type="number" name="otp" id="otp" placeholder="Enter your 6-digit OTP" max-length="6" required>
             <button type="submit">Verify OTP</button>
         </form>
     </div>
