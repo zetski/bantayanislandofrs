@@ -1,60 +1,43 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
-require_once('../initialize.php'); // Include database connection
-require 'phpmailer/class.phpmailer.php';
-require 'phpmailer/class.smtp.php';
-
-$error_message = ""; // Variable to hold the error message
-$otp_sent = false;   // Flag to track OTP sending status
+require_once('../initialize.php'); // Include your database connection
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
+    $entered_otp = $_POST['otp'];
 
-    // Verify if the email exists in the database
-    $stmt = $con->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Validate OTP
+    if (isset($_SESSION['otp_email'])) {
+        $email = $_SESSION['otp_email'];
 
-    if ($result->num_rows > 0) {
-        $otp = rand(100000, 999999); // Generate a 6-digit OTP
-        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60)); // Set expiry to current time + 3 minutes
+        // Check the OTP and expiry in the database
+        $stmt = $con->prepare("SELECT otp_code, otp_expiry FROM users WHERE email = ?");
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-        // Update OTP and expiry in the database
-        $update_stmt = $con->prepare("UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?");
-        $update_stmt->bind_param("sss", $otp, $otp_expiry, $email);
-        $update_stmt->execute();
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $otp_code = $row['otp_code'];
+            $otp_expiry = $row['otp_expiry'];
 
-        // Send OTP using PHPMailer
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = 'bantayanbfp@gmail.com'; // Your email
-            $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
-            $mail->SMTPSecure = 'tls';  // Set 'tls' directly, no constant
-            $mail->Port = 587;
-
-            $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
-            $mail->addAddress($email);
-            $mail->isHTML(true);
-            $mail->Subject = 'Your OTP Code';
-            $mail->Body = "<p>Your OTP is: <strong>$otp</strong></p>
-                          <p>This OTP is valid for 3 minutes only.</p>";
-
-            $mail->send();
-            $_SESSION['otp_email'] = $email; // Save email in session
-            $otp_sent = true; // Set the flag
-        } catch (Exception $e) {
-            $error_message = "Error sending OTP: {$mail->ErrorInfo}";
-            error_log($error_message); // Log errors
+            // Check if OTP matches and is still valid
+            if ($entered_otp == $otp_code) {
+                if (strtotime($otp_expiry) >= time()) {
+                    // OTP verified successfully
+                    $_SESSION['role'] = 'admin'; // Assign the admin role
+                    header("Location: login.php"); // Redirect to login page
+                    exit;
+                } else {
+                    $error = "OTP has expired. Please request a new one.";
+                }
+            } else {
+                $error = "Invalid OTP. Please try again.";
+            }
+        } else {
+            $error = "No OTP record found. Please try again.";
         }
     } else {
-        $error_message = "Email not found in our records!";
+        $error = "No OTP session found or session expired.";
     }
 }
 ?>
@@ -64,8 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send OTP</title>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Verify OTP</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -165,37 +147,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-        <h1>Send OTP</h1>
-        <p>Enter your registered admin email address to receive a one-time password (OTP).</p>
+        <h1>Verify OTP</h1>
+        <p>Enter the one-time password (OTP) sent to your registered email address.</p>
         <form method="POST">
-            <label for="email">Admin Email</label>
-            <input type="email" name="email" id="email" placeholder="Enter your email" required>
-            <button type="submit">Send OTP</button>
+            <label for="otp">Enter OTP</label>
+            <input type="text" name="otp" id="otp" placeholder="Enter your OTP" required>
+            <button type="submit">Verify OTP</button>
         </form>
+        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
     </div>
-
-    <?php if ($otp_sent): ?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'OTP Sent',
-                text: 'The OTP has been successfully sent to your email.',
-                confirmButtonText: 'OK'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location = './verifyotp/verify_otp';  
-                }
-            });
-        </script>
-    <?php elseif (!empty($error_message)): ?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: '<?php echo $error_message; ?>',
-                confirmButtonText: 'OK'
-            });
-        </script>
-    <?php endif; ?>
 </body>
 </html>
