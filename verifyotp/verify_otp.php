@@ -3,6 +3,8 @@ ob_start();
 session_start();
 require_once('../initialize.php'); // Include your database connection
 
+$error = ""; // Initialize error variable
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entered_otp = $_POST['otp'];
 
@@ -26,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (strtotime($otp_expiry) >= time()) {
                     // OTP verified successfully
                     $_SESSION['role'] = 'admin'; // Assign the admin role
-                    header("Location: https://bantayan-bfp.com/admin/login.php");
+                    header("Location: https://bantayan-bfp.com/admin/login");
                     exit;
                 } else {
                     $error = "OTP has expired. Please request a new one.";
@@ -50,6 +52,7 @@ ob_end_flush();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verify OTP</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -127,19 +130,6 @@ ob_end_flush();
             background-color: #0056b3;
         }
 
-        .error, .success {
-            font-size: 14px;
-            margin-top: 15px;
-        }
-
-        .error {
-            color: #ff4d4f;
-        }
-
-        .success {
-            color: #28a745;
-        }
-
         @media screen and (max-width: 480px) {
             .container {
                 padding: 20px;
@@ -156,7 +146,17 @@ ob_end_flush();
             <input type="text" name="otp" id="otp" placeholder="Enter your OTP" required>
             <button type="submit">Verify OTP</button>
         </form>
-        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
     </div>
+
+    <?php if (!empty($error)) : ?>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '<?php echo $error; ?>',
+                confirmButtonText: 'OK'
+            });
+        </script>
+    <?php endif; ?>
 </body>
 </html>
