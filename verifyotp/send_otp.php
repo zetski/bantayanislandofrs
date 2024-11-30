@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->send();
             $_SESSION['otp_email'] = $email; // Save email in session
-            header("Location: " . base_url() . "./verifyotp/verify_otp.php");
+            header("Location: ./verifyotp/verify_otp");
             exit;
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
