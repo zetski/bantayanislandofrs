@@ -51,19 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['otp_email'] = $email;
 
             // Show an alert and redirect using JavaScript
-            echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
-                  <script>
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'OTP successfully sent! Click OK to proceed to the verification page.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = './verifyotp/verify_otp.php';
-                        }
-                    });
-                  </script>";
+            echo "<script>
+                alert('OTP successfully sent! Please click OK to proceed to the verification page.');
+                window.location.href = './otp_verified.php';
+                </script>";
             exit;
         } catch (Exception $e) {
             error_log("PHPMailer Error: " . $mail->ErrorInfo);
