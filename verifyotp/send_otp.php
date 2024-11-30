@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = './otp_verified.php';
+                            window.location.href = './verifyotp/verify_otp';
                         }
                     });
                   </script>";
