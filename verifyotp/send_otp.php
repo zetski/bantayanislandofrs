@@ -12,65 +12,49 @@ $error_message = ""; // Variable to hold the error message
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
-    // Check if the email exists
+    // Verify if the email exists in the database
     $stmt = $con->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $otp = rand(100000, 999999); // Generate a random OTP
-        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60)); // 3 minutes expiry
+        $otp = rand(100000, 999999); // Generate a 6-digit OTP
+        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60)); // Set expiry to current time + 3 minutes
 
-        // Save OTP and expiry
+        // Update OTP and expiry in the database
         $update_stmt = $con->prepare("UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?");
         $update_stmt->bind_param("sss", $otp, $otp_expiry, $email);
         $update_stmt->execute();
 
-        // Send OTP
+        // Send OTP using PHPMailer
+        $mail = new PHPMailer(true);
         try {
-            $mail = new PHPMailer(true);
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
             $mail->Username = 'bantayanbfp@gmail.com'; // Your email
-            $mail->Password = 'otrj ptcg karr ogdd';   // Your app password
-            $mail->SMTPSecure = 'tls';
+            $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
+            $mail->SMTPSecure = 'tls';  // Set 'tls' directly, no constant
             $mail->Port = 587;
 
             $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
-            $mail->addAddress($email); // Recipient email
+            $mail->addAddress($email);
             $mail->isHTML(true);
             $mail->Subject = 'Your OTP Code';
             $mail->Body = "<p>Your OTP is: <strong>$otp</strong></p>
                           <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-
-            // Set session variable for the next page
-            $_SESSION['otp_email'] = $email;
-
-            // Show an alert and redirect using JavaScript
-            echo "<script>
-                    Swal.fire({
-                        title: 'Success!',
-                        text: 'OTP successfully sent! Click OK to proceed to the verification page.',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = './verifyotp/verify_otp';
-                        }
-                    });
-                  </script>";
+            $_SESSION['otp_email'] = $email; // Save email in session
+            header("Location: ./verifyotp/verify_otp");
             exit;
         } catch (Exception $e) {
-            error_log("PHPMailer Error: " . $mail->ErrorInfo);
-            echo "<script>alert('Failed to send OTP. Please try again later.');</script>";
+            $error_message = "Error sending OTP: {$mail->ErrorInfo}";
+            error_log($error_message); // Log errors
         }
     } else {
-        // Email not found in the database
-        echo "<script>alert('Email not found in our records!');</script>";
+        $error_message = "Email not found in our records!";
     }
 }
 ?>
