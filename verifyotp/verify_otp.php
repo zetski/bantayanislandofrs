@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (strtotime($otp_expiry) >= time()) {
                     // OTP verified successfully
                     $_SESSION['role'] = 'admin'; // Assign the admin role
-                    header("Location: ./admin"); // Redirect to login page
+                    header("Location: ./admin/login"); // Redirect to login page
                     exit;
                 } else {
                     $error = "OTP has expired. Please request a new one.";
