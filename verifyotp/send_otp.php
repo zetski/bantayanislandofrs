@@ -8,6 +8,7 @@ require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
 $error_message = ""; // Variable to hold the error message
+$success_message = ""; // Variable to hold the success message
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
@@ -35,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mail->SMTPAuth = true;
             $mail->Username = 'bantayanbfp@gmail.com'; // Your email
             $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
-            $mail->SMTPSecure = 'tls';  // Set 'tls' directly, no constant
+            $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
             $mail->setFrom('bantayanbfp@gmail.com', 'Bantayan BFP');
@@ -47,8 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             $mail->send();
             $_SESSION['otp_email'] = $email; // Save email in session
-            header("Location: https://bantayan-bfp.com/verifyotp/verify_otp");
-            exit;
+            $success_message = "OTP successfully sent to $email.";
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
             error_log($error_message); // Log errors
@@ -111,11 +111,11 @@ ob_end_flush();
             font-size: 14px;
             font-weight: 500;
             color: #444444;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             text-align: left;
         }
 
-        input[type="email"] {
+        input[type="text"] {
             padding: 10px 15px;
             font-size: 14px;
             border: 1px solid #cccccc;
@@ -124,7 +124,7 @@ ob_end_flush();
             outline: none;
         }
 
-        input[type="email"]:focus {
+        input[type="text"]:focus {
             border-color: #007bff;
         }
 
@@ -182,6 +182,19 @@ ob_end_flush();
                 title: 'Oops...',
                 text: '<?php echo $error_message; ?>',
                 confirmButtonText: 'OK'
+            });
+        </script>
+    <?php endif; ?>
+
+    <?php if (!empty($success_message)) : ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '<?php echo $success_message; ?>',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.href = 'https://bantayan-bfp.com/verifyotp/verify_otp'; // Redirect after confirmation
             });
         </script>
     <?php endif; ?>
