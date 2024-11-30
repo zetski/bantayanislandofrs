@@ -1,11 +1,6 @@
 <?php 
 require_once('../config.php'); 
 
-// Check if OTP was verified and passed through as a GET parameter
-$otp_verified = isset($_GET['otp_verified']) && $_GET['otp_verified'] === 'true';
-
-// Start session
-session_start();
 // // Allowed IP addresses
 // $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 
