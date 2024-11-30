@@ -160,7 +160,7 @@ ob_end_flush();
             }).then((result) => {
                 <?php if (isset($redirect) && $redirect) : ?>
                     // Redirect to Send OTP page if redirect flag is set
-                    window.location.href = 'https://bantayan-bfp.com/send_otp';
+                    window.location.href = 'https://bantayan-bfp.com/verifyotp/send_otp';
                 <?php endif; ?>
             });
         </script>
