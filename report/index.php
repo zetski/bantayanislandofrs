@@ -207,11 +207,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 /* Style for the modal close button */
-.modal-header {
-    background-color: #FF4600; /* Matching the form header color */
-    color: black;
-    border-bottom: none;
-    font-size: 1.25rem;
+.modal-header .close {
+    color: white; /* White color for the 'X' close button */
+    opacity: 1; /* Ensure the close button is fully opaque */
 }
 
 .modal-header .close:hover,
