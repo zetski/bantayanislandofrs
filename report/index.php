@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>We take your privacy seriously and will handle your information with utmost care. Your data will not be shared with third parties without your consent, except as necessary to comply with legal requirements or to improve our services.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" style="background-color: #007BFF" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
