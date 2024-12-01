@@ -181,9 +181,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
                 <p>...</p>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn custom-close-btn" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
     </div>
 </div>
@@ -197,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         position: relative;
     }
     .modal-footer .custom-close-btn {
-    background-color: black; /* Custom orange */
+    background-color: #FF4600; /* Custom orange */
     color: white;
     border: none;
     }
