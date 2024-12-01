@@ -196,6 +196,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .position-relative {
         position: relative;
     }
+    .custom-close-btn {
+    background-color: #FF4600; /* Custom orange color */
+    color: white;
+    border: none;
+    }
+
+    .custom-close-btn:hover {
+        background-color: #cc3700; /* Darker orange on hover */
+    }
 </style>
 
 <script>
