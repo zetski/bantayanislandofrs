@@ -144,6 +144,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <label for="sitio_street" class="control-label">Purok/Street <small class="text-danger">*</small></label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="sitio_street" id="sitio_street" required="required">
                                 </div>
+                                <!-- Terms and Conditions Checkbox -->
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label class="control-label" for="terms">
+                                        <input type="checkbox" id="terms" name="terms"> 
+                                        I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>.
+                                    </label>
+                                    <small class="text-danger d-none" id="terms-error">You must agree to the terms and conditions.</small>
+                                </div>
                             </form>
                         </div>
                     </div>
