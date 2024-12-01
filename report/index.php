@@ -182,7 +182,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>...</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn custom-close-btn" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -196,14 +196,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .position-relative {
         position: relative;
     }
-    .custom-close-btn {
-    background-color: #FF4600; /* Custom orange color */
+    .modal-footer .custom-close-btn {
+    background-color: #FF4600; /* Custom orange */
     color: white;
     border: none;
     }
 
-    .custom-close-btn:hover {
-        background-color: #cc3700; /* Darker orange on hover */
+    .modal-footer .custom-close-btn:hover {
+        background-color: #cc3700; /* Darker orange */
     }
 </style>
 
