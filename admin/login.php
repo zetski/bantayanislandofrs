@@ -1,14 +1,14 @@
 <?php
-session_start(); // Start session at the beginning
+// session_start(); // Start session at the beginning
 
-// Check if OTP is verified
-if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
-    echo "<script>
-        alert('OTP not verified. Please verify it first.');
-        window.location.href = 'https://bantayan-bfp.com/verifyotp/send_otp';
-    </script>";
-    exit;
-}
+// // Check if OTP is verified
+// if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
+//     echo "<script>
+//         alert('OTP not verified. Please verify it first.');
+//         window.location.href = 'https://bantayan-bfp.com/verifyotp/send_otp';
+//     </script>";
+//     exit;
+// }
 
 require_once('../config.php');
 
