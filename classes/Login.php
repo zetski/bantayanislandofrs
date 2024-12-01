@@ -15,12 +15,38 @@ class Login extends DBConnection {
 	public function index(){
 		echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
 	}
-	public function login(){
+	public function login() {
 		extract($_POST);
 	
-		// Fetch the user based on username only
+		// Sanitize input
+		$username = htmlspecialchars($username, ENT_QUOTES, 'UTF-8');
+		$password = htmlspecialchars($password, ENT_QUOTES, 'UTF-8');
+	
+		// Start session to track login attempts
+		session_start();
+	
+		// Initialize login attempts tracking if not already set
+		if (!isset($_SESSION['login_attempts'])) {
+			$_SESSION['login_attempts'] = [];
+		}
+	
+		// Check if the username is locked
+		if (isset($_SESSION['login_attempts'][$username])) {
+			$attemptData = $_SESSION['login_attempts'][$username];
+	
+			// Check if user is still in cooldown period
+			// Check if user is still in cooldown period
+			if ($attemptData['attempts'] >= 3 && time() - $attemptData['last_attempt'] < 300) { // 300 seconds = 5 minutes
+				return json_encode([
+					'status' => 'locked',
+					'message' => 'Too many login attempts. Please try again after 5 minutes.'
+				]);
+			}
+		}
+	
+		// Query database for user
 		$stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
-		$stmt->bind_param('s', $username);
+		$stmt->bind_param("s", $username);
 		$stmt->execute();
 		$result = $stmt->get_result();
 	
@@ -28,40 +54,40 @@ class Login extends DBConnection {
 			$user = $result->fetch_assoc();
 			$storedHash = $user['password'];
 	
-			// Check if the password is in MD5 format (32 characters long)
-			if (strlen($storedHash) == 32) {
-				// Verify with MD5
-				if (md5($password) === $storedHash) {
-					// Re-hash the password with bcrypt for future logins
-					$newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-					$updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-					$updateStmt->bind_param("ss", $newHashedPassword, $username);
-					$updateStmt->execute();
-					$updateStmt->close();
-				} else {
-					// Incorrect password
-					return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
-				}
-			} else {
-				// Verify with password_verify for bcrypt or other compatible algorithms
-				if (!password_verify($password, $storedHash)) {
-					// Incorrect password
-					return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
-				}
-			}
+			// Verify password
+			if ((strlen($storedHash) == 32 && md5($password) === $storedHash) || password_verify($password, $storedHash)) {
+				// Successful login: Reset login attempts
+				unset($_SESSION['login_attempts'][$username]);
 	
-			// Successful login: set session data
-			foreach ($user as $k => $v) {
-				if (!is_numeric($k) && $k != 'password') {
-					$this->settings->set_userdata($k, $v);
+				// Set session data
+				foreach ($user as $k => $v) {
+					if (!is_numeric($k) && $k != 'password') {
+						$this->settings->set_userdata($k, $v);
+					}
 				}
+				$this->settings->set_userdata('login_type', 1);
+	
+				return json_encode(['status' => 'success']);
 			}
-			$this->settings->set_userdata('login_type', 1);
-			return json_encode(array('status' => 'success'));
-		} else {
-			// User not found
-			return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
 		}
+	
+		// Failed login attempt
+		if (!isset($_SESSION['login_attempts'][$username])) {
+			$_SESSION['login_attempts'][$username] = ['attempts' => 0, 'last_attempt' => time()];
+		}
+	
+		$_SESSION['login_attempts'][$username]['attempts']++;
+		$_SESSION['login_attempts'][$username]['last_attempt'] = time();
+	
+		// Lock user if attempts exceed the limit
+		if ($_SESSION['login_attempts'][$username]['attempts'] >= 3) {
+			return json_encode([
+				'status' => 'locked',
+				'message' => 'Too many login attempts. Please try again after 3 minutes.'
+			]);
+		}
+	
+		return json_encode(['status' => 'incorrect', 'message' => 'Invalid username or password.']);
 	}
 	public function logout(){
 		if($this->settings->sess_des()){
