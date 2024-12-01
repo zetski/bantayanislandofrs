@@ -1,50 +1,41 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-// Enforce secure cookies and sessions
-ini_set('session.cookie_secure', 1); // HTTPS only
-ini_set('session.cookie_httponly', 1); // JavaScript cannot access
-ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
-session_set_cookie_params([
-    'lifetime' => 3600, // 1 hour
-    'secure' => true,
-    'httponly' => true,
-    'samesite' => 'Strict'
-]);
-session_start();
-
 ob_start();
+session_start();
 require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
 
-$error_message = "";
-$success_message = "";
+$error_message = ""; // Variable to hold the error message
+$success_message = ""; // Variable to hold the success message
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
 
+    // Verify if the email exists in the database
     $stmt = $con->prepare("SELECT * FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        $otp = rand(100000, 999999);
-        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60));
+        $otp = rand(100000, 999999); // Generate a 6-digit OTP
+        $otp_expiry = date("Y-m-d H:i:s", time() + (3 * 60)); // Set expiry to current time + 3 minutes
 
+        // Update OTP and expiry in the database
         $update_stmt = $con->prepare("UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?");
         $update_stmt->bind_param("sss", $otp, $otp_expiry, $email);
         $update_stmt->execute();
 
+        // Send OTP using PHPMailer
         $mail = new PHPMailer(true);
         try {
             $mail->isSMTP();
             $mail->Host = 'smtp.gmail.com';
             $mail->SMTPAuth = true;
-            $mail->Username = 'bantayanbfp@gmail.com';
-            $mail->Password = 'otrj ptcg karr ogdd';
+            $mail->Username = 'bantayanbfp@gmail.com'; // Your email
+            $mail->Password = 'otrj ptcg karr ogdd'; // Your app password
             $mail->SMTPSecure = 'tls';
             $mail->Port = 587;
 
@@ -56,11 +47,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                           <p>This OTP is valid for 3 minutes only.</p>";
 
             $mail->send();
-            $_SESSION['otp_email'] = $email;
+            $_SESSION['otp_email'] = $email; // Save email in session
             $success_message = "OTP successfully sent to $email.";
         } catch (Exception $e) {
             $error_message = "Error sending OTP: {$mail->ErrorInfo}";
-            error_log($error_message);
+            error_log($error_message); // Log errors
         }
     } else {
         $error_message = "Email not found in our records!";
@@ -68,7 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ob_end_flush();
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
