@@ -206,6 +206,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     font-size: 1.25rem;
 }
 
+/* Style for the modal close button */
+.modal-header .close {
+    color: white; /* White color for the 'X' close button */
+    opacity: 1; /* Ensure the close button is fully opaque */
+}
+
+.modal-header .close:hover,
+.modal-header .close:focus {
+    color: #FF4600; /* Orange color when hovering or focusing */
+    text-decoration: none;
+    background-color: transparent;
+}
+
 .modal-body {
     font-size: 1rem;
     color: #333;
@@ -229,6 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     max-width: 500px;
     margin: 30px auto;
 }
+
 </style>
 
 <script>
