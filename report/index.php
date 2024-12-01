@@ -193,15 +193,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .position-relative {
         position: relative;
     }
-    .modal-footer .custom-close-btn {
-    background-color: #FF4600; /* Custom orange */
-    color: white;
-    border: none;
-    }
-
-    .modal-footer .custom-close-btn:hover {
-        background-color: #cc3700; /* Darker orange */
-    }
 </style>
 
 <script>
