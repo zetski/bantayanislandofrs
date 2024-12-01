@@ -1,17 +1,4 @@
 <?php 
-ob_start();
-session_start();
-
-// Ensure HTTPS is used
-ini_set('session.cookie_httponly', 1);
-
-// Check if the user is trying to access login.php directly without verifying OTP
-if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
-    // Redirect to the OTP verification page
-    header("Location: https://bantayan-bfp.com/admin/login");
-    exit;
-}
-
 require_once('../config.php'); 
 
 // // Allowed IP addresses
@@ -120,7 +107,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $stmt->close();
 }
-ob_end_flush();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">
