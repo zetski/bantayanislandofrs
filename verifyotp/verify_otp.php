@@ -28,6 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (strtotime($otp_expiry) >= time()) {
                     // OTP verified successfully
                     $_SESSION['role'] = 'admin'; // Assign the admin role
+                    $_SESSION['otp_verified'] = true;
                     header("Location: https://bantayan-bfp.com/admin/login");
                     exit;
                 } else {
