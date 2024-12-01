@@ -179,7 +179,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p>We take your privacy seriously and will handle your information with utmost care. Your data will not be shared with third parties without your consent, except as necessary to comply with legal requirements or to improve our services.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" style="background-color: #007BFF" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -207,9 +207,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 /* Style for the modal close button */
-.modal-header .close {
-    color: white; /* White color for the 'X' close button */
-    opacity: 1; /* Ensure the close button is fully opaque */
+.modal-header {
+    background-color: #FF4600; /* Matching the form header color */
+    color: white;
+    border-bottom: none;
+    font-size: 1.25rem;
 }
 
 .modal-header .close:hover,
@@ -242,7 +244,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     max-width: 500px;
     margin: 30px auto;
 }
-
 </style>
 
 <script>
