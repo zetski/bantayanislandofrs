@@ -156,15 +156,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                     <div class="card-footer py-1 text-center">
-                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form"><i class="fa fa-paper-plane"></i> Submit</button>
-                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';"><i class="fa fa-times"></i> Cancel</button>
+                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form" id="submit-btn" disabled>
+                            <i class="fa fa-paper-plane"></i> Submit
+                        </button>
+                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';">
+                            <i class="fa fa-times"></i> Cancel
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
+<!-- Terms and Conditions Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Your terms and conditions text goes here. Add detailed information about your terms and policies.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
+                <p>...</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     body {
@@ -177,6 +199,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script>
+    const termsCheckbox = document.getElementById('terms');
+    const submitButton = document.getElementById('submit-btn');
+    const termsError = document.getElementById('terms-error');
+
+    termsCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            submitButton.disabled = false;
+            termsError.classList.add('d-none'); // Hide error message
+        } else {
+            submitButton.disabled = true;
+            termsError.classList.remove('d-none'); // Show error message
+        }
+    });
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
@@ -248,3 +283,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </script>
 
 <script src="report/script.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
