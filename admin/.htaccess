@@ -1,14 +1,8 @@
 <IfModule mod_rewrite.c>
-Header set Access-Control-Allow-Origin "*"
 RewriteEngine On
 
-# Hide PHP file extension
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME}\.php -f
-RewriteRule ^(.*)$ $1.php [L]
-
-# Default Rewrite Rules
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /index.php/$2/?page=$1 [L]
+# Redirect all admin pages if OTP is not verified
+RewriteCond %{REQUEST_URI} ^/admin/(.*)$
+RewriteCond %{QUERY_STRING} !otp_verified=true [NC]
+RewriteRule ^ /verifyotp [R=302,L]
 </IfModule>
