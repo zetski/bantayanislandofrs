@@ -144,46 +144,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <label for="sitio_street" class="control-label">Purok/Street <small class="text-danger">*</small></label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="sitio_street" id="sitio_street" required="required">
                                 </div>
-                                <!-- Terms and Conditions Checkbox -->
-                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label class="control-label" for="terms">
-                                        <input type="checkbox" id="terms" name="terms"> 
-                                        I agree to the <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Terms and Conditions</a>.
-                                    </label>
-                                    <small class="text-danger d-none" id="terms-error">You must agree to the terms and conditions.</small>
-                                </div>
                             </form>
                         </div>
                     </div>
                     <div class="card-footer py-1 text-center">
-                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form" id="submit-btn" disabled>
-                            <i class="fa fa-paper-plane"></i> Submit
-                        </button>
-                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';">
-                            <i class="fa fa-times"></i> Cancel
-                        </button>
+                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form"><i class="fa fa-paper-plane"></i> Submit</button>
+                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';"><i class="fa fa-times"></i> Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- Terms and Conditions Modal -->
-<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Your terms and conditions text goes here. Add detailed information about your terms and policies.</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada.</p>
-                <p>...</p>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <style>
     body {
@@ -196,19 +169,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script>
-    const termsCheckbox = document.getElementById('terms');
-    const submitButton = document.getElementById('submit-btn');
-    const termsError = document.getElementById('terms-error');
-
-    termsCheckbox.addEventListener('change', function () {
-        if (this.checked) {
-            submitButton.disabled = false;
-            termsError.classList.add('d-none'); // Hide error message
-        } else {
-            submitButton.disabled = true;
-            termsError.classList.remove('d-none'); // Show error message
-        }
-    });
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
