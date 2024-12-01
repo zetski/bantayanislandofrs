@@ -10,6 +10,7 @@ header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"
 // Secure Cookie Flags
 ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_secure', 1);
+ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
 ini_set('session.use_only_cookies', 1);
 
 session_start();
