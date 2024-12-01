@@ -1,6 +1,18 @@
 <?php 
 require_once('../config.php'); 
 
+session_start();
+
+// Ensure HTTPS is used
+ini_set('session.cookie_httponly', 1);
+
+// Check if the user is trying to access login.php directly without verifying OTP
+if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
+    // Redirect to the OTP verification page
+    header("Location: /verifyotp");
+    exit;
+}
+
 // // Allowed IP addresses
 // $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 
