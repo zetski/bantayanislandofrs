@@ -197,7 +197,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         position: relative;
     }
     .modal-footer .custom-close-btn {
-    background-color: #FF4600; /* Custom orange */
+    background-color: black; /* Custom orange */
     color: white;
     border: none;
     }
