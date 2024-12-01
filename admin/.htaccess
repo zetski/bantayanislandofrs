@@ -11,7 +11,7 @@
     RewriteRule ^(.*)$ $1.php [L]
 
     # Redirect verifyotp to its folder or file
-    RewriteRule ^verifyotp$ ./verifyotp/verify_otp [L]
+    RewriteRule ^verifyotp$ /verifyotp/index.php [L]
 
     # Default Rewrite Rules
     RewriteCond %{REQUEST_FILENAME} !-f
