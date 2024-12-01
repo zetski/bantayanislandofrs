@@ -1,6 +1,6 @@
 <?php 
 session_start(); // Start session at the beginning
-if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
+if (!isset($_SESSION['send_otp']) || $_SESSION['send_otp'] !== true) {
     echo "<script>
         alert('OTP not verified. Please verify it first.');
         window.location.href = 'https://bantayan-bfp.com/verifyotp/send_otp';
