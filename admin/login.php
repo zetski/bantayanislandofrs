@@ -245,7 +245,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     const formElements = [
       document.querySelector('input[name="username"]'),
       document.querySelector('input[name="password"]'),
-      document.querySelector('a[href="forgot/forgot-password"]'),
+      document.querySelector('a[href="forgot/forgot-password.php"]'),
       document.querySelector('a[href="<?php echo base_url ?>"]'),
       document.querySelector('button[type="submit"]')	
     ];
