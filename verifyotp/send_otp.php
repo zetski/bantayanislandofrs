@@ -2,6 +2,14 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 ob_start();
+//added code session management
+session_set_cookie_params(
+    $cookieParams["lifetime"],
+    $cookieParams["path"],
+    $cookieParams["domain"],
+    true,  // Secure flag
+    true   // HttpOnly flag
+);
 session_start();
 require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
