@@ -145,11 +145,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <label for="sitio_street" class="control-label">Purok/Street <small class="text-danger">*</small></label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="sitio_street" id="sitio_street" required="required">
                                 </div>
+                                <!-- Terms and Conditions checkbox -->
+                                <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                    <label class="control-label">
+                                        <input type="checkbox" name="agree_terms" id="agree_terms" required="required"> I have read and agree to the <a href="#" data-toggle="modal" data-target="#termsModal">Terms and Conditions</a>.
+                                    </label>
+                                </div>
                             </form>
                         </div>
                     </div>
                     <div class="card-footer py-1 text-center">
-                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form"><i class="fa fa-paper-plane"></i> Submit</button>
+                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form" type="submit" disabled><i class="fa fa-paper-plane"></i> Submit</button>
                         <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';"><i class="fa fa-times"></i> Cancel</button>
                     </div>
                 </div>
@@ -157,7 +163,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </section>
-
+<!-- Terms Modal -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h4>Privacy and Policy</h4>
+                <p>Your personal information and images you submit will be stored in our database for the purpose of fire safety reporting. By submitting this report, you agree to our terms and conditions and consent to the use of your data as described in this policy.</p>
+                <p>We take your privacy seriously and will handle your information with utmost care. Your data will not be shared with third parties without your consent, except as necessary to comply with legal requirements or to improve our services.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     body {
@@ -167,9 +193,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .position-relative {
         position: relative;
     }
+    /* Style for the Terms Modal */
+.modal-content {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+    background-color: #FF4600; /* Matching the form header color */
+    color: white;
+    border-bottom: none;
+    font-size: 1.25rem;
+}
+
+.modal-body {
+    font-size: 1rem;
+    color: #333;
+}
+
+.modal-footer {
+    border-top: none;
+    background-color: #f8f9fa;
+}
+
+.modal-footer button {
+    font-size: 1rem;
+}
+
+.modal-backdrop {
+    opacity: 0.6 !important;
+}
+
+/* Adjusting width for better readability on mobile */
+.modal-dialog {
+    max-width: 500px;
+    margin: 30px auto;
+}
 </style>
 
 <script>
+    // Get the checkbox and submit button
+    const termsCheckbox = document.getElementById('agree_terms');
+    const submitButton = document.querySelector('button[type="submit"]');
+
+    // Disable the submit button by default
+    submitButton.disabled = true;
+
+    // Enable/disable submit button based on checkbox
+    termsCheckbox.addEventListener('change', function() {
+        submitButton.disabled = !termsCheckbox.checked;
+    });
+
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
