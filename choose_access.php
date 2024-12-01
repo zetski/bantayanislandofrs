@@ -1,7 +1,31 @@
 <?php
+// Start a session with secure configuration
+ini_set('session.cookie_secure', '1'); // Send cookies over HTTPS only
+ini_set('session.cookie_httponly', '1'); // Prevent JavaScript access to cookies
+ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
+session_set_cookie_params([
+    'lifetime' => 3600, // 1-hour session duration
+    'path' => '/',
+    'domain' => '', // Specify domain if needed
+    'secure' => true, // Ensure cookie is sent over HTTPS
+    'httponly' => true, // Prevent access via JavaScript
+    'samesite' => 'Strict', // CSRF protection
+]);
+
 session_start();
+
+// Handle session expiration
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
+    // Session expired after 1 hour
+    session_unset(); // Clear session data
+    session_destroy(); // Destroy the session
+    header("Location: ./index"); // Redirect to the entry point
+    exit;
+}
+$_SESSION['last_activity'] = time(); // Update last activity time
+
+// Role-based redirection
 if (isset($_SESSION['role'])) {
-    // Redirect based on role if already logged in
     if ($_SESSION['role'] === 'guest') {
         header("Location: ./index");
         exit;
@@ -17,7 +41,7 @@ if (isset($_SESSION['role'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="img/r7logo.png" type="image/png">
-    <title>Oline Fire Reporting System</title>
+    <title>Online Fire Reporting System</title>
     <style>
         /* Basic styles for the gateway page */
         body {
