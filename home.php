@@ -10,12 +10,12 @@
     #carouselExampleControls .carousel-inner {
         height: 20em !important; /* Ensure this matches the image height */
     }
-    .btn{
+    .btn {
         color: #fff;
         margin-left: 30px;
         background-color: #f46000;
     }
-    .btn:focus, .btn:hover{
+    .btn:focus, .btn:hover {
         outline: none;
         box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
     }
@@ -26,21 +26,15 @@
             <div class="col-md-12">
                 <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
                     <div class="carousel-inner">
-                        <?php 
-                            $upload_path = "uploads/banner";
-                            if (is_dir(base_app . $upload_path)): 
-                                $file = scandir(base_app . $upload_path);
-                                $_i = 0;
-                                foreach ($file as $img):
-                                    if (in_array($img, array('.', '..')))
-                                        continue;
-                                    $_i++;
-                        ?>
-                        <div class="carousel-item <?php echo $_i == 1 ? "active" : '' ?>">
-                            <img src="<?php echo validate_image($upload_path . '/' . $img) ?>" class="d-block w-100" alt="<?php echo $img ?>">
+                        <div class="carousel-item active">
+                            <img src="static/banner1.jpg" class="d-block w-100" alt="Banner 1">
                         </div>
-                        <?php endforeach; ?>
-                        <?php endif; ?>
+                        <div class="carousel-item">
+                            <img src="static/banner2.jpg" class="d-block w-100" alt="Banner 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="static/banner3.jpg" class="d-block w-100" alt="Banner 3">
+                        </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
