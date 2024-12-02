@@ -131,9 +131,10 @@ session_start();
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
-    <a class="navbar-brand" href="./">
-      <img src="<?php echo validate_image($_settings->info('logo')) ?>" width="30" height="30" alt="Logo" loading="lazy">
-      <?php echo $_settings->info('short_name') ?>
+  <a class="navbar-brand" href="./">
+      <!-- Replace PHP dynamic content with static image and text -->
+      <img src="path/to/logo.png" width="30" height="30" alt="Brand Logo" loading="lazy"> <!-- Use a trusted logo source -->
+      Bantayan Fire Station<!-- Replace with the desired brand name -->
     </a>
     <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
       <span class="navbar-toggler-icon"></span>
