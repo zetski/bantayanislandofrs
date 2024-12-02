@@ -136,9 +136,8 @@ session_start();
       </?php echo $_settings->info('short_name') ?>
     </a> -->
     <a class="navbar-brand" href="./">
-      <!-- Replace PHP dynamic content with static image and text -->
-      <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy"> <!-- Use a trusted logo source -->
-      Bantayan Fire Station<!-- Replace with the desired brand name -->
+      <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
+      Bantayan Fire Station
     </a>
     <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
       <span class="navbar-toggler-icon"></span>
