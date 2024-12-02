@@ -152,8 +152,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                     <div class="card-footer py-1 text-center">
-                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form"><i class="fa fa-paper-plane"></i> Submit</button>
-                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';"><i class="fa fa-times"></i> Cancel</button>
+                        <button id="submit-button" class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form" disabled>
+                            <i class="fa fa-paper-plane"></i> Submit
+                        </button>
+                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';">
+                            <i class="fa fa-times"></i> Cancel
+                        </button>
                     </div>
                 </div>
             </div>
@@ -195,6 +199,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script>
+     // Get the checkbox and submit button elements
+     const termsCheckbox = document.getElementById('terms-checkbox');
+    const submitButton = document.getElementById('submit-button');
+
+    // Add event listener to the checkbox
+    termsCheckbox.addEventListener('change', function () {
+        // Enable the button if the checkbox is checked, otherwise disable it
+        submitButton.disabled = !termsCheckbox.checked;
+    });
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
