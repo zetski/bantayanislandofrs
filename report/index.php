@@ -160,6 +160,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </section>
+<!-- Modal for Terms and Conditions -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>Terms and Conditions for Bureau Fire Protection Incident Reporting System</h5>
+                    <p>Please read and agree to the following terms and conditions before submitting your incident report.</p>
+                    <p><strong>1. Acceptance of Terms</strong></p>
+                    <p>By submitting your incident report, you agree to these terms and conditions...</p> <!-- Add the full terms here -->
+                    <p><strong>2. Data Collection</strong></p>
+                    <p>Your personal information will be collected, including but not limited to your full name, contact information, and address...</p>
+                    <!-- Add all other terms here -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 <style>
