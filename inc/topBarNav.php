@@ -133,7 +133,7 @@ session_start();
   <div class="container px-4 px-lg-5">
   <a class="navbar-brand" href="./">
       <!-- Replace PHP dynamic content with static image and text -->
-      <img src="path/to/logo.png" width="30" height="30" alt="Brand Logo" loading="lazy"> <!-- Use a trusted logo source -->
+      <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy"> <!-- Use a trusted logo source -->
       Bantayan Fire Station<!-- Replace with the desired brand name -->
     </a>
     <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
