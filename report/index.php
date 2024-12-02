@@ -179,9 +179,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <p>Your personal information will be collected, including but not limited to your full name, contact information, and address...</p>
                     <!-- Add all other terms here -->
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
             </div>
         </div>
     </div>
