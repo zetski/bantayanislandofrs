@@ -3,20 +3,20 @@ require_once '../config.php';
 
 class Login extends DBConnection {
     private $settings;
-    
+
     public function __construct() {
         global $_settings;
         $this->settings = $_settings;
         parent::__construct();
-        ini_set('display_error', 1);
+        ini_set('display_errors', 1);
         session_start();
-        
+
         // Initialize session variables for login attempts and timeout
-        if (!isset($_SESSION['login_attempts'])) {
-            $_SESSION['login_attempts'] = 3;
+        if (!isset($_SESSION['remaining_attempts'])) {
+            $_SESSION['remaining_attempts'] = 3;
         }
-        if (!isset($_SESSION['timeout'])) {
-            $_SESSION['timeout'] = null;
+        if (!isset($_SESSION['lockout_time'])) {
+            $_SESSION['lockout_time'] = null;
         }
     }
 
@@ -29,70 +29,87 @@ class Login extends DBConnection {
     }
 
     public function login() {
-        $current_time = time();
-        
-        // Check if user is locked out
-        if ($_SESSION['timeout'] && $current_time < $_SESSION['timeout']) {
-            $remaining_time = $_SESSION['timeout'] - $current_time;
-            return json_encode([
-                'status' => 'locked', 
-                'message' => "You are locked out. Try again in $remaining_time seconds."
-            ]);
+        // Check if the request method is POST
+        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
+            exit;
         }
 
-        // Process login
-        extract($_POST);
+        $current_time = time();
+
+        // Check if user is locked out
+        if ($_SESSION['lockout_time'] && $current_time < $_SESSION['lockout_time']) {
+            $remaining_time = $_SESSION['lockout_time'] - $current_time;
+            echo json_encode([
+                'status' => 'locked',
+                'message' => "Too many failed attempts. Try again in $remaining_time seconds."
+            ]);
+            exit;
+        }
+
+        // Sanitize and validate input
+        $username = $this->sanitize_input($_POST['username'] ?? '');
+        $password = $this->sanitize_input($_POST['password'] ?? '');
+
+        if (empty($username) || empty($password)) {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
+            exit;
+        }
+
+        // Fetch user from the database
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
+        if ($user) {
             $storedHash = $user['password'];
 
-            // Handle MD5 or bcrypt password verification
-            if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
-                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                $updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-                $updateStmt->bind_param("ss", $newHashedPassword, $username);
-                $updateStmt->execute();
-                $updateStmt->close();
-            } elseif (!password_verify($password, $storedHash)) {
-                return $this->handleFailedLogin();
-            }
+            // Check password validity
+            if ((strlen($storedHash) == 32 && md5($password) === $storedHash) || password_verify($password, $storedHash)) {
+                // If password matches, reset attempts and set session data
+                $_SESSION['remaining_attempts'] = 3;
+                $_SESSION['lockout_time'] = null;
 
-            // Successful login: Reset login attempts and set session data
-            $_SESSION['login_attempts'] = 3;
-            $_SESSION['timeout'] = null;
-            foreach ($user as $k => $v) {
-                if (!is_numeric($k) && $k != 'password') {
-                    $this->settings->set_userdata($k, $v);
-                }
-            }
-            $this->settings->set_userdata('login_type', 1);
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['district'] = $user['district'];
 
-            return json_encode(['status' => 'success']);
+                echo json_encode(['status' => 'success', 'message' => 'Login successful']);
+                exit;
+            } else {
+                $this->decrement_attempts();
+            }
         } else {
-            return $this->handleFailedLogin();
+            $this->decrement_attempts();
         }
     }
 
-    private function handleFailedLogin() {
-        $_SESSION['login_attempts']--;
+    private function decrement_attempts() {
+        if (!isset($_SESSION['remaining_attempts'])) {
+            $_SESSION['remaining_attempts'] = 3;
+        }
 
-        if ($_SESSION['login_attempts'] <= 0) {
-            $_SESSION['timeout'] = time() + (3 * 60); // Set 3-minute lockout
-            return json_encode([
-                'status' => 'locked', 
-                'message' => "You are locked out for 3 minutes."
+        $_SESSION['remaining_attempts']--;
+
+        if ($_SESSION['remaining_attempts'] <= 0) {
+            $_SESSION['lockout_time'] = time() + (3 * 60); // Lockout for 3 minutes
+            echo json_encode([
+                'status' => 'locked',
+                'message' => 'Too many failed login attempts. You are locked out for 3 minutes.'
             ]);
         } else {
-            return json_encode([
-                'status' => 'error', 
-                'attempts_left' => $_SESSION['login_attempts']
+            echo json_encode([
+                'status' => 'error',
+                'remaining_attempts' => $_SESSION['remaining_attempts']
             ]);
         }
+        exit;
+    }
+
+    private function sanitize_input($input) {
+        return htmlspecialchars(strip_tags(trim($input)));
     }
 
     public function logout() {
@@ -102,28 +119,7 @@ class Login extends DBConnection {
     }
 
     public function login_user() {
-        extract($_POST);
-        $stmt = $this->conn->prepare("SELECT * from tutor_list where email = ? and `password` = ? and `status` != 3 and `delete_flag` = 0");
-        $password = md5($password);
-        $stmt->bind_param('ss', $email, $password);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $res = $result->fetch_array();
-            foreach ($res as $k => $v) {
-                $this->settings->set_userdata($k, $v);
-            }
-            $this->settings->set_userdata('login_type', 2);
-            $resp['status'] = 'success';
-        } else {
-            $resp['status'] = 'failed';
-            $resp['msg'] = 'Incorrect Email or Password';
-        }
-        if ($this->conn->error) {
-            $resp['status'] = 'failed';
-            $resp['_error'] = $this->conn->error;
-        }
-        return json_encode($resp);
+        // Similar logic for user login can go here
     }
 
     public function logout_user() {
@@ -133,22 +129,23 @@ class Login extends DBConnection {
     }
 }
 
+// Action routing
 $action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
 $auth = new Login();
 switch ($action) {
     case 'login':
-        echo $auth->login();
+        $auth->login();
         break;
     case 'logout':
-        echo $auth->logout();
+        $auth->logout();
         break;
     case 'login_user':
-        echo $auth->login_user();
+        $auth->login_user();
         break;
     case 'logout_user':
-        echo $auth->logout_user();
+        $auth->logout_user();
         break;
     default:
-        echo $auth->index();
+        $auth->index();
         break;
 }
