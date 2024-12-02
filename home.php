@@ -57,7 +57,7 @@
             <div class="col-lg-10 col-md-11 col-sm-11">
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
-                        <div>
+                        <div class="container-fluid">
                             <center>
                                 <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
                             </center>
