@@ -1,151 +1,119 @@
 <?php
 require_once '../config.php';
-
 class Login extends DBConnection {
-    private $settings;
+	private $settings;
+	public function __construct(){
+		global $_settings;
+		$this->settings = $_settings;
 
-    public function __construct() {
-        global $_settings;
-        $this->settings = $_settings;
-        parent::__construct();
-        ini_set('display_errors', 1);
-        session_start();
-
-        // Initialize session variables for login attempts and timeout
-        if (!isset($_SESSION['remaining_attempts'])) {
-            $_SESSION['remaining_attempts'] = 3;
-        }
-        if (!isset($_SESSION['lockout_time'])) {
-            $_SESSION['lockout_time'] = null;
-        }
-    }
-
-    public function __destruct() {
-        parent::__destruct();
-    }
-
-    public function index() {
-        echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
-    }
-
-    public function login() {
-        // Check if the request method is POST
-        if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid request method']);
-            exit;
-        }
-
-        $current_time = time();
-
-        // Check if user is locked out
-        if ($_SESSION['lockout_time'] && $current_time < $_SESSION['lockout_time']) {
-            $remaining_time = $_SESSION['lockout_time'] - $current_time;
-            echo json_encode([
-                'status' => 'locked',
-                'message' => "Too many failed attempts. Try again in $remaining_time seconds."
-            ]);
-            exit;
-        }
-
-        // Sanitize and validate input
-        $username = $this->sanitize_input($_POST['username'] ?? '');
-        $password = $this->sanitize_input($_POST['password'] ?? '');
-
-        if (empty($username) || empty($password)) {
-            echo json_encode(['status' => 'error', 'message' => 'Invalid username or password']);
-            exit;
-        }
-
-        // Fetch user from the database
-        $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user = $result->fetch_assoc();
-
-        if ($user) {
-            $storedHash = $user['password'];
-
-            // Check password validity
-            if ((strlen($storedHash) == 32 && md5($password) === $storedHash) || password_verify($password, $storedHash)) {
-                // If password matches, reset attempts and set session data
-                $_SESSION['remaining_attempts'] = 3;
-                $_SESSION['lockout_time'] = null;
-
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['district'] = $user['district'];
-
-                echo json_encode(['status' => 'success', 'message' => 'Login successful']);
-                exit;
-            } else {
-                $this->decrement_attempts();
-            }
-        } else {
-            $this->decrement_attempts();
-        }
-    }
-
-    private function decrement_attempts() {
-        if (!isset($_SESSION['remaining_attempts'])) {
-            $_SESSION['remaining_attempts'] = 3;
-        }
-
-        $_SESSION['remaining_attempts']--;
-
-        if ($_SESSION['remaining_attempts'] <= 0) {
-            $_SESSION['lockout_time'] = time() + (3 * 60); // Lockout for 3 minutes
-            echo json_encode([
-                'status' => 'locked',
-                'message' => 'Too many failed login attempts. You are locked out for 3 minutes.'
-            ]);
-        } else {
-            echo json_encode([
-                'status' => 'error',
-                'remaining_attempts' => $_SESSION['remaining_attempts']
-            ]);
-        }
-        exit;
-    }
-
-    private function sanitize_input($input) {
-        return htmlspecialchars(strip_tags(trim($input)));
-    }
-
-    public function logout() {
-        if ($this->settings->sess_des()) {
-            redirect('admin/login.php');
-        }
-    }
-
-    public function login_user() {
-        // Similar logic for user login can go here
-    }
-
-    public function logout_user() {
-        if ($this->settings->sess_des()) {
-            redirect('tutor');
-        }
-    }
+		parent::__construct();
+		ini_set('display_error', 1);
+	}
+	public function __destruct(){
+		parent::__destruct();
+	}
+	public function index(){
+		echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
+	}
+	public function login(){
+		extract($_POST);
+	
+		// Fetch the user based on username only
+		$stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
+		$stmt->bind_param('s', $username);
+		$stmt->execute();
+		$result = $stmt->get_result();
+	
+		if ($result->num_rows > 0) {
+			$user = $result->fetch_assoc();
+			$storedHash = $user['password'];
+	
+			// Check if the password is in MD5 format (32 characters long)
+			if (strlen($storedHash) == 32) {
+				// Verify with MD5
+				if (md5($password) === $storedHash) {
+					// Re-hash the password with bcrypt for future logins
+					$newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+					$updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+					$updateStmt->bind_param("ss", $newHashedPassword, $username);
+					$updateStmt->execute();
+					$updateStmt->close();
+				} else {
+					// Incorrect password
+					return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
+				}
+			} else {
+				// Verify with password_verify for bcrypt or other compatible algorithms
+				if (!password_verify($password, $storedHash)) {
+					// Incorrect password
+					return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
+				}
+			}
+	
+			// Successful login: set session data
+			foreach ($user as $k => $v) {
+				if (!is_numeric($k) && $k != 'password') {
+					$this->settings->set_userdata($k, $v);
+				}
+			}
+			$this->settings->set_userdata('login_type', 1);
+			return json_encode(array('status' => 'success'));
+		} else {
+			// User not found
+			return json_encode(array('status' => 'incorrect', 'last_qry' => "SELECT * FROM users WHERE username = '$username'"));
+		}
+	}
+	public function logout(){
+		if($this->settings->sess_des()){
+			redirect('admin/login.php');
+		}
+	}
+	function login_user(){
+		extract($_POST);
+		$stmt = $this->conn->prepare("SELECT * from tutor_list where email = ? and `password` = ? and `status` != 3 and `delete_flag` = 0 ");
+		$password = md5($password);
+		$stmt->bind_param('ss',$email,$password);
+		$stmt->execute();
+		$result = $stmt->get_result();
+		if($result->num_rows > 0){
+			$res = $result->fetch_array();
+			foreach($res as $k => $v){
+				$this->settings->set_userdata($k,$v);
+			}
+			$this->settings->set_userdata('login_type',2);
+			$resp['status'] = 'success';
+		}else{
+			$resp['status'] = 'failed';
+			$resp['msg'] = 'Incorrect Email or Password';
+		}
+		if($this->conn->error){
+			$resp['status'] = 'failed';
+			$resp['_error'] = $this->conn->error;
+		}
+		return json_encode($resp);
+	}
+	public function logout_user(){
+		if($this->settings->sess_des()){
+			redirect('tutor');
+		}
+	}
 }
-
-// Action routing
 $action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
 $auth = new Login();
 switch ($action) {
-    case 'login':
-        $auth->login();
-        break;
-    case 'logout':
-        $auth->logout();
-        break;
-    case 'login_user':
-        $auth->login_user();
-        break;
-    case 'logout_user':
-        $auth->logout_user();
-        break;
-    default:
-        $auth->index();
-        break;
+	case 'login':
+		echo $auth->login();
+		break;
+	case 'logout':
+		echo $auth->logout();
+		break;
+	case 'login_user':
+		echo $auth->login_user();
+		break;
+	case 'logout_user':
+		echo $auth->logout_user();
+		break;
+	default:
+		echo $auth->index();
+		break;
 }
