@@ -1,17 +1,16 @@
 <?php if($_settings->chk_flashdata('success')): ?>
 <script>
-	alert_toast("<?php echo $_settings->flashdata('success') ?>", 'success');
+	alert_toast("<?php echo $_settings->flashdata('success') ?>",'success')
 </script>
-<?php endif; ?>
+<?php endif;?>
 <style>
-    .user-avatar {
-        width: 3rem;
-        height: 3rem;
-        object-fit: scale-down;
-        object-position: center center;
+    .user-avatar{
+        width:3rem;
+        height:3rem;
+        object-fit:scale-down;
+        object-position:center center;
     }
 </style>
-
 <div class="card card-outline rounded-0 card-danger">
 	<div class="card-header">
 		<h3 class="card-title">List of Users</h3>
@@ -45,22 +44,12 @@
 				<tbody>
 					<?php 
 					$i = 1;
-					
-					// Get the logged-in admin's district
-					$current_admin_district = $_settings->userdata('district'); // Assuming 'district' is stored in the session data
-
-					// Query to fetch users belonging to the same district as the logged-in admin
-					$qry = $conn->query("SELECT *, concat(firstname,' ', coalesce(concat(middlename,' '), '') , lastname) as `name` 
-						FROM `users` 
-						WHERE id != '{$_settings->userdata('id')}' 
-						AND district = '{$current_admin_district}' 
-						ORDER BY concat(firstname, ' ', lastname) ASC");
-
-					while($row = $qry->fetch_assoc()):
+						$qry = $conn->query("SELECT *, concat(firstname,' ', coalesce(concat(middlename,' '), '') , lastname) as `name` from `users` where id != '{$_settings->userdata('id')}' order by concat(firstname,' ', lastname) asc ");
+						while($row = $qry->fetch_assoc()):
 					?>
 						<tr>
 							<td class="text-center"><?php echo $i++; ?></td>
-							<td><?php echo date("Y-m-d H:i", strtotime($row['date_updated'])) ?></td>
+							<td><?php echo date("Y-m-d H:i",strtotime($row['date_updated'])) ?></td>
 							<td class="text-center">
                                 <img src="<?= validate_image($row['avatar']) ?>" alt="" class="img-thumbnail rounded-circle user-avatar">
                             </td>
@@ -72,7 +61,7 @@
                                 <?php elseif($row['type'] == 2): ?>
                                     Staff
                                 <?php else: ?>
-                                    N/A
+									N/A
                                 <?php endif; ?>
                             </td>
 							<td align="center">
@@ -93,53 +82,38 @@
 		</div>
 	</div>
 </div>
-
 <script>
 	$(document).ready(function(){
 		$('.delete_data').click(function(){
-			var id = $(this).attr('data-id');
-			Swal.fire({
-				title: 'Are you sure?',
-				text: "You won't be able to revert this!",
-				icon: 'warning',
-				showCancelButton: true,
-				confirmButtonColor: '#3085d6',
-				cancelButtonColor: '#d33',
-				confirmButtonText: 'Yes, delete it!'
-			}).then((result) => {
-				if (result.isConfirmed) {
-					delete_user(id);
-				}
-			});
-		});
+			_conf("Are you sure to delete this User permanently?","delete_user",[$(this).attr('data-id')])
+		})
 		$('.table').dataTable({
 			columnDefs: [
-				{ orderable: false, targets: [6] }
+					{ orderable: false, targets: [6] }
 			],
-			order: [0, 'asc']
+			order:[0,'asc']
 		});
-		$('.dataTable td, .dataTable th').addClass('py-1 px-2 align-middle');
-	});
-
-	function delete_user(id){
+		$('.dataTable td,.dataTable th').addClass('py-1 px-2 align-middle')
+	})
+	function delete_user($id){
 		start_loader();
 		$.ajax({
-			url: _base_url_ + "classes/Users.php?f=delete",
-			method: "POST",
-			data: {id: id},
-			error: err => {
-				console.log(err);
-				alert_toast("An error occurred.", 'error');
+			url:_base_url_+"classes/Users.php?f=delete",
+			method:"POST",
+			data:{id: $id},
+			error:err=>{
+				console.log(err)
+				alert_toast("An error occured.",'error');
 				end_loader();
 			},
-			success: function(resp){
-				if (resp == 1){
+			success:function(resp){
+				if(resp == 1){
 					location.reload();
-				} else {
-					alert_toast("An error occurred.", 'error');
+				}else{
+					alert_toast("An error occured.",'error');
 					end_loader();
 				}
 			}
-		});
+		})
 	}
 </script>
