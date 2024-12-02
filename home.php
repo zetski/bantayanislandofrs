@@ -1,68 +1,87 @@
-<style>
-    body {
-        padding-top: 10px;
-        margin-top: 40px;
-    }
-    .carousel-item>img {
-        object-fit: cover !important;
-        height: 20em; /* Adjust the height to your desired value */
-    }
-    #carouselExampleControls .carousel-inner {
-        height: 20em !important; /* Ensure this matches the image height */
-    }
-    .btn {
-        color: #fff;
-        margin-left: 30px;
-        background-color: #f46000;
-    }
-    .btn:focus, .btn:hover {
-        outline: none;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    }
-</style>
-<section class="py-3">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage Design</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .text-section {
+            flex: 1;
+            padding: 20px;
+        }
+        .text-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        .text-section p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .text-section .btn {
+            background-color: #f46000;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+        }
+        .text-section .btn:hover {
+            background-color: #d94d00;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .image-carousel {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ddd;
+            border-radius: 8px;
+            height: 300px;
+            max-width: 500px;
+        }
+        .image-carousel img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="static/banner1.jpg" class="d-block w-100" alt="Banner 1">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="static/banner2.jpg" class="d-block w-100" alt="Banner 2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="static/banner3.jpg" class="d-block w-100" alt="Banner 3">
-                        </div>
-                    </div>
-                    <button class="carousel-control-prev" type="button" data-target="#carouselExampleControls" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-target="#carouselExampleControls" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>
-                </div>
-            </div>
+        <div class="text-section">
+            <h1>Welcome</h1>
+            <p>
+                Fire safety is the set of practices intended to reduce the destruction caused by fire. Fire safety measures include those that are intended to prevent ignition of an uncontrolled fire, and those that are used to limit development and effects of a fire after it starts.
+            </p>
+            <button class="btn" onclick="location.href='./upcoming_events.html'">Upcoming Events</button>
         </div>
-        <div class="row justify-content-center mt-n3">
-            <div class="col-lg-10 col-md-11 col-sm-11">
-                <div class="card card-outline rounded-0">
-                    <div class="card-body">
-                        <div class="container-fluid">
-                            <center>
-                                <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
-                            </center>
-                            <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
-                            <div>
-                                <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="image-carousel">
+            <img src="static/banner-placeholder.png" alt="Image Carousel">
         </div>
     </div>
-</section>
+</body>
+</html>
