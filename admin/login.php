@@ -224,61 +224,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-     let remainingAttempts = 3; // Initial login attempts
-  let isLocked = false; // Lockout flag
+    document.getElementById("login-frm").addEventListener("submit", function (e) {
+    e.preventDefault();
 
-  function handleInvalidCredentials() {
-    if (isLocked) return;
-
-    // Decrease attempts
-    remainingAttempts--;
-
-    // Shake the card body
-    const cardBody = document.querySelector(".card-body");
-    cardBody.classList.add("shake");
-    setTimeout(() => cardBody.classList.remove("shake"), 500);
-
-    // Display alert below form
+    const formData = new FormData(this);
     const alertBox = document.getElementById("alert-box");
-    if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-    } else {
-      isLocked = true;
-      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-      lockForm();
-      setTimeout(() => {
-        isLocked = false;
-        remainingAttempts = 3;
-        alertBox.innerHTML = ""; // Clear alert
-        unlockForm();
-      }, 3 * 60 * 1000); // 3 minutes
-    }
-  }
+    const cardBody = document.querySelector(".card-body");
 
-  function lockForm() {
+    fetch(this.action, {
+        method: "POST",
+        body: formData,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.status === "success") {
+            alertBox.innerHTML = `<div class="alert alert-success">${sanitizeHTML(data.message)}</div>`;
+            setTimeout(() => {
+                window.location.href = "dashboard.php"; // Redirect after successful login
+            }, 1000);
+        } else if (data.status === "error") {
+            cardBody.classList.add("shake");
+            setTimeout(() => cardBody.classList.remove("shake"), 500);
+            alertBox.innerHTML = `<div class="alert alert-warning">You have ${data.remaining_attempts || "unknown"} login attempts left.</div>`;
+        } else if (data.status === "locked") {
+            lockForm();
+            let lockoutTime = 180; // Example lockout duration in seconds (or get from server).
+            alertBox.innerHTML = `<div class="alert alert-danger">${sanitizeHTML(data.message)}</div>`;
+            const lockoutInterval = setInterval(() => {
+                lockoutTime--;
+                alertBox.innerHTML = `
+                    <div class="alert alert-danger">
+                        Too many attempts. Try again in ${lockoutTime} seconds.
+                    </div>
+                `;
+                if (lockoutTime <= 0) {
+                    clearInterval(lockoutInterval);
+                    unlockForm();
+                }
+            }, 1000);
+        }
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+        alertBox.innerHTML = `
+            <div class="alert alert-danger">
+                Something went wrong. Please try again later.
+            </div>
+        `;
+    });
+});
+
+function lockForm() {
     document.querySelector('input[name="username"]').disabled = true;
     document.querySelector('input[name="password"]').disabled = true;
     document.querySelector('button[type="submit"]').disabled = true;
-  }
+}
 
-  function unlockForm() {
+function unlockForm() {
     document.querySelector('input[name="username"]').disabled = false;
     document.querySelector('input[name="password"]').disabled = false;
     document.querySelector('button[type="submit"]').disabled = false;
-  }
+}
 
-  document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault();
+function sanitizeHTML(html) {
+    const tempDiv = document.createElement("div");
+    tempDiv.textContent = html;
+    return tempDiv.innerHTML;
+}
+  //end of alertbox
 
-    // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
-    if (!isValid) {
-      handleInvalidCredentials();
-    } else {
-      // Handle successful login
-      alert("Login successful!");
-    }
-  });
     $(document).ready(function(){
       end_loader();
     });
