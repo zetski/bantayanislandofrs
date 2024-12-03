@@ -5,6 +5,99 @@
   .bg-maroon {
       background-color: #ff4600 !important;
   }
+  /* Mobile First Design */
+@media screen and (max-width: 768px) {
+    .main-sidebar {
+        width: 70px; /* Collapse sidebar on mobile */
+    }
+
+    .content-wrapper {
+        margin-left: 70px; /* Adjust content width */
+    }
+
+    .brand-text {
+        display: none; /* Hide brand text on mobile */
+    }
+
+    .nav-treeview {
+        display: none; /* Hide submenu on mobile */
+    }
+
+    .nav-item:hover .nav-treeview {
+        display: block; /* Show submenu on hover */
+    }
+
+    .nav-link {
+        font-size: 12px; /* Smaller font size on mobile */
+        text-align: center;
+    }
+
+    .nav-icon {
+        margin-right: 0;
+    }
+
+    /* Toggle Sidebar button */
+    .sidebar-toggle {
+        display: block;
+        background-color: #ff4600;
+        border: none;
+        color: #fff;
+        padding: 10px;
+        font-size: 18px;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1001;
+    }
+
+    .sidebar-open {
+        transform: translateX(0); /* Show sidebar */
+    }
+
+    .sidebar-closed {
+        transform: translateX(-100%); /* Hide sidebar */
+    }
+
+    .main-sidebar.sidebar-open {
+        width: 250px;
+    }
+
+    .main-sidebar.sidebar-closed {
+        width: 70px;
+    }
+
+    /* Make Sidebar Full-Width on mobile */
+    .main-sidebar {
+        position: absolute;
+        z-index: 1000;
+        height: 100vh;
+        width: 100%;
+        background-color: #ff4600;
+    }
+
+    .content-wrapper {
+        margin-left: 0;
+    }
+
+    .main-sidebar.sidebar-open {
+        transform: translateX(0);
+    }
+
+    .main-sidebar.sidebar-closed {
+        transform: translateX(-100%);
+    }
+}
+
+/* Extra Small Devices (Phones) */
+@media screen and (max-width: 480px) {
+    .main-sidebar {
+        width: 100% !important; /* Full-width sidebar on small screens */
+    }
+    .content-wrapper {
+        margin-left: 0 !important;
+    }
+}
+
 </style>
 <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
@@ -176,24 +269,37 @@
         </div>
         <!-- /.sidebar -->
       </aside>
+      <!-- Sidebar Toggle Button for Mobile -->
+    <button class="sidebar-toggle">
+        <i class="fas fa-bars"></i> <!-- Hamburger Icon -->
+    </button>
       <script>
     $(document).ready(function(){
-      var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
-      var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
-      page = page.replace(/\//g,'_');
-      page = status != '' ? page + "_" + status : page;
-      console.log($('.nav-link.nav-'+page)[0])
-      if($('.nav-link.nav-'+page).length > 0){
-             $('.nav-link.nav-'+page).addClass('active')
+    var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
+    var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
+    page = page.replace(/\//g,'_');
+    page = status != '' ? page + "_" + status : page;
+    console.log($('.nav-link.nav-'+page)[0])
+    if($('.nav-link.nav-'+page).length > 0){
+        $('.nav-link.nav-'+page).addClass('active')
         if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
             $('.nav-link.nav-'+page).addClass('active')
-          $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
+            $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
         }
         if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
-          $('.nav-link.nav-'+page).parent().addClass('menu-open')
+            $('.nav-link.nav-'+page).parent().addClass('menu-open')
         }
-
-      }
-      $('.nav-link.active').addClass('bg-maroon')
-    })
+    }
+    $('.nav-link.active').addClass('bg-maroon')
+    
+    // Toggle Sidebar for Mobile
+    $('.sidebar-toggle').click(function() {
+        var sidebar = $('.main-sidebar');
+        if (sidebar.hasClass('sidebar-closed')) {
+            sidebar.removeClass('sidebar-closed').addClass('sidebar-open');
+        } else {
+            sidebar.removeClass('sidebar-open').addClass('sidebar-closed');
+        }
+    });
+  })
   </script>
