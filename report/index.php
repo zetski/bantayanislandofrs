@@ -203,15 +203,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
      const termsCheckbox = document.getElementById('terms-checkbox');
     const submitButton = document.getElementById('submit-button');
 
-    // Add event listener to the checkbox
     termsCheckbox.addEventListener('change', function () {
-        // Enable the button if the checkbox is checked, otherwise disable it
         submitButton.disabled = !termsCheckbox.checked;
     });
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
-    // Capitalize first letter of each word for specific fields
     fields.forEach(field => {
         document.getElementById(field).addEventListener('input', function (e) {
             e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function (char) {
@@ -220,7 +217,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         });
     });
 
-    // No automatic capitalization for the 'message' field, only prevent special characters
     document.getElementById('message').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s,.!?]/g, ''); // Allow letters, numbers, spaces, and basic punctuation
     });
@@ -243,7 +239,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 });
             });
 
-            // Allow letters, spaces, and the forward slash (/) for the 'sitio_street' field
             document.getElementById('sitio_street').addEventListener('input', function (e) {
                 e.target.value = e.target.value.replace(/[^a-zA-Z\s\/]/g, '').replace(/\b\w/g, function (char) {
                     return char.toUpperCase();
