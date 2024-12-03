@@ -1,107 +1,151 @@
 <style>
-  [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active, 
-  [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active:hover {
-    color: #ffffff !important;
+  /* Existing CSS for sidebar toggle and custom styles */
+  .user-img {
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    object-fit: cover;
+    left: -7%;
+    top: -12%;
   }
 
-  .bg-maroon {
-    background-color: #ff4600 !important;
+  .btn-rounded {
+    border-radius: 50px;
   }
 
-  /* Basic styles for the sidebar */
+  .navbar-separator {
+    height: 25px;
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 15px;
+  }
+
+  .nav-icon {
+    font-size: 18px;
+    margin-right: 15px;
+  }
+
+  .badge-notification {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 50%;
+    font-size: 5px;
+    font-weight: bold;
+  }
+
+  .dropdown-menu {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+
+  /* Sidebar styles */
   .main-sidebar {
     position: fixed;
     top: 0;
     left: 0;
     width: 250px;
     height: 100%;
-    z-index: 100;
     background-color: #343a40;
     transition: all 0.3s ease;
   }
 
-  /* Ensure the sidebar has a default width */
-  .sidebar-no-expand {
-    width: 250px;
+  /* Sidebar hidden by default on smaller screens */
+  .main-sidebar.hidden {
+    left: -250px;
   }
 
-  .sidebar-no-expand .nav-treeview {
-    display: block;
-  }
-
-  /* Mobile-first styles (small screens) */
+  /* Small screens: Sidebar hidden, show hamburger menu icon */
   @media (max-width: 768px) {
     .main-sidebar {
-      width: 0;
-      display: none;
+      left: -250px; /* Hidden by default */
     }
 
-    /* On mobile, make the sidebar take full width when it’s visible */
-    .main-sidebar.sidebar-open {
-      width: 250px;
-      display: block;
+    .main-sidebar.show {
+      left: 0; /* Show sidebar when "show" class is added */
     }
 
-    /* Collapsing the sidebar items on small screens */
-    .sidebar .nav-item {
-      text-align: center;
-    }
-
-    .sidebar .nav-link {
-      padding: 10px 20px;
-    }
-
-    /* Adjust navigation for mobile layout */
-    .main-sidebar .nav-pills {
-      display: block;
-    }
-
-    .main-sidebar .nav-item {
-      display: block;
+    .navbar-nav .nav-link {
+      padding-left: 10px;  /* Adjust padding for mobile view */
     }
   }
 
-  /* Tablet Screens (768px - 1024px) */
-  @media (min-width: 768px) and (max-width: 1024px) {
+  /* Desktop - Sidebar fully visible */
+  @media (min-width: 768px) {
     .main-sidebar {
-      width: 220px; /* Slightly smaller for tablets */
+      left: 0;  /* Always visible on larger screens */
     }
 
-    /* Keep tree view items visible */
-    .sidebar-no-expand .nav-treeview {
-      display: block;
-    }
-
-    /* Adjust icon sizes and spacing for tablets */
-    .main-sidebar .nav-item {
-      text-align: left;
-    }
-
-    .main-sidebar .nav-link {
-      padding: 12px 20px;
-    }
-  }
-
-  /* Large Screens (Desktop - min-width: 1024px) */
-  @media (min-width: 1024px) {
-    .main-sidebar {
-      width: 250px; /* Full sidebar width for desktops */
-    }
-
-    .sidebar-no-expand .nav-treeview {
-      display: block;
-    }
-
-    /* Keep the nav item layout the same */
-    .main-sidebar .nav-item {
-      text-align: left;
-    }
-
-    .main-sidebar .nav-link {
-      padding: 12px 20px;
+    .navbar-nav .nav-link {
+      padding-left: 20px;  /* Standard padding for desktop */
     }
   }
 </style>
+
+<!-- Navbar -->
+<nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
+  <!-- Left navbar links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+    </li>
+    <li class="nav-item d-none d-sm-inline-block">
+      <a href="<?php echo base_url ?>" class="nav-link">
+        <?php echo (!isMobileDevice()) ? $_settings->info('name') : $_settings->info('short_name'); ?> - Admin
+      </a>
+    </li>
+  </ul>
+
+  <!-- Right navbar links -->
+  <ul class="navbar-nav ml-auto">
+    <!-- Notification Bell Icon -->
+    <li class="nav-item dropdown">
+      <a class="nav-link nav-icon" href="#" id="notificationDropdown" data-toggle="dropdown">
+        <i class="fas fa-bell"></i>
+        <?php if($new_reports_count > 0): ?>
+          <span class="badge-notification"><?php echo $new_reports_count; ?></span>
+        <?php endif; ?>
+      </a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
+        <span class="dropdown-header"><?php echo $new_reports_count; ?> New Report(s)</span>
+        <div class="dropdown-divider"></div>
+        <?php while($report = $new_reports_query->fetch_assoc()): ?>
+          <a href="./?page=requests/view_request&id=<?php echo $report['id']; ?>" class="dropdown-item">
+            <i class="fas fa-fire mr-2"></i>
+            <?php echo $report['lastname'] . ', ' . $report['firstname'] . ', ' . $report['middlename']; ?>
+            <span class="float-right text-muted text-sm"><?php echo date('Y-m-d', strtotime($report['date_created'])); ?></span>
+          </a>
+          <div class="dropdown-divider"></div>
+        <?php endwhile; ?>
+        <a href="./?page=requests&status=0" class="dropdown-item dropdown-footer">See All Reports</a>
+      </div>
+    </li>
+
+    <!-- Vertical Line -->
+    <li class="nav-item">
+      <div class="navbar-separator"></div>
+    </li>
+
+    <!-- User Image and Dropdown -->
+    <li class="nav-item">
+      <div class="btn-group nav-link">
+        <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
+          <span><img src="<?php echo validate_image($_settings->userdata('avatar')) ?>" class="img-circle elevation-2 user-img" alt="User Image"></span>
+          <span class="ml-3"><?php echo ucwords($_settings->userdata('firstname') . ' ' . $_settings->userdata('lastname')) ?></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu" role="menu">
+          <a class="dropdown-item" href="<?php echo base_url . 'admin/?page=user' ?>"><span class="fa fa-user"></span> My Account</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="<?php echo base_url . '/classes/Login.php?f=logout' ?>"><span class="fas fa-sign-out-alt"></span> Logout</a>
+        </div>
+      </div>
+    </li>
+  </ul>
+</nav>
 
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
@@ -122,112 +166,23 @@
             <p>Dashboard</p>
           </a>
         </li> 
-        <li class="nav-item dropdown">
-          <a href="./?page=teams" class="nav-link nav-teams">
-            <i class="nav-icon fas fa-users"></i>
-            <p>Control Teams</p>
-          </a>
-        </li> 
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-exclamation-triangle"></i>
-            <p>Requests<i class="right fas fa-angle-left"></i></p>
-          </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-              <a href="./?page=requests&status=0" class="nav-link tree-item nav-requests_0">
-                <i class="far fa-circle nav-icon"></i><p>Pending</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./?page=requests&status=1" class="nav-link tree-item nav-requests_1">
-                <i class="far fa-circle nav-icon"></i><p>Assigned to Team</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./?page=requests&status=2" class="nav-link tree-item nav-requests_2">
-                <i class="far fa-circle nav-icon"></i><p>Team on their Way</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./?page=requests&status=3" class="nav-link tree-item nav-requests_3">
-                <i class="far fa-circle nav-icon"></i><p>Fire Refief on Progress</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./?page=requests&status=4" class="nav-link tree-item nav-requests_4">
-                <i class="far fa-circle nav-icon"></i><p>Fire Refief Completed</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="./?page=requests" class="nav-link tree-item nav-requests">
-                <i class="far fa-circle nav-icon"></i><p>List All</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <?php if($_settings->userdata('type') == 1): ?>
-        <li class="nav-header">Maintenance</li>
-        <li class="nav-item dropdown">
-          <a href="<?php echo base_url ?>admin/?page=reports" class="nav-link nav-reports">
-            <i class="nav-icon far fa-circle"></i>
-            <p>Daily Report</p>
-          </a>
-        </li>
-        <li class="nav-item dropdown">
-          <a href="<?php echo base_url ?>admin/?page=reports/archive" class="nav-link nav-archive">
-            <i class="nav-icon fas fa-archive"></i>
-            <p>Archive</p>
-          </a>
-        </li>
-        <li class="nav-header">Maintenance</li>
-        <li class="nav-item dropdown">
-          <a href="<?php echo base_url ?>admin/?page=user/list" class="nav-link nav-user_list">
-            <i class="nav-icon fas fa-users-cog"></i>
-            <p>User List</p>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a href="#" class="nav-link">
-            <i class="nav-icon fas fa-tools"></i>
-            <p>Settings<i class="right fas fa-angle-left"></i></p>
-          </a>
-          <ul class="nav nav-treeview" style="display: none;">
-            <li class="nav-item">
-              <a href="<?php echo base_url ?>admin/?page=system_info" class="nav-link nav-system_info">
-                <i class="fas fa-info-circle nav-icon"></i><p>System Info</p>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a href="<?php echo base_url ?>admin/?page=system_info/event_info" class="nav-link nav-system_info_event_info">
-                <i class="fas fa-calendar-alt nav-icon"></i><p>Event</p>
-              </a>
-            </li>
-          </ul>
-        </li>
-        <?php endif; ?>
+        <!-- Add other nav items here -->
       </ul>
     </nav>
   </div>
 </aside>
 
 <script>
-  $(document).ready(function(){
-    var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
-    var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
-    page = page.replace(/\//g,'_');
-    page = status != '' ? page + "_" + status : page;
-    
-    if($('.nav-link.nav-'+page).length > 0){
-      $('.nav-link.nav-'+page).addClass('active');
-      if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
-        $('.nav-link.nav-'+page).addClass('active');
-        $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open');
+  // Check for pushmenu toggle functionality
+  $(document).ready(function() {
+    $('[data-widget="pushmenu"]').on('click', function() {
+      var sidebar = $('.main-sidebar');
+      sidebar.toggleClass('show'); // Toggle sidebar visibility
+
+      // Optionally, add or remove 'hidden' class for small screens
+      if ($(window).width() <= 768) {
+        sidebar.toggleClass('hidden');
       }
-      if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
-        $('.nav-link.nav-'+page).parent().addClass('menu-open');
-      }
-    }
-    $('.nav-link.active').addClass('bg-maroon');
-  })
+    });
+  });
 </script>
