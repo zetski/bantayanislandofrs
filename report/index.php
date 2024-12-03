@@ -1,3 +1,4 @@
+report image validate
 <?php
 // Secure Headers
 header("Content-Security-Policy: default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self';");
@@ -54,6 +55,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $barangay = sanitizeInput($_POST['barangay']);
     $sitio_street = sanitizeInput($_POST['sitio_street']);
     
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['image']['tmp_name'];
+            $fileName = $_FILES['image']['name'];
+            $fileSize = $_FILES['image']['size'];
+            $fileType = mime_content_type($fileTmpPath);
+            $allowedMimeTypes = ['image/jpeg'];
+    
+            // Validate MIME type
+            if (!in_array($fileType, $allowedMimeTypes)) {
+                die('Invalid file type. Only JPEG/JPG images are allowed.');
+            }
+    
+            // Validate file extension
+            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            if (!in_array($fileExtension, ['jpg', 'jpeg'])) {
+                die('Invalid file extension. Only .jpg and .jpeg are allowed.');
+            }
+    
+            // Process the image (e.g., move to a specific folder)
+            $uploadFileDir = './uploads/';
+            $destPath = $uploadFileDir . $fileName;
+            if (move_uploaded_file($fileTmpPath, $destPath)) {
+                echo 'File successfully uploaded.';
+            } else {
+                die('File upload failed.');
+            }
+        } else {
+            die('No file uploaded or upload error occurred.');
+        }
+    }
     // Process the sanitized data (e.g., insert into database)
 }
 ?>
@@ -252,6 +284,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             document.getElementById('contact').addEventListener('input', function (e) {
                 this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
+            });
+
+            document.getElementById('image').addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const allowedExtensions = ['jpg', 'jpeg'];
+                    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                    if (!allowedExtensions.includes(fileExtension)) {
+                        alert('Invalid file type. Please upload a JPEG/JPG image.');
+                        this.value = ''; // Clear the input
+                    }
+                }
             });
 
     const barangays = {
