@@ -55,6 +55,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sitio_street = sanitizeInput($_POST['sitio_street']);
     
     // Process the sanitized data (e.g., insert into database)
+    
+    // Define allowed MIME types and extensions
+    $allowedMimeTypes = ['image/jpeg'];
+    $allowedExtensions = ['jpeg', 'jpg'];
+
+    // Check if the file is uploaded
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        // Get file info
+        $fileTmpPath = $_FILES['image']['tmp_name'];
+        $fileName = $_FILES['image']['name'];
+        $fileSize = $_FILES['image']['size'];
+        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+        // Validate file size (e.g., max 2MB)
+
+        $max_file_size = 2 * 1024 * 1024; // 2 MB
+        if ($file['size'] > $max_file_size) {
+            die('File size exceeds the 2MB limit.');
+        }
+
+        // Validate file extension
+        if (!in_array($fileExt, $allowedExtensions)) {
+            die("Error: Invalid file extension. Only JPEG images are allowed.");
+        }
+
+        // Validate MIME type using finfo
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileMimeType = finfo_file($finfo, $fileTmpPath);
+        finfo_close($finfo);
+
+        if (!in_array($fileMimeType, $allowedMimeTypes)) {
+            die("Error: Invalid MIME type. Only JPEG images are allowed.");
+        }
+
+        // Validate file signature (magic numbers for JPEG: FF D8 FF)
+        $fileHandle = fopen($fileTmpPath, 'rb');
+        $fileHeader = fread($fileHandle, 3);
+        fclose($fileHandle);
+
+        if ($fileHeader !== "\xFF\xD8\xFF") {
+            die("Error: Invalid file content. File is not a valid JPEG image.");
+        }
+
+        // Validate image using GD library
+        if (!@imagecreatefromjpeg($fileTmpPath)) {
+            die("Error: Uploaded file is not a valid image.");
+        }
+
+        // Generate a secure unique name for the file
+        $newFileName = uniqid('img_', true) . '.' . $fileExt;
+
+        // Define the upload directory (ensure this is outside the web root)
+        $uploadDir = '../uploads/';
+        $destPath = $uploadDir . $newFileName;
+
+        // Move the file to the destination
+        if (move_uploaded_file($fileTmpPath, $destPath)) {
+            echo "File uploaded successfully. Saved as: " . htmlspecialchars($newFileName);
+        } else {
+            die("Error: There was a problem saving the file.");
+        }
+    } else {
+        die("Error: No file uploaded or an upload error occurred.");
+    }
+    //end of image validation
 }
 ?>
 
@@ -199,33 +264,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script>
-     // Get the checkbox and submit button elements
-     const termsCheckbox = document.getElementById('terms-checkbox');
-    const submitButton = document.getElementById('submit-button');
+            // Get the checkbox and submit button elements
+            const termsCheckbox = document.getElementById('terms-checkbox');
+            const submitButton = document.getElementById('submit-button');
 
-    termsCheckbox.addEventListener('change', function () {
-        submitButton.disabled = !termsCheckbox.checked;
-    });
-    // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
-    const fields = ['lastname', 'firstname', 'middlename', 'subject'];
-
-    fields.forEach(field => {
-        document.getElementById(field).addEventListener('input', function (e) {
-            e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function (char) {
-                return char.toUpperCase();
+            termsCheckbox.addEventListener('change', function () {
+                submitButton.disabled = !termsCheckbox.checked;
             });
-        });
-    });
+            // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
+            const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
-    document.getElementById('message').addEventListener('input', function (e) {
-        e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s,.!?]/g, ''); // Allow letters, numbers, spaces, and basic punctuation
-    });
-
-    document.getElementById('lastname').addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function(char) {
-                    return char.toUpperCase();
+            fields.forEach(field => {
+                document.getElementById(field).addEventListener('input', function (e) {
+                    e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function (char) {
+                        return char.toUpperCase();
+                    });
                 });
             });
+
+            document.getElementById('message').addEventListener('input', function (e) {
+                e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s,.!?]/g, ''); // Allow letters, numbers, spaces, and basic punctuation
+            });
+
+            document.getElementById('lastname').addEventListener('input', function(e) {
+                        e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function(char) {
+                            return char.toUpperCase();
+                        });
+                    });
 
             document.getElementById('firstname').addEventListener('input', function(e) {
                 e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function(char) {
@@ -249,6 +314,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             document.getElementById('contact').addEventListener('input', function (e) {
                 this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);
             });
+
+            document.getElementById('image').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            const validMimeTypes = ['image/jpeg', 'image/jpg'];
+
+            if (!validMimeTypes.includes(file.type)) {
+                alert('Invalid file type. Only JPEG/JPG images are allowed.');
+                event.target.value = ''; // Clear the input
+            }
+        });
 
     const barangays = {
         "Bantayan": ["Atop-Atop", "Baigad", "Bantigue", "Baod", "Binaobao", "Botigues", "Doong", "Guiwanon", "Hilotongan", "Kabac", "Kabangbang", "Kampinganon", "Kangkaibe", "Lipayran", "Luyongbay-bay", "Mojon", "Oboob", "Patao", "Putian", "Sillon", "Suba", "Sulangan", "Sungko", "Tamiao", "Ticad"],
