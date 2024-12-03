@@ -49,7 +49,7 @@
     left: 0;
     width: 250px;
     height: 100%;
-    background-color: #343a40;
+    background-color: #fff;
     transition: all 0.3s ease;
   }
 
