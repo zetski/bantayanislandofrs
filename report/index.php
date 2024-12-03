@@ -66,22 +66,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $fileTmpPath = $_FILES['image']['tmp_name'];
         $fileName = $_FILES['image']['name'];
         $fileSize = $_FILES['image']['size'];
-        $fileType = mime_content_type($fileTmpPath); 
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION)); 
+        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
         // Validate file size (e.g., max 2MB)
-        if ($fileSize > 2 * 1024 * 1024) { 
+        if ($fileSize > 2 * 1024 * 1024) {
             die("Error: File size exceeds 2MB.");
         }
 
-        // Validate file MIME type and extension
-        if (!in_array($fileType, $allowedMimeTypes) || !in_array($fileExt, $allowedExtensions)) {
-            die("Error: Invalid file type. Only JPEG images are allowed.");
+        // Validate file extension
+        if (!in_array($fileExt, $allowedExtensions)) {
+            die("Error: Invalid file extension. Only JPEG images are allowed.");
         }
 
-        // Verify the file content is an image
-        $checkImage = getimagesize($fileTmpPath);
-        if ($checkImage === false) {
+        // Validate MIME type using finfo
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileMimeType = finfo_file($finfo, $fileTmpPath);
+        finfo_close($finfo);
+
+        if (!in_array($fileMimeType, $allowedMimeTypes)) {
+            die("Error: Invalid MIME type. Only JPEG images are allowed.");
+        }
+
+        // Validate file signature (magic numbers for JPEG: FF D8 FF)
+        $fileHandle = fopen($fileTmpPath, 'rb');
+        $fileHeader = fread($fileHandle, 3);
+        fclose($fileHandle);
+
+        if ($fileHeader !== "\xFF\xD8\xFF") {
+            die("Error: Invalid file content. File is not a valid JPEG image.");
+        }
+
+        // Validate image using GD library
+        if (!@imagecreatefromjpeg($fileTmpPath)) {
             die("Error: Uploaded file is not a valid image.");
         }
 
@@ -89,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $newFileName = uniqid('img_', true) . '.' . $fileExt;
 
         // Define the upload directory (ensure this is outside the web root)
-        $uploadDir = '../uploads/'; 
+        $uploadDir = '../uploads/';
         $destPath = $uploadDir . $newFileName;
 
         // Move the file to the destination
@@ -102,7 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         die("Error: No file uploaded or an upload error occurred.");
     }
     //end of image validation
-
 }
 ?>
 
@@ -162,10 +177,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <textarea rows="3" class="form-control form-control-sm rounded-0" name="message" id="message" required="required"></textarea>
                                 </div>
 
-                                <!-- Photo Upload -->
+                               <!-- Photo Upload -->
                                 <div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <label for="image" class="control-label">Upload Photo (JPEG/JPG only) <small class="text-danger">*</small></label>
-                                    <input type="file" class="form-control form-control-sm rounded-0" name="image" id="image" accept=".jpeg, .jpg" required="required">
+                                    <label for="image" class="control-label">
+                                        Upload Photo (JPEG/JPG only) <small class="text-danger">*</small>
+                                    </label>
+                                    <input 
+                                        type="file" 
+                                        class="form-control form-control-sm rounded-0" 
+                                        name="image" 
+                                        id="image" 
+                                        accept=".jpeg,.jpg" 
+                                        required>
                                 </div>
 
                                 <!-- Municipality -->
