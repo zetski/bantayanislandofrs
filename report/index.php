@@ -87,6 +87,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     // Process the sanitized data (e.g., insert into database)
 }
+
+// Disallow specific user agents
+$disallowedUserAgents = [
+    "BurpSuite", 
+    "Cyberfox", 
+    "OWASP ZAP", 
+    "PostmanRuntime"
+];
+if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTTP_USER_AGENT'])) {
+    http_response_code(403);
+    exit("Unauthorized access");
+}
 ?>
 
 <section class="py-3">
@@ -230,6 +242,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </style>
 
 <script>
+    document.addEventListener('contextmenu', function(event) {
+    event.preventDefault();
+    alert("Right-click is disabled on this page.");
+});
+
+document.onkeydown = function(e) {
+    if (e.key === "F12" || (e.ctrlKey && e.shiftKey && ["I", "J", "C"].includes(e.key))) {
+        alert("Developer tools are disabled.");
+        e.preventDefault();
+    }
+};
+
+// Detect advanced developer tools and block access
+(function() {
+    const detectDevToolsAdvanced = () => {
+        const start = new Date();
+        debugger; // Trigger if dev tools are open
+        const end = new Date();
+        if (end - start > 100) {
+            document.body.innerHTML = "<h1>Unauthorized Access</h1><p>Developer tools are not allowed on this page.</p>";
+            document.body.style.textAlign = "center";
+            document.body.style.paddingTop = "20%";
+        }
+    };
+    setInterval(detectDevToolsAdvanced, 500);
+})();
+
+// Block specific browsers
+const blockedAgents = ["Cyberfox", "Kali"];
+if (blockedAgents.some(agent => navigator.userAgent.includes(agent))) {
+    document.body.innerHTML = "<h1>Access Denied</h1><p>Your browser is not supported.</p>";
+}
+
+// Detect tampered JavaScript prototypes
+if (window.__proto__.toString() !== "[object Window]") {
+    alert("Unauthorized modification detected.");
+    window.location.href = "https://www.bible-knowledge.com/wp-content/uploads/battle-verses-against-demonic-attacks.jpg";
+}
      // Get the checkbox and submit button elements
      const termsCheckbox = document.getElementById('terms-checkbox');
     const submitButton = document.getElementById('submit-button');
