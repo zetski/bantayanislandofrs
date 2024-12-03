@@ -101,7 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         die("Error: No file uploaded or an upload error occurred.");
     }
-    //end of image validation
+    //end of image validat
 
 }
 ?>
