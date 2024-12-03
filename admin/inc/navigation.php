@@ -1,188 +1,199 @@
 <style>
-  /* Existing CSS for sidebar toggle and custom styles */
-  .user-img {
-    position: absolute;
-    height: 27px;
-    width: 27px;
-    object-fit: cover;
-    left: -7%;
-    top: -12%;
+  [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active, [class*="sidebar-light-"] .nav-treeview > .nav-item > .nav-link.active:hover {
+      color: #ffffff !important;
   }
-
-  .btn-rounded {
-    border-radius: 50px;
-  }
-
-  .navbar-separator {
-    height: 25px;
-    width: 1px;
-    background-color: #ccc;
-    margin: 0 15px;
-  }
-
-  .nav-icon {
-    font-size: 18px;
-    margin-right: 15px;
-  }
-
-  .badge-notification {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    background-color: red;
-    color: white;
-    padding: 2px 5px;
-    border-radius: 50%;
-    font-size: 5px;
-    font-weight: bold;
-  }
-
-  .dropdown-menu {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-
-  /* Sidebar styles */
-  .main-sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100%;
-    background-color: #fff;
-    transition: all 0.3s ease;
-  }
-
-  /* Sidebar hidden by default on smaller screens */
-  .main-sidebar.hidden {
-    left: -250px;
-  }
-
-  /* Small screens: Sidebar hidden, show hamburger menu icon */
-  @media (max-width: 768px) {
-    .main-sidebar {
-      left: -250px; /* Hidden by default */
-    }
-
-    .main-sidebar.show {
-      left: 0; /* Show sidebar when "show" class is added */
-    }
-
-    .navbar-nav .nav-link {
-      padding-left: 10px;  /* Adjust padding for mobile view */
-    }
-  }
-
-  /* Desktop - Sidebar fully visible */
-  @media (min-width: 768px) {
-    .main-sidebar {
-      left: 0;  /* Always visible on larger screens */
-    }
-
-    .navbar-nav .nav-link {
-      padding-left: 20px;  /* Standard padding for desktop */
-    }
+  .bg-maroon {
+      background-color: #ff4600 !important;
   }
 </style>
-
-<!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
-  <!-- Left navbar links -->
-  <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-    </li>
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="<?php echo base_url ?>" class="nav-link">
-        <?php echo (!isMobileDevice()) ? $_settings->info('name') : $_settings->info('short_name'); ?> - Admin
-      </a>
-    </li>
-  </ul>
-
-  <!-- Right navbar links -->
-  <ul class="navbar-nav ml-auto">
-    <!-- Notification Bell Icon -->
-    <li class="nav-item dropdown">
-      <a class="nav-link nav-icon" href="#" id="notificationDropdown" data-toggle="dropdown">
-        <i class="fas fa-bell"></i>
-        <?php if($new_reports_count > 0): ?>
-          <span class="badge-notification"><?php echo $new_reports_count; ?></span>
-        <?php endif; ?>
-      </a>
-      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="notificationDropdown">
-        <span class="dropdown-header"><?php echo $new_reports_count; ?> New Report(s)</span>
-        <div class="dropdown-divider"></div>
-        <?php while($report = $new_reports_query->fetch_assoc()): ?>
-          <a href="./?page=requests/view_request&id=<?php echo $report['id']; ?>" class="dropdown-item">
-            <i class="fas fa-fire mr-2"></i>
-            <?php echo $report['lastname'] . ', ' . $report['firstname'] . ', ' . $report['middlename']; ?>
-            <span class="float-right text-muted text-sm"><?php echo date('Y-m-d', strtotime($report['date_created'])); ?></span>
-          </a>
-          <div class="dropdown-divider"></div>
-        <?php endwhile; ?>
-        <a href="./?page=requests&status=0" class="dropdown-item dropdown-footer">See All Reports</a>
-      </div>
-    </li>
-
-    <!-- Vertical Line -->
-    <li class="nav-item">
-      <div class="navbar-separator"></div>
-    </li>
-
-    <!-- User Image and Dropdown -->
-    <li class="nav-item">
-      <div class="btn-group nav-link">
-        <button type="button" class="btn btn-rounded badge badge-light dropdown-toggle dropdown-icon" data-toggle="dropdown">
-          <span><img src="<?php echo validate_image($_settings->userdata('avatar')) ?>" class="img-circle elevation-2 user-img" alt="User Image"></span>
-          <span class="ml-3"><?php echo ucwords($_settings->userdata('firstname') . ' ' . $_settings->userdata('lastname')) ?></span>
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu" role="menu">
-          <a class="dropdown-item" href="<?php echo base_url . 'admin/?page=user' ?>"><span class="fa fa-user"></span> My Account</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="<?php echo base_url . '/classes/Login.php?f=logout' ?>"><span class="fas fa-sign-out-alt"></span> Logout</a>
-        </div>
-      </div>
-    </li>
-  </ul>
-</nav>
-
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
-  <!-- Brand Logo -->
-  <a href="<?php echo base_url ?>admin" class="brand-link bg-maroon text-sm">
-    <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 1.5rem;height: 1.5rem;max-height: unset">
-    <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
-  </a>
+      <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
+        <!-- Brand Logo -->
+        <a href="<?php echo base_url ?>admin" class="brand-link bg-maroon text-sm">
+        <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 1.5rem;height: 1.5rem;max-height: unset">
+        <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
+        </a>
+        <!-- Sidebar -->
+        <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-scrollbar-horizontal-hidden">
+          <div class="os-resize-observer-host observed">
+            <div class="os-resize-observer" style="left: 0px; right: auto;"></div>
+          </div>
+          <div class="os-size-auto-observer observed" style="height: calc(100% + 1px); float: left;">
+            <div class="os-resize-observer"></div>
+          </div>
+          <div class="os-content-glue" style="margin: 0px -8px; width: 249px; height: 646px;"></div>
+          <div class="os-padding">
+            <div class="os-viewport os-viewport-native-scrollbars-invisible" style="overflow-y: scroll;">
+              <div class="os-content" style="padding: 0px 8px; height: 100%; width: 100%;">
+                <!-- Sidebar user panel (optional) -->
+                <div class="clearfix"></div>
+                <!-- Sidebar Menu -->
+                <nav class="mt-4">
+                   <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-compact nav-flat nav-child-indent nav-collapse-hide-child" data-widget="treeview" role="menu" data-accordion="false">
+                    <li class="nav-item dropdown">
+                      <a href="./" class="nav-link nav-home">
+                        <i class="nav-icon fas fa-tachometer-alt"></i>
+                        <p>
+                          Dashboard
+                        </p>
+                      </a>
+                    </li> 
+                    <li class="nav-item dropdown">
+                      <a href="./?page=teams" class="nav-link nav-teams">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>
+                          Control Teams
+                        </p>
+                      </a>
+                    </li> 
+                    <li class="nav-item">
+                      <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-exclamation-triangle"></i>
+                        <p>
+                          Requests
+                          <i class="right fas fa-angle-left"></i>
+                        </p>
+                      </a>
+                      <ul class="nav nav-treeview" style="display: none;">
+                        <!-- <li class="nav-item">
+                          <a href="./?page=requests/manage_request" class="nav-link tree-item nav-requests_manage_request">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create New</p>
+                          </a>
+                        </li> -->
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=0" class="nav-link tree-item nav-requests_0">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Pending</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=1" class="nav-link tree-item nav-requests_1">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Assigned to Team</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=2" class="nav-link tree-item nav-requests_2">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Team on their Way</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=3" class="nav-link tree-item nav-requests_3">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Fire Refief on Progress</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests&status=4" class="nav-link tree-item nav-requests_4">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Fire Refief Completed</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="./?page=requests" class="nav-link tree-item nav-requests">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>List All</p>
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <?php if($_settings->userdata('type') == 1): ?>
+                    <li class="nav-header">Maintenance</li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=reports" class="nav-link nav-reports">
+                        <i class="nav-icon far fa-circle"></i>
+                        <p>
+                          Daily Report
+                        </p>
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=reports/archive" class="nav-link nav-archive">
+                        <i class="nav-icon fas fa-archive"></i>
+                        <p>
+                          Archive
+                        </p>
+                      </a>
+                    </li>
+                    <li class="nav-header">Maintenance</li>
+                    <li class="nav-item dropdown">
+                      <a href="<?php echo base_url ?>admin/?page=user/list" class="nav-link nav-user_list">
+                        <i class="nav-icon fas fa-users-cog"></i>
+                        <p>
+                          User List
+                        </p>
+                      </a>
+                    </li>
+                    <!-- <li class="nav-item dropdown">
+                      <a href="</?php echo base_url ?>admin/?page=system_info/contact_info" class="nav-link nav-system_info_contact_info">
+                        <i class="nav-icon fas fa-phone-square-alt"></i>
+                        <p>
+                          Contact Info
+                        </p>
+                      </a>
+                    </li> -->
+                    <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-tools"></i>
+                        <p>
+                            Settings
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: none;">
+                        <li class="nav-item">
+                            <a href="<?php echo base_url ?>admin/?page=system_info" class="nav-link nav-system_info">
+                                <i class="fas fa-info-circle nav-icon"></i>
+                                <p>System Info</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="<?php echo base_url ?>admin/?page=system_info/event_info" class="nav-link nav-system_info_event_info">
+                                <i class="fas fa-calendar-alt nav-icon"></i>
+                                <p>Event</p>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                  </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+              </div>
+            </div>
+          </div>
+          <div class="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable os-scrollbar-auto-hidden">
+            <div class="os-scrollbar-track">
+              <div class="os-scrollbar-handle" style="width: 100%; transform: translate(0px, 0px);"></div>
+            </div>
+          </div>
+          <div class="os-scrollbar os-scrollbar-vertical os-scrollbar-auto-hidden">
+            <div class="os-scrollbar-track">
+              <div class="os-scrollbar-handle" style="height: 55.017%; transform: translate(0px, 0px);"></div>
+            </div>
+          </div>
+          <div class="os-scrollbar-corner"></div>
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+      <script>
+    $(document).ready(function(){
+      var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
+      var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
+      page = page.replace(/\//g,'_');
+      page = status != '' ? page + "_" + status : page;
+      console.log($('.nav-link.nav-'+page)[0])
+      if($('.nav-link.nav-'+page).length > 0){
+             $('.nav-link.nav-'+page).addClass('active')
+        if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
+            $('.nav-link.nav-'+page).addClass('active')
+          $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
+        }
+        if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
+          $('.nav-link.nav-'+page).parent().addClass('menu-open')
+        }
 
-  <!-- Sidebar -->
-  <div class="sidebar os-host os-theme-light">
-    <!-- Sidebar Menu -->
-    <nav class="mt-4">
-      <ul class="nav nav-pills nav-sidebar flex-column text-sm nav-compact nav-flat nav-child-indent nav-collapse-hide-child" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-item dropdown">
-          <a href="./" class="nav-link nav-home">
-            <i class="nav-icon fas fa-tachometer-alt"></i>
-            <p>Dashboard</p>
-          </a>
-        </li> 
-        <!-- Add other nav items here -->
-      </ul>
-    </nav>
-  </div>
-</aside>
-
-<script>
-  // Check for pushmenu toggle functionality
-  $(document).ready(function() {
-    $('[data-widget="pushmenu"]').on('click', function() {
-      var sidebar = $('.main-sidebar');
-      sidebar.toggleClass('show'); // Toggle sidebar visibility
-
-      // Optionally, add or remove 'hidden' class for small screens
-      if ($(window).width() <= 768) {
-        sidebar.toggleClass('hidden');
       }
-    });
-  });
-</script>
+      $('.nav-link.active').addClass('bg-maroon')
+    })
+  </script>
