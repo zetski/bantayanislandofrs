@@ -55,54 +55,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sitio_street = sanitizeInput($_POST['sitio_street']);
     
     // Process the sanitized data (e.g., insert into database)
-
-    // Define allowed MIME types and extensions
-    $allowedMimeTypes = ['image/jpeg'];
-    $allowedExtensions = ['jpeg', 'jpg'];
-
-    // Check if the file is uploaded
-    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-        // Get file info
-        $fileTmpPath = $_FILES['image']['tmp_name'];
-        $fileName = $_FILES['image']['name'];
-        $fileSize = $_FILES['image']['size'];
-        $fileType = mime_content_type($fileTmpPath); 
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION)); 
-
-        // Validate file size (e.g., max 2MB)
-        if ($fileSize > 2 * 1024 * 1024) { 
-            die("Error: File size exceeds 2MB.");
-        }
-
-        // Validate file MIME type and extension
-        if (!in_array($fileType, $allowedMimeTypes) || !in_array($fileExt, $allowedExtensions)) {
-            die("Error: Invalid file type. Only JPEG images are allowed.");
-        }
-
-        // Verify the file content is an image
-        $checkImage = getimagesize($fileTmpPath);
-        if ($checkImage === false) {
-            die("Error: Uploaded file is not a valid image.");
-        }
-
-        // Generate a secure unique name for the file
-        $newFileName = uniqid('img_', true) . '.' . $fileExt;
-
-        // Define the upload directory (ensure this is outside the web root)
-        $uploadDir = '../uploads/'; 
-        $destPath = $uploadDir . $newFileName;
-
-        // Move the file to the destination
-        if (move_uploaded_file($fileTmpPath, $destPath)) {
-            echo "File uploaded successfully. Saved as: " . htmlspecialchars($newFileName);
-        } else {
-            die("Error: There was a problem saving the file.");
-        }
-    } else {
-        die("Error: No file uploaded or an upload error occurred.");
-    }
-    //end of image validation
-
 }
 ?>
 
