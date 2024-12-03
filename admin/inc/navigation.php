@@ -269,37 +269,24 @@
         </div>
         <!-- /.sidebar -->
       </aside>
-      <!-- Sidebar Toggle Button for Mobile -->
-    <button class="sidebar-toggle">
-        <i class="fas fa-bars"></i> <!-- Hamburger Icon -->
-    </button>
       <script>
     $(document).ready(function(){
-    var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
-    var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
-    page = page.replace(/\//g,'_');
-    page = status != '' ? page + "_" + status : page;
-    console.log($('.nav-link.nav-'+page)[0])
-    if($('.nav-link.nav-'+page).length > 0){
-        $('.nav-link.nav-'+page).addClass('active')
+      var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
+      var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
+      page = page.replace(/\//g,'_');
+      page = status != '' ? page + "_" + status : page;
+      console.log($('.nav-link.nav-'+page)[0])
+      if($('.nav-link.nav-'+page).length > 0){
+             $('.nav-link.nav-'+page).addClass('active')
         if($('.nav-link.nav-'+page).hasClass('tree-item') == true){
             $('.nav-link.nav-'+page).addClass('active')
-            $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
+          $('.nav-link.nav-'+page).closest('.nav-treeview').parent().addClass('menu-open')
         }
         if($('.nav-link.nav-'+page).hasClass('nav-is-tree') == true){
-            $('.nav-link.nav-'+page).parent().addClass('menu-open')
+          $('.nav-link.nav-'+page).parent().addClass('menu-open')
         }
-    }
-    $('.nav-link.active').addClass('bg-maroon')
-    
-    // Toggle Sidebar for Mobile
-    $('.sidebar-toggle').click(function() {
-        var sidebar = $('.main-sidebar');
-        if (sidebar.hasClass('sidebar-closed')) {
-            sidebar.removeClass('sidebar-closed').addClass('sidebar-open');
-        } else {
-            sidebar.removeClass('sidebar-open').addClass('sidebar-closed');
-        }
-    });
-  })
+
+      }
+      $('.nav-link.active').addClass('bg-maroon')
+    })
   </script>
