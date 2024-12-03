@@ -8,40 +8,54 @@ header("Referrer-Policy: no-referrer-when-downgrade");
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
 
 // Secure Cookie Flags
-ini_set('session.cookie_httponly', 1);
-ini_set('session.cookie_secure', 1);
-ini_set('session.use_only_cookies', 1);
+ini_set('session.cookie_secure', '1'); // Send cookies over HTTPS only
+ini_set('session.cookie_httponly', '1'); // Prevent JavaScript access to cookies
+ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
+ini_set('session.use_only_cookies', '1'); // Ensure session only uses cookies
+
+// Session Configuration
+session_set_cookie_params([
+    'lifetime' => 3600, // 1-hour session duration
+    'path' => '/',
+    'domain' => '', // Specify domain if needed
+    'secure' => true, // Ensure cookie is sent over HTTPS
+    'httponly' => true, // Prevent access via JavaScript
+    'samesite' => 'Strict', // CSRF protection
+]);
 
 session_start();
 
-// Define a function to sanitize input data
+// Session expiration logic
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
+    // Session expired after 1 hour
+    session_unset(); // Clear session data
+    session_destroy(); // Destroy the session
+    header("Location: ./index"); // Redirect to index
+    exit;
+}
+$_SESSION['last_activity'] = time(); // Update last activity time
+
+// Sanitize Input Function
 function sanitizeInput($data) {
     $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
     $data = trim($data);
     return $data;
 }
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Define a function to sanitize input data
-        function sanitizeInput($data) {
-            // Strip tags and special characters, convert them to HTML entities
-            $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-            $data = trim($data); // Remove unnecessary spaces
-            return $data;
-        }
 
-        // Sanitize the form fields
-        $lastname = sanitizeInput($_POST['lastname']);
-        $firstname = sanitizeInput($_POST['firstname']);
-        $middlename = sanitizeInput($_POST['middlename']);
-        $contact = sanitizeInput($_POST['contact']);
-        $subject = sanitizeInput($_POST['subject']);
-        $message = sanitizeInput($_POST['message']);
-        $municipality = sanitizeInput($_POST['municipality']);
-        $barangay = sanitizeInput($_POST['barangay']);
-        $sitio_street = sanitizeInput($_POST['sitio_street']);
-        
-        // Process the data here (e.g., insert into a database)
-    }
+// Process Form Submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $lastname = sanitizeInput($_POST['lastname']);
+    $firstname = sanitizeInput($_POST['firstname']);
+    $middlename = sanitizeInput($_POST['middlename']);
+    $contact = sanitizeInput($_POST['contact']);
+    $subject = sanitizeInput($_POST['subject']);
+    $message = sanitizeInput($_POST['message']);
+    $municipality = sanitizeInput($_POST['municipality']);
+    $barangay = sanitizeInput($_POST['barangay']);
+    $sitio_street = sanitizeInput($_POST['sitio_street']);
+    
+    // Process the sanitized data (e.g., insert into database)
+}
 ?>
 
 <section class="py-3">
@@ -130,18 +144,48 @@ function sanitizeInput($data) {
                                     <label for="sitio_street" class="control-label">Purok/Street <small class="text-danger">*</small></label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="sitio_street" id="sitio_street" required="required">
                                 </div>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="terms-checkbox" required>
+                                    <label class="form-check-label" for="terms-checkbox">I agree to the <a href="#" data-toggle="modal" data-target="#termsModal">Terms and Conditions</a></label>
+                                </div>
                             </form>
                         </div>
                     </div>
                     <div class="card-footer py-1 text-center">
-                        <button class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form"><i class="fa fa-paper-plane"></i> Submit</button>
-                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';"><i class="fa fa-times"></i> Cancel</button>
+                        <button id="submit-button" class="btn btn-flat btn-sm btn-primary bg-gradient-primary" form="request-form" disabled>
+                            <i class="fa fa-paper-plane"></i> Submit
+                        </button>
+                        <button class="btn btn-flat btn-sm btn-light bg-gradient-light border" type="button" onclick="window.location.href='./';">
+                            <i class="fa fa-times"></i> Cancel
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Modal for Terms and Conditions -->
+<div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>Terms and Conditions for Bureau Fire Protection Incident Reporting System</h5>
+                    <p>Please read and agree to the following terms and conditions before submitting your incident report.</p>
+                    <p><strong>1. Acceptance of Terms</strong></p>
+                    <p>By submitting your incident report, you agree to these terms and conditions...</p> <!-- Add the full terms here -->
+                    <p><strong>2. Data Collection</strong></p>
+                    <p>Your personal information will be collected, including but not limited to your full name, contact information, and address...</p>
+                    <!-- Add all other terms here -->
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 <style>
@@ -155,10 +199,16 @@ function sanitizeInput($data) {
 </style>
 
 <script>
+     // Get the checkbox and submit button elements
+     const termsCheckbox = document.getElementById('terms-checkbox');
+    const submitButton = document.getElementById('submit-button');
+
+    termsCheckbox.addEventListener('change', function () {
+        submitButton.disabled = !termsCheckbox.checked;
+    });
     // Define fields that need capitalization for the first letter of each word (except message and sitio_street)
     const fields = ['lastname', 'firstname', 'middlename', 'subject'];
 
-    // Capitalize first letter of each word for specific fields
     fields.forEach(field => {
         document.getElementById(field).addEventListener('input', function (e) {
             e.target.value = e.target.value.replace(/[^a-zA-Z\s]/g, '').replace(/\b\w/g, function (char) {
@@ -167,7 +217,6 @@ function sanitizeInput($data) {
         });
     });
 
-    // No automatic capitalization for the 'message' field, only prevent special characters
     document.getElementById('message').addEventListener('input', function (e) {
         e.target.value = e.target.value.replace(/[^a-zA-Z0-9\s,.!?]/g, ''); // Allow letters, numbers, spaces, and basic punctuation
     });
