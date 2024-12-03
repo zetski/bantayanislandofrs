@@ -5,37 +5,6 @@
   .bg-maroon {
       background-color: #ff4600 !important;
   }
-   /* Responsive Styles */
-   @media (max-width: 768px) {
-    /* Sidebar styles for mobile */
-    .main-sidebar {
-      position: fixed; /* Ensure the sidebar stays fixed */
-      top: 0;
-      left: 0;
-      height: 100vh; /* Full viewport height */
-      z-index: 1050; /* Place above the topbar */
-      overflow-y: auto;
-    }
-    .main-sidebar.sidebar-show {
-      left: 0;
-    }
-
-    .os-host {
-      height: calc(100vh - 56px); /* Adjust height to exclude navbar */
-      overflow-y: auto;
-    }
-
-    .brand-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    /* Adjust sidebar item font sizes */
-    .nav-sidebar .nav-link {
-      font-size: 14px;
-    }
-  }
 </style>
 <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
@@ -227,17 +196,4 @@
       }
       $('.nav-link.active').addClass('bg-maroon')
     })
-    $('[data-widget="pushmenu"]').on("click", function () {
-      $(".main-sidebar").toggleClass("sidebar-show");
-    });
-
-    // Close sidebar when clicking outside
-    $(document).on("click", function (e) {
-      if (
-        !$(e.target).closest(".main-sidebar").length &&
-        !$(e.target).closest('[data-widget="pushmenu"]').length
-      ) {
-        $(".main-sidebar").removeClass("sidebar-show");
-      }
-    });
   </script>

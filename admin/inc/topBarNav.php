@@ -58,26 +58,6 @@ $new_reports_count = $new_reports_query->num_rows;
     max-height: 300px;
     overflow-y: auto;
   }
-  /* Responsive Styles */
-  @media (max-width: 768px) {
-    .navbar-nav {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .navbar-separator {
-      display: none;
-    }
-
-    .nav-link {
-      font-size: 14px;
-    }
-
-    .dropdown-menu {
-      width: 100%;
-    }
-  }
 </style>
 
 <!-- Navbar -->
