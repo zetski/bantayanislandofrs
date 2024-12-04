@@ -12,45 +12,6 @@ $stat_arr = ['Pending Requests', 'Assigned to a Team', 'Request where a Team is 
 $admin_district = $_settings->userdata('district');
 
 ?>
-<style>
-    /* General Styles */
-    .card-body {
-        overflow-x: auto; /* Enable horizontal scrolling for tables */
-    }
-
-    /* Responsive Table */
-    @media (max-width: 768px) {
-        .table th,
-        .table td {
-            font-size: 12px;
-            padding: 8px;
-        }
-        .btn {
-            font-size: 10px; /* Smaller button font */
-        }
-        .modal-content {
-            font-size: 12px; /* Smaller modal font for small screens */
-        }
-    }
-
-    @media (max-width: 576px) {
-        .table th,
-        .table td {
-            white-space: nowrap; /* Prevent text wrapping in small screens */
-        }
-        .card-header .card-title {
-            font-size: 14px;
-        }
-    }
-
-    /* Action Dropdown for Small Screens */
-    @media (max-width: 400px) {
-        .dropdown-menu {
-            font-size: 12px; /* Reduce font size for dropdown options */
-        }
-    }
-</style>
-
 <div class="card card-outline rounded-0 card-danger">
     <div class="card-header">
         <h3 class="card-title">List of <?= isset($stat_arr[$status]) ? $stat_arr[$status] : 'All Requests' ?></h3>
@@ -127,18 +88,38 @@ $admin_district = $_settings->userdata('district');
                                 ?>
                             </td>
                             <td>
-                                <?php
-                                // Define the base directory where images are stored
-                                $baseDir = '../uploads/';
+                            <?php
+                            // Define the base directory where images are stored
+                            $baseDir = '../uploads/';
 
-                                // Check if the photo field is not empty and if the file exists
-                                $imagePath = !empty($row['image']) && file_exists($baseDir . $row['image']) 
-                                            ? $baseDir . $row['image'] 
-                                            : $baseDir . 'default-image.jpg';
-                                ?>
-                                <a href="javascript:void(0);" data-toggle="modal" data-target="#imageModal<?php echo $i; ?>">
-                                    <img src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>" alt="Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
-                                </a>
+                            // Check if the photo field is not empty and if the file exists
+                            $imagePath = !empty($row['image']) && file_exists($baseDir . $row['image']) 
+                                        ? $baseDir . $row['image'] 
+                                        : $baseDir . 'default-image.jpg';
+                            ?>
+                            <a href="javascript:void(0);" data-toggle="modal" data-target="#imageModal<?php echo $i; ?>">
+                                <img src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>" alt="Image" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
+                            </a>
+
+                            <!-- Modal -->
+                            <div class="modal fade" id="imageModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel<?php echo $i; ?>" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="imageModalLabel<?php echo $i; ?>">Image Preview</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <img src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>" alt="Image" class="img-fluid">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             </td>
                             <td align="center">
                                 <button type="button" class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
