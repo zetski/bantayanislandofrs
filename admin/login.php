@@ -272,11 +272,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const username = document.querySelector('input[name="username"]').value;
-    const password = document.querySelector('input[name="password"]').value;
-    
     // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; 
+    const isValid = false; // Replace this with actual validation logic
     if (!isValid) {
       handleInvalidCredentials();
     } else {
