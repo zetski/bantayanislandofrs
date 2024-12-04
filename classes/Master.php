@@ -416,7 +416,7 @@ Class Master extends DBConnection {
 	// Save Officer Function
     public function save_officer() {
 		extract($_POST);
-		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position) || empty($officer_district)) {
+		if (empty($officer_lastname) || empty($officer_firstname) || empty($officer_middlename) || empty($officer_position)) {
 			echo json_encode([
 				'status' => 'failed',
 				'error' => 'Last Name, First Name, Middle Name and Position are required fields.'
@@ -451,9 +451,9 @@ Class Master extends DBConnection {
 		$images = json_encode($officer_images);
 	
 		// Insert officer record
-		$sql = "INSERT INTO officers (lastname, firstname, middlename, position, district, image) VALUES (?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO officers (lastname, firstname, middlename, position, image) VALUES (?, ?, ?, ?, ?)";
 		$stmt = $this->conn->prepare($sql);
-		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_district, $images);
+		$stmt->bind_param('sssss', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $images);
 	
 		if ($stmt->execute()) {
 			$response = [
@@ -463,7 +463,6 @@ Class Master extends DBConnection {
 				'firstname' => $officer_firstname,
 				'middlename' => $officer_middlename,
 				'position' => $officer_position,
-				'district' => $officer_district,
 				'image' => $officer_images ? base_url . $officer_images[0] : ''  // Return the first image URL
 			];
 		} else {
@@ -514,7 +513,7 @@ Class Master extends DBConnection {
     }
 
 	public function get_officers() {
-		$sql = "SELECT id, lastname, firstname, middlename, position, district, image FROM officers ORDER BY id ASC";
+		$sql = "SELECT id, lastname, firstname, middlename, position, image FROM officers ORDER BY id ASC";
 		$query = $this->conn->query($sql);
 	
 		$officers = [];
@@ -525,7 +524,6 @@ Class Master extends DBConnection {
 				'firstname' => $row['firstname'],
 				'middlename' => $row['middlename'],
 				'position' => $row['position'],
-				'district' => $row['district'],
 				'image' => validate_image($row['image']) // Assuming validate_image handles URL validation
 			];
 		}
@@ -536,7 +534,7 @@ Class Master extends DBConnection {
 	public function get_officer_details() {
 		extract($_GET);
 	
-		$sql = "SELECT id, lastname, firstname, middlename, position, district, image FROM officers WHERE id = ?";
+		$sql = "SELECT id, lastname, firstname, middlename, position, image FROM officers WHERE id = ?";
 		$stmt = $this->conn->prepare($sql);
 		$stmt->bind_param('i', $id);
 		$stmt->execute();
@@ -561,13 +559,13 @@ Class Master extends DBConnection {
 		}
 	
 		$image_sql = $officer_image ? ", image = ?" : "";
-		$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ?, district =? $image_sql WHERE id = ?";
+		$sql = "UPDATE officers SET lastname = ?, firstname = ?, middlename = ?, position = ? $image_sql WHERE id = ?";
 		$stmt = $this->conn->prepare($sql);
 	
 		if ($officer_image) {
-			$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_district, $officer_image, $officer_id);
+			$stmt->bind_param('sssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_image, $officer_id);
 		} else {
-			$stmt->bind_param('ssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_district, $officer_id);
+			$stmt->bind_param('ssssi', $officer_lastname, $officer_firstname, $officer_middlename, $officer_position, $officer_id);
 		}
 	
 		if ($stmt->execute()) {
