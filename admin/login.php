@@ -272,57 +272,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const formData = new FormData(this);
-    fetch('Login.php?f=login', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // SweetAlert for success
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Successful!',
-                text: data.message,
-                timer: 2000,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = 'dashboard.php'; // Redirect to dashboard
-            });
-        } else if (data.status === 'locked') {
-            Swal.fire({
-                icon: 'error',
-                title: 'Account Locked!',
-                text: data.message,
-            });
-        } else {
-            // Handle invalid credentials
-            handleInvalidCredentials();
-        }
-    })
-    .catch(error => console.error('Error:', error));
-});
-
-function handleInvalidCredentials() {
-    remainingAttempts--;
-    const cardBody = document.querySelector(".card-body");
-    cardBody.classList.add("shake");
-    setTimeout(() => cardBody.classList.remove("shake"), 500);
-
-    const alertBox = document.getElementById("alert-box");
-    if (remainingAttempts > 0) {
-        alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+    // Simulate an invalid login for demonstration (replace with actual AJAX request)
+    const isValid = false; // Replace this with actual validation logic
+    if (!isValid) {
+      handleInvalidCredentials();
     } else {
-        alertBox.innerHTML = `<div class="alert alert-danger">You are locked out for 3 minutes.</div>`;
-        lockForm();
-        setTimeout(() => {
-            unlockForm();
-            remainingAttempts = 3;
-            alertBox.innerHTML = '';
-        }, 180000); // 3 minutes
+      // Handle successful login
+      alert("Login successful!");
     }
-}
+  });
   //end of limit attempt
 
     $(document).ready(function(){
