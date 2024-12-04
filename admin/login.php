@@ -46,7 +46,7 @@ function sanitize_input($input) {
 // ReCAPTCHA v3 verification
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $recaptchaResponse = $_POST['recaptcha_response'] ?? '';
-  $recaptchaSecret = 'YOUR_SECRET_KEY'; // Replace with your secret key
+  $recaptchaSecret = '6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp'; // Replace with your secret key
   $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
   
   $response = file_get_contents($recaptchaUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
