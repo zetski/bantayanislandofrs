@@ -30,41 +30,49 @@ class Login extends DBConnection {
 
     public function login() {
         $current_time = time();
-    
+        
         // Check if user is locked out
         if ($_SESSION['timeout'] && $current_time < $_SESSION['timeout']) {
             $remaining_time = $_SESSION['timeout'] - $current_time;
             return json_encode([
-                'status' => 'locked',
+                'status' => 'locked', 
                 'message' => "You are locked out. Try again in $remaining_time seconds."
             ]);
         }
-    
+
+        // Process login
         extract($_POST);
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-    
+
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             $storedHash = $user['password'];
-    
-            if ((strlen($storedHash) == 32 && md5($password) === $storedHash) || password_verify($password, $storedHash)) {
-                // Successful login
-                $_SESSION['login_attempts'] = 3;
-                $_SESSION['timeout'] = null;
-                foreach ($user as $k => $v) {
-                    if (!is_numeric($k) && $k != 'password') {
-                        $this->settings->set_userdata($k, $v);
-                    }
-                }
-                $this->settings->set_userdata('login_type', 1);
-    
-                return json_encode(['status' => 'success', 'message' => 'Login successful!']);
-            } else {
+
+            // Handle MD5 or bcrypt password verification
+            if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
+                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+                $updateStmt->bind_param("ss", $newHashedPassword, $username);
+                $updateStmt->execute();
+                $updateStmt->close();
+            } elseif (!password_verify($password, $storedHash)) {
                 return $this->handleFailedLogin();
             }
+
+            // Successful login: Reset login attempts and set session data
+            $_SESSION['login_attempts'] = 3;
+            $_SESSION['timeout'] = null;
+            foreach ($user as $k => $v) {
+                if (!is_numeric($k) && $k != 'password') {
+                    $this->settings->set_userdata($k, $v);
+                }
+            }
+            $this->settings->set_userdata('login_type', 1);
+
+            return json_encode(['status' => 'success']);
         } else {
             return $this->handleFailedLogin();
         }
