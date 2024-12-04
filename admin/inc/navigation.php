@@ -5,34 +5,13 @@
   .bg-maroon {
       background-color: #ff4600 !important;
   }
-  .brand-link {
-  display: flex;
-  justify-content: space-between; /* Distribute space between the logo and the hamburger icon */
-  align-items: center; /* Vertically align logo and icon */
-}
-
-#sidebarToggle {
-  margin-left: 10px; /* Optional: Adds space between logo and hamburger icon */
-  cursor: pointer; /* Show pointer on hover */
-}
-
-#sidebarToggle i {
-  font-size: 24px; /* Adjust the size of the hamburger icon */
-  color: white; /* Optional: make the icon white */
-}
 </style>
 <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-light-maroon navbar-light elevation-4 sidebar-no-expand">
         <!-- Brand Logo -->
-        <a href="<?php echo base_url ?>admin" class="brand-link bg-maroon text-sm d-flex justify-content-between align-items-center">
-          <div class="d-flex align-items-center">
-            <img src="<?php echo validate_image($_settings->info('logo')) ?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 1.5rem;height: 1.5rem;max-height: unset">
-            <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
-          </div>
-          <!-- Hamburger Icon -->
-          <div id="sidebarToggle">
-            <i class="fas fa-bars nav-icon text-white"></i> <!-- Hamburger Icon -->
-          </div>
+        <a href="<?php echo base_url ?>admin" class="brand-link bg-maroon text-sm">
+        <img src="<?php echo validate_image($_settings->info('logo'))?>" alt="Store Logo" class="brand-image img-circle elevation-3" style="opacity: .8;width: 1.5rem;height: 1.5rem;max-height: unset">
+        <span class="brand-text font-weight-light"><?php echo $_settings->info('short_name') ?></span>
         </a>
         <!-- Sidebar -->
         <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-transition os-host-scrollbar-horizontal-hidden">
@@ -198,12 +177,6 @@
         <!-- /.sidebar -->
       </aside>
       <script>
-        $(document).ready(function() {
-    // Toggle Sidebar visibility
-    $('#sidebarToggle').click(function() {
-      $('body').toggleClass('sidebar-collapse');  // Toggle the 'sidebar-collapse' class on body
-    });
-  });
     $(document).ready(function(){
       var page = '<?php echo isset($_GET['page']) ? $_GET['page'] : 'home' ?>';
       var status = '<?php echo isset($_GET['status']) ? $_GET['status'] : '' ?>';
