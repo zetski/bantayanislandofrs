@@ -12,72 +12,34 @@ $stat_arr = ['Pending Requests', 'Assigned to a Team', 'Request where a Team is 
 $admin_district = $_settings->userdata('district');
 
 ?>
-<style>
-    /* General styles */
-    .img-thumbnail {
-        max-width: 50px;
-        max-height: 50px;
-    }
-
-    /* Adjustments for smaller screens */
-    @media (max-width: 768px) {
-        .card-body {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            min-width: 700px; /* Adjust as needed */
-        }
-        .btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-    }
-
-    /* Hiding less important columns on small screens */
-    @media (max-width: 576px) {
-        th:nth-child(5), td:nth-child(5), /* Message Column */
-        th:nth-child(6), td:nth-child(6), /* Address Column */
-        th:nth-child(7), td:nth-child(7)  /* Image Column */ {
-            display: none;
-        }
-    }
-
-    /* Full-width dropdown for better usability on mobile */
-    .dropdown-menu {
-        width: 100%;
-    }
-</style>
-
 <div class="card card-outline rounded-0 card-danger">
     <div class="card-header">
         <h3 class="card-title">List of <?= isset($stat_arr[$status]) ? $stat_arr[$status] : 'All Requests' ?></h3>
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <div class="table-responsive">
-                <table class="table table-hover table-striped table-bordered" id="list">
-                    <colgroup>
-                        <col width="5%">
-                        <col width="15%">
-                        <col width="15%">
-                        <col width="20%">
-                        <col width="15%">
-                        <col width="15%">
-                        <col width="10%">
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Date Created</th>
-                            <th>Code</th>
-                            <th>Reported By</th>
-                            <th>Message</th>
-                            <th>Address</th>
-                            <th>Image</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
+            <table class="table table-hover table-striped table-bordered" id="list">
+                <colgroup>
+                    <col width="5%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="20%">
+                    <col width="15%">
+                    <col width="15%">
+                    <col width="10%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date Created</th>
+                        <th>Code</th>
+                        <th>Reported By</th>
+                        <th>Message</th>
+                        <th>Address</th>
+                        <th>Image</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <?php 
                     $i = 1;
@@ -176,7 +138,6 @@ $admin_district = $_settings->userdata('district');
                     <?php endwhile; ?>
                 </tbody>
             </table>
-             </div>
         </div>
     </div>
     <div class="card-footer text-right">
