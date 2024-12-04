@@ -30,7 +30,7 @@ class Login extends DBConnection {
 
     public function login() {
         $current_time = time();
-        
+    
         // Check if user is locked out
         if ($_SESSION['timeout'] && $current_time < $_SESSION['timeout']) {
             $remaining_time = $_SESSION['timeout'] - $current_time;
@@ -39,20 +39,21 @@ class Login extends DBConnection {
                 'message' => "You are locked out. Try again in $remaining_time seconds."
             ]);
         }
-
+    
         // Process login
         extract($_POST);
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             $storedHash = $user['password'];
-
+    
             // Handle MD5 or bcrypt password verification
             if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
+                // If password is in MD5, hash it using bcrypt and update the DB
                 $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
                 $updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
                 $updateStmt->bind_param("ss", $newHashedPassword, $username);
@@ -61,7 +62,7 @@ class Login extends DBConnection {
             } elseif (!password_verify($password, $storedHash)) {
                 return $this->handleFailedLogin();
             }
-
+    
             // Successful login: Reset login attempts and set session data
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
@@ -71,18 +72,22 @@ class Login extends DBConnection {
                 }
             }
             $this->settings->set_userdata('login_type', 1);
-
-            return json_encode(['status' => 'success']);
+    
+            return json_encode([
+                'status' => 'success', 
+                'message' => 'Login successful'
+            ]);
         } else {
             return $this->handleFailedLogin();
         }
     }
-
+    
     private function handleFailedLogin() {
         $_SESSION['login_attempts']--;
-
+    
         if ($_SESSION['login_attempts'] <= 0) {
-            $_SESSION['timeout'] = time() + (3 * 60); // Set 3-minute lockout
+            // Set a 3-minute lockout if attempts are exhausted
+            $_SESSION['timeout'] = time() + (3 * 60);
             return json_encode([
                 'status' => 'locked', 
                 'message' => "You are locked out for 3 minutes."
@@ -90,14 +95,9 @@ class Login extends DBConnection {
         } else {
             return json_encode([
                 'status' => 'error', 
-                'attempts_left' => $_SESSION['login_attempts']
+                'attempts_left' => $_SESSION['login_attempts'],
+                'message' => 'Invalid credentials. Please try again.'
             ]);
-        }
-    }
-
-    public function logout() {
-        if ($this->settings->sess_des()) {
-            redirect('admin/login.php');
         }
     }
 

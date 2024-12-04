@@ -272,6 +272,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
 
+    const username = document.querySelector('input[name="username"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+
+     // Send an AJAX request to validate the credentials
+     $.ajax({
+        url: '', // Same page for login validation
+        type: 'POST',
+        data: { username: username, password: password },
+        success: function(response) {
+            // Check if the login is successful
+            if (response.trim() === 'Login successful') {
+                alert("Login successful!");
+            } else {
+                handleInvalidCredentials(); // Handle failed login
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log(error);
+            handleInvalidCredentials(); // Handle AJAX error
+        }
+    });
+});
     // Simulate an invalid login for demonstration (replace with actual AJAX request)
     const isValid = false; 
     if (!isValid) {
