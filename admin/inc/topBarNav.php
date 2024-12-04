@@ -64,9 +64,9 @@ $new_reports_count = $new_reports_query->num_rows;
 <nav class="main-header navbar navbar-expand navbar-light shadow text-sm">
   <!-- Left navbar links -->
   <ul class="navbar-nav">
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-    </li>
+    </li> -->
     <li class="nav-item d-none d-sm-inline-block">
       <a href="<?php echo base_url ?>" class="nav-link">
         <?php echo (!isMobileDevice()) ? $_settings->info('name') : $_settings->info('short_name'); ?> - Admin
