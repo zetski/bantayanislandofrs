@@ -27,7 +27,7 @@
      
         <!-- Main content -->
         <section class="content  text-dark">
-          <div class="container-fluid">
+          <div class=".container-fluid">
             <?php 
               if(!file_exists($page.".php") && !is_dir($page)){
                   include '404.html';
