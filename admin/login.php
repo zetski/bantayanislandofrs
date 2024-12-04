@@ -317,23 +317,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Insert reCAPTCHA v3 logic
   document.addEventListener('DOMContentLoaded', function() {
-      const siteKey = '6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp'; // Replace with your reCAPTCHA v3 site key
+    const siteKey = '6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp'; // Replace with your actual reCAPTCHA v3 site key
 
-      grecaptcha.ready(function() {
-          document.getElementById('login-frm').addEventListener('submit', function(event) {
-              event.preventDefault(); // Prevent form submission for validation
-              grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
-                  // Append the token to the form and submit it
-                  const recaptchaInput = document.createElement('input');
-                  recaptchaInput.type = 'hidden';
-                  recaptchaInput.name = 'recaptcha_response';
-                  recaptchaInput.value = token;
-                  document.getElementById('login-frm').appendChild(recaptchaInput);
-                  document.getElementById('login-frm').submit();
-              });
-          });
-      });
-  });
+    grecaptcha.ready(function() {
+        document.getElementById('login-frm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
+                const recaptchaInput = document.createElement('input');
+                recaptchaInput.type = 'hidden';
+                recaptchaInput.name = 'recaptcha_response';
+                recaptchaInput.value = token;
+                document.getElementById('login-frm').appendChild(recaptchaInput);
+
+                // Submit the form after the token is appended
+                document.getElementById('login-frm').submit();
+            }).catch(function(error) {
+                console.error('reCAPTCHA execution failed:', error);
+                alert('Failed to verify reCAPTCHA. Please try again.');
+            });
+        });
+    });
+});
 </script>
 </body>
 </html>
