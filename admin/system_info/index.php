@@ -156,7 +156,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Officers data will be loaded here dynamically -->
+                        Officers data will be loaded here dynamically
                     </tbody>
                 </table>
             </div>
