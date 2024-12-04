@@ -45,17 +45,20 @@ function sanitize_input($input) {
 
 // ReCAPTCHA v3 verification
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $recaptchaResponse = $_POST['recaptcha_response'] ?? '';
-    $recaptchaSecret = '6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp'; // Replace with your reCAPTCHA v3 secret key
-
-    $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
-    $response = file_get_contents($recaptchaUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
-    $responseKeys = json_decode($response, true);
-
-    if (!$responseKeys['success'] || $responseKeys['score'] < 0.5) {
-        echo 'reCAPTCHA verification failed. Please try again.';
-        exit;
-    }
+  $recaptchaResponse = $_POST['recaptcha_response'] ?? '';
+  $recaptchaSecret = 'YOUR_SECRET_KEY'; // Replace with your secret key
+  $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+  
+  $response = file_get_contents($recaptchaUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+  $responseKeys = json_decode($response, true);
+  
+  if (!$responseKeys['success'] || $responseKeys['score'] < 0.5) {
+      echo "<script>
+          alert('reCAPTCHA verification failed. Please try again.');
+          window.location.href = 'login.php';
+      </script>";
+      exit;
+  }
 
     $username = sanitize_input($_POST['username']);
     $password = sanitize_input($_POST['password']);
