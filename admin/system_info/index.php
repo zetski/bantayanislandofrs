@@ -103,7 +103,7 @@
 	</div>
 
 	 <!-- Officers Management Section -->
-	 <!-- <div class="card card-outline rounded-0 card-danger mt-3">
+	 <div class="card card-outline rounded-0 card-danger mt-3">
         <div class="card-header">
             <h5 class="card-title">Officers Management</h5>
         </div>
@@ -156,13 +156,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        Officers data will be loaded here dynamically
+                        <!-- Officers data will be loaded here dynamically -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
-</div> -->
+</div>
 
 <!-- modal -->
 <div class="modal fade" id="editOfficerModal" tabindex="-1" aria-labelledby="editOfficerModalLabel" aria-hidden="true">
