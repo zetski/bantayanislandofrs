@@ -143,6 +143,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </script>
   <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
+    html, body {
+    height: 100%;
+    overflow: hidden;
+}
    body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
         background-size: cover; 
@@ -151,6 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         backdrop-filter: contrast(1);
         height: 100vh; 
         margin: 0;
+        overflow: hidden;
     }
     #page-title {
         text-shadow: 6px 4px 7px black;
