@@ -330,10 +330,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     };
     
     grecaptcha.ready(function () {
-        grecaptcha.execute('6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp', { action: 'login' }).then(function (token) {
-            document.getElementById('recaptcha-token').value = token;
-        });
+    grecaptcha.execute('6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp', { action: 'login' }).then(function (token) {
+        console.log('Generated Token:', token); // Debugging
+        document.getElementById('recaptcha-token').value = token;
     });
+});
   </script>
 </body>
 </html>
