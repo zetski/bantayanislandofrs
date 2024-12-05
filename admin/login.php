@@ -56,6 +56,20 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $recaptcha_secret = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH'; // Replace with your reCAPTCHA secret key
+  $recaptcha_response = $_POST['g-recaptcha-response'];
+
+  // Verify the reCAPTCHA response
+  $recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+  $response = file_get_contents($recaptcha_verify_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+  $response_keys = json_decode($response, true);
+
+  if (intval($response_keys["success"]) !== 1) {
+      echo 'Please complete the reCAPTCHA';
+      exit;
+  }
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = sanitize_input($_POST['username']);
   $password = sanitize_input($_POST['password']);
 
@@ -63,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       echo 'Invalid input';
       exit;
   }
-
+}
   // Prepared statement to prevent SQL injection
   $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
   $stmt->bind_param("s", $username);
