@@ -323,7 +323,7 @@ document.onkeydown = function(e) {
 function onClick(e) {
         e.preventDefault();
         grecaptcha.ready(function() {
-          grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
+          grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
               // Add your logic to submit to your backend server here.
           });
         });
