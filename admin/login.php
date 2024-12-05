@@ -316,24 +316,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   };
 
   // Insert reCAPTCHA v3 logic
-  document.addEventListener('DOMContentLoaded', function() {
-      const siteKey = '6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2'; // Replace with your reCAPTCHA v3 site key
-
-      grecaptcha.ready(function() {
-          document.getElementById('login-frm').addEventListener('submit', function(event) {
-              event.preventDefault(); // Prevent form submission for validation
-              grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
-                  // Append the token to the form and submit it
-                  const recaptchaInput = document.createElement('input');
-                  recaptchaInput.type = 'hidden';
-                  recaptchaInput.name = 'recaptcha_response';
-                  recaptchaInput.value = token;
-                  document.getElementById('login-frm').appendChild(recaptchaInput);
-                  document.getElementById('login-frm').submit();
-              });
-          });
-      });
-  });
+  document.getElementById('login-frm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    grecaptcha.ready(function() {
+        grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
+            const recaptchaInput = document.createElement('input');
+            recaptchaInput.type = 'hidden';
+            recaptchaInput.name = 'recaptcha_response';
+            recaptchaInput.value = token;
+            event.target.appendChild(recaptchaInput);
+            event.target.submit(); // Submit the form after adding token
+        });
+    });
+});
 </script>
 </body>
 </html>
