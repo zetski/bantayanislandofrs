@@ -227,87 +227,87 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <script>
     let remainingAttempts = 3; // Initial login attempts
-  let isLocked = false; // Lockout flag
+    let isLocked = false; // Lockout flag
 
-  function handleInvalidCredentials() {
-    if (isLocked) return;
+    function handleInvalidCredentials() {
+      if (isLocked) return;
 
-    // Decrease attempts
-    remainingAttempts--;
+      // Decrease attempts
+      remainingAttempts--;
 
-    // Shake the card body
-    const cardBody = document.querySelector(".card-body");
-    cardBody.classList.add("shake");
-    setTimeout(() => cardBody.classList.remove("shake"), 500);
+      // Shake the card body
+      const cardBody = document.querySelector(".card-body");
+      cardBody.classList.add("shake");
+      setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-    // Display alert below form
-    const alertBox = document.getElementById("alert-box");
-    if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-    } else {
-      isLocked = true;
-      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-      lockForm();
-      setTimeout(() => {
-        isLocked = false;
-        remainingAttempts = 3;
-        alertBox.innerHTML = ""; // Clear alert
-        unlockForm();
-      }, 3 * 60 * 1000); // 3 minutes
+      // Display alert below form
+      const alertBox = document.getElementById("alert-box");
+      if (remainingAttempts > 0) {
+        alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+      } else {
+        isLocked = true;
+        alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
+        lockForm();
+        setTimeout(() => {
+          isLocked = false;
+          remainingAttempts = 3;
+          alertBox.innerHTML = ""; // Clear alert
+          unlockForm();
+        }, 3 * 60 * 1000); // 3 minutes
+      }
     }
-  }
 
-  function lockForm() {
-    document.querySelector('input[name="username"]').disabled = true;
-    document.querySelector('input[name="password"]').disabled = true;
-    document.querySelector('button[type="submit"]').disabled = true;
-  }
-
-  function unlockForm() {
-    document.querySelector('input[name="username"]').disabled = false;
-    document.querySelector('input[name="password"]').disabled = false;
-    document.querySelector('button[type="submit"]').disabled = false;
-  }
-
-  document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
-    if (!isValid) {
-      handleInvalidCredentials();
-    } else {
-      // Handle successful login
-      alert("Login successful!");
+    function lockForm() {
+      document.querySelector('input[name="username"]').disabled = true;
+      document.querySelector('input[name="password"]').disabled = true;
+      document.querySelector('button[type="submit"]').disabled = true;
     }
-  });
-  //end of limit attempt
 
-    $(document).ready(function(){
-      end_loader();
-    });
+    function unlockForm() {
+      document.querySelector('input[name="username"]').disabled = false;
+      document.querySelector('input[name="password"]').disabled = false;
+      document.querySelector('button[type="submit"]').disabled = false;
+    }
 
-    // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+    document.getElementById("login-frm").addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+      // Simulate an invalid login for demonstration (replace with actual AJAX request)
+      const isValid = false; // Replace this with actual validation logic
+      if (!isValid) {
+        handleInvalidCredentials();
+      } else {
+        // Handle successful login
+        alert("Login successful!");
+      }
     });
+    //end of limit attempt
 
-    // Toggle password visibility
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
+      $(document).ready(function(){
+        end_loader();
+      });
+
+      // Automatically remove disallowed characters as they are typed
+      document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+          e.target.value = e.target.value.replace(/[<>\/]/g, '');
+      });
+
+      document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+          e.target.value = e.target.value.replace(/[<>\/]/g, '');
+      });
+
+      // Toggle password visibility
+      $('#toggle-password').on('click', function() {
+          let passwordField = $('#password');
+          let passwordFieldType = passwordField.attr('type');
+          if (passwordFieldType === 'password') {
+              passwordField.attr('type', 'text');
+              $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+          } else {
+              passwordField.attr('type', 'password');
+              $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+          }
+      });
 
     // Disable inspect element and right-click
     document.addEventListener('contextmenu', event => event.preventDefault());
