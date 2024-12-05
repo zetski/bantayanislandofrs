@@ -56,7 +56,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Verify reCAPTCHA v3
     $secretKey = "6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp";
     $recaptchaURL = "https://www.google.com/recaptcha/api/siteverify";
-    $response = file_get_contents("$recaptchaURL?secret=$secretKey&response=$recaptchaToken");
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $recaptchaURL);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
+        'secret' => $secretKey,
+        'response' => $recaptchaToken
+    ]));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);
     $responseKeys = json_decode($response, true);
 
     error_log('reCAPTCHA response: ' . print_r($responseKeys, true));
