@@ -9,6 +9,10 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
 }
 require_once('../config.php'); 
 
+if (!isset($_SESSION['login_attempts'])) {
+  $_SESSION['login_attempts'] = 3; // Set default attempts
+}
+
 // // Allowed IP addresses
 // $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 

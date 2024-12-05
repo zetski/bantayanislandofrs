@@ -79,8 +79,12 @@ class Login extends DBConnection {
     }
 
     private function handleFailedLogin() {
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 3; // Initialize if not set
+        }
+    
         $_SESSION['login_attempts']--;
-
+    
         if ($_SESSION['login_attempts'] <= 0) {
             $_SESSION['timeout'] = time() + (3 * 60); // Set 3-minute lockout
             return json_encode([
