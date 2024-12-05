@@ -356,31 +356,20 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
             })
             .then(response => response.json())
             .then(data => {
+                const alertBox = document.getElementById("alert-box");
+
                 if (data.status === 'error') {
-                    // Show SweetAlert for errors (Invalid credentials)
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Failed',
-                        text: data.message || 'Invalid credentials',
-                    });
+                    // Display error message below the form
+                    alertBox.innerHTML = `<div class="alert alert-danger">${data.message || 'Invalid credentials'}</div>`;
                 } else if (data.status === 'success') {
-                    // Redirect to a success page or perform other actions
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Successful',
-                        text: data.message || 'You have successfully logged in!',
-                    }).then(() => {
-                        window.location.href = 'https://bantayan-bfp.com/admin/'; // Redirect after successful login
-                    });
+                    // Redirect on success
+                    window.location.href = 'https://bantayan-bfp.com/admin/';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Invalid credentials!',
-                });
+                const alertBox = document.getElementById("alert-box");
+                alertBox.innerHTML = `<div class="alert alert-danger">An unexpected error occurred. Please try again.</div>`;
             });
         });
     });
