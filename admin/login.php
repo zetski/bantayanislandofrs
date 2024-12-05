@@ -339,49 +339,40 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
 
     // Get reCAPTCHA token
     grecaptcha.ready(function() {
-        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
-            // Append the token to the form data
-            var input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "g-recaptcha-response";
-            input.value = token;
-            document.getElementById("login-frm").appendChild(input);
+    grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
+        // Append the token to the form data
+        var input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "g-recaptcha-response";
+        input.value = token;
+        document.getElementById("login-frm").appendChild(input);
 
-            // Perform AJAX form submission
-            var formData = new FormData(document.getElementById("login-frm"));
-            
-            fetch('', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'error') {
-                    // Show SweetAlert for errors (Invalid credentials)
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Failed',
-                        text: data.message || 'Invalid credentials',
-                    });
-                } else if (data.status === 'success') {
-                    // Redirect to a success page or perform other actions
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login Successful',
-                        text: data.message || 'You have successfully logged in!',
-                    }).then(() => {
-                        window.location.href = 'https://bantayan-bfp.com/admin/'; // Redirect after successful login
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+        // Perform AJAX form submission
+        var formData = new FormData(document.getElementById("login-frm"));
+
+        fetch('', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'error') {
+                // Show SweetAlert for errors (Invalid credentials)
                 Swal.fire({
                     icon: 'error',
-                    title: 'Error',
-                    text: 'There was an issue with your request. Please try again.',
+                    title: 'Login Failed',
+                    text: data.message || 'Invalid credentials',
                 });
-            });
+            } else if (data.status === 'success') {
+                // Redirect to a success page or perform other actions
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Login Successful',
+                    text: data.message || 'You have successfully logged in!',
+                }).then(() => {
+                    window.location.href = 'https://bantayan-bfp.com/admin/'; // Redirect after successful login
+                });
+            }
         });
     });
 });
