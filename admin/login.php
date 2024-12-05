@@ -369,7 +369,7 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
             .catch(error => {
                 console.error('Error:', error);
                 const alertBox = document.getElementById("alert-box");
-                alertBox.innerHTML = `<div class="alert alert-danger">An unexpected error occurred. Please try again.</div>`;
+                alertBox.innerHTML = `<div class="alert alert-danger">Invalid credentials!</div>`;
             });
         });
     });
