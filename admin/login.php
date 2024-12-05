@@ -133,7 +133,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader();
   </script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -330,7 +330,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     };
     
     grecaptcha.ready(function () {
-    grecaptcha.execute('6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp', { action: 'login' }).then(function (token) {
+    grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', { action: 'login' }).then(function (token) {
         console.log('Generated Token:', token); // Debugging
         document.getElementById('recaptcha-token').value = token;
     });
