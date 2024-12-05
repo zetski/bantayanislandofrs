@@ -59,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = file_get_contents("$recaptchaURL?secret=$secretKey&response=$recaptchaToken");
     $responseKeys = json_decode($response, true);
 
+    error_log('reCAPTCHA response: ' . print_r($responseKeys, true));
     if (!$responseKeys['success'] || $responseKeys['score'] < 0.5) {
         echo 'reCAPTCHA verification failed.';
         exit;
