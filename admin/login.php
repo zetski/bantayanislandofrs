@@ -123,9 +123,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
-    body {
+   body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
         background-size: cover; 
         background-position: center;
@@ -178,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transform: translateX(-5px);
     }
   }
-</style>
+  </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
     <div class="card card-danger my-2">
@@ -186,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -194,39 +193,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" disabled>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
+              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
           </div>
         </form>
         <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>" disabled>Go to Website</a>
+          <a href="<?php echo base_url ?>">Go to Website</a>
         </p>
       </div>
     </div>
   </div>
 
   <div id="alert-box"></div> 
-  
+	
   <!-- Scripts -->
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-    let remainingAttempts = 3; // Initial login attempts
+let remainingAttempts = 3; // Initial login attempts
     let isLocked = false; // Lockout flag
 
     function handleInvalidCredentials() {
@@ -283,67 +281,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     });
     //end of limit attempt
 
-      $(document).ready(function(){
-        end_loader();
-      });
+    $(document).ready(function(){
+      end_loader();
+    });
 
-      // Automatically remove disallowed characters as they are typed
-      document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-          e.target.value = e.target.value.replace(/[<>\/]/g, '');
-      });
-
-      document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-          e.target.value = e.target.value.replace(/[<>\/]/g, '');
-      });
-
-      // Toggle password visibility
-      $('#toggle-password').on('click', function() {
-          let passwordField = $('#password');
-          let passwordFieldType = passwordField.attr('type');
-          if (passwordFieldType === 'password') {
-              passwordField.attr('type', 'text');
-              $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-          } else {
-              passwordField.attr('type', 'password');
-              $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-          }
-      });
-
-    // Disable inspect element and right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
-
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
+    // Automatically remove disallowed characters as they are typed
+document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+    // Replace disallowed characters in username field
+    e.target.value = e.target.value.replace(/[<>\/]/g, '');
 });
-</script>
+
+document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+    // Replace disallowed characters in password field
+    e.target.value = e.target.value.replace(/[<>\/]/g, '');
+});
+
+// Toggle password visibility
+$('#toggle-password').on('click', function() {
+    let passwordField = $('#password');
+    let passwordFieldType = passwordField.attr('type');
+    if (passwordFieldType == 'password') {
+        passwordField.attr('type', 'text');
+        $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+    } else {
+        passwordField.attr('type', 'password');
+        $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+    }
+});
+
+// Disable inspect element and right-click
+document.addEventListener('contextmenu', event => event.preventDefault());
+document.onkeydown = function(e) {
+    if (e.keyCode == 123 || e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0) || 
+        e.ctrlKey && e.shiftKey && e.keyCode == 'J'.charCodeAt(0) || 
+        e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) {
+        return false;
+    }
+};
+  </script>
 </body>
 </html>
