@@ -379,7 +379,7 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'There was an issue with your request. Please try again.',
+                    text: 'Invalid credentials!',
                 });
             });
         });
