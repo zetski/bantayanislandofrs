@@ -320,14 +320,24 @@ document.onkeydown = function(e) {
     }
 };
 
-function onClick(e) {
-        e.preventDefault();
-        grecaptcha.ready(function() {
-          grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
-              // Add your logic to submit to your backend server here.
-          });
+document.getElementById("login-frm").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Get reCAPTCHA token
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
+            // Append the token to the form data
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "g-recaptcha-response";
+            input.value = token;
+            document.getElementById("login-frm").appendChild(input);
+
+            // Submit the form
+            document.getElementById("login-frm").submit();
         });
-      }
+    });
+});
   </script>
 </body>
 </html>
