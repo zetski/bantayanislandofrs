@@ -334,9 +334,6 @@ document.onkeydown = function(e) {
     }
 };
 
-let remainingAttempts = 3; // Initial login attempts
-let isLocked = false; // Lockout flag
-
 document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
 
@@ -360,35 +357,14 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'error') {
-                    // If invalid credentials, show SweetAlert with remaining attempts
-                    remainingAttempts--; // Decrease attempts
-
-                    // If remaining attempts > 0, show the remaining attempts message
-                    if (remainingAttempts > 0) {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Login Failed',
-                            text: `Invalid credentials. You have ${remainingAttempts} attempts left.`,
-                        });
-                    } else {
-                        // If no attempts left, lock the form and show a lockout message
-                        isLocked = true;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Too Many Attempts',
-                            text: 'You have been locked out for 3 minutes due to multiple failed login attempts.',
-                        }).then(() => {
-                            lockForm();
-                            // Lockout for 3 minutes
-                            setTimeout(() => {
-                                isLocked = false;
-                                remainingAttempts = 3;
-                                unlockForm();
-                            }, 3 * 60 * 1000); // 3 minutes
-                        });
-                    }
+                    // Show SweetAlert for errors (Invalid credentials)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: data.message || 'Invalid credentials',
+                    });
                 } else if (data.status === 'success') {
-                    // On successful login, redirect user
+                    // Redirect to a success page or perform other actions
                     Swal.fire({
                         icon: 'success',
                         title: 'Login Successful',
