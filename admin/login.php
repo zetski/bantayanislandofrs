@@ -123,7 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -201,7 +200,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
@@ -318,32 +316,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
-
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
 </script>
 </body>
 </html>
