@@ -242,33 +242,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     let remainingAttempts = 3; // Initial login attempts
     let isLocked = false; // Lockout flag
 
-    function handleInvalidCredentials() {
-      if (isLocked) return;
+    function handleInvalidCredentials(message) {
+    // Check if lockout is active
+    if (isLocked) return;
 
-      // Decrease attempts
-      remainingAttempts--;
+    // Decrease attempts
+    remainingAttempts--;
 
-      // Shake the card body
-      const cardBody = document.querySelector(".card-body");
-      cardBody.classList.add("shake");
-      setTimeout(() => cardBody.classList.remove("shake"), 500);
+    // Shake the card body
+    const cardBody = document.querySelector(".card-body");
+    cardBody.classList.add("shake");
+    setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-      // Display alert below form
-      const alertBox = document.getElementById("alert-box");
-      if (remainingAttempts > 0) {
-        alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-      } else {
+    // Display alert below form
+    const alertBox = document.getElementById("alert-box");
+    if (remainingAttempts > 0) {
+        alertBox.innerHTML = `<div class="alert alert-warning">${message} You have ${remainingAttempts} login attempts left.</div>`;
+    } else {
         isLocked = true;
         alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
         lockForm();
         setTimeout(() => {
-          isLocked = false;
-          remainingAttempts = 3;
-          alertBox.innerHTML = ""; // Clear alert
-          unlockForm();
+            isLocked = false;
+            remainingAttempts = 3;
+            alertBox.innerHTML = ""; // Clear alert
+            unlockForm();
         }, 3 * 60 * 1000); // 3 minutes
-      }
     }
+}
 
     function lockForm() {
       document.querySelector('input[name="username"]').disabled = true;
@@ -338,8 +339,8 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
 
     // Get reCAPTCHA token
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', { action: 'submit' }).then(function (token) {
             // Append the token to the form data
             var input = document.createElement("input");
             input.type = "hidden";
@@ -349,28 +350,34 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
 
             // Perform AJAX form submission
             var formData = new FormData(document.getElementById("login-frm"));
-            
+
             fetch('', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                const alertBox = document.getElementById("alert-box");
-
-                if (data.status === 'error') {
-                    // Display error message below the form
-                    alertBox.innerHTML = `<div class="alert alert-danger">${data.message || 'Invalid credentials'}</div>`;
-                } else if (data.status === 'success') {
-                    // Redirect on success
-                    window.location.href = 'https://bantayan-bfp.com/admin/';
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                const alertBox = document.getElementById("alert-box");
-                alertBox.innerHTML = `<div class="alert alert-danger">Invalid credentials!</div>`;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    const alertBox = document.getElementById("alert-box");
+                    
+                    if (data.status === 'error') {
+                        // Handle invalid login
+                        handleInvalidCredentials(data.message || 'Invalid credentials');
+                    } else if (data.status === 'success') {
+                        // Handle successful login
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Successful',
+                            text: 'You have successfully logged in!',
+                        }).then(() => {
+                            window.location.href = 'https://bantayan-bfp.com/admin/';
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    const alertBox = document.getElementById("alert-box");
+                    alertBox.innerHTML = `<div class="alert alert-danger">An unexpected error occurred. Please try again.</div>`;
+                });
         });
     });
 });
