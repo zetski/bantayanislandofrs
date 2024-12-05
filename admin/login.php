@@ -123,6 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
    body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -224,7 +225,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-let remainingAttempts = 3; // Initial login attempts
+    let remainingAttempts = 3; // Initial login attempts
     let isLocked = false; // Lockout flag
 
     function handleInvalidCredentials() {
@@ -318,6 +319,15 @@ document.onkeydown = function(e) {
         return false;
     }
 };
+
+function onClick(e) {
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('reCAPTCHA_site_key', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+          });
+        });
+      }
   </script>
 </body>
 </html>
