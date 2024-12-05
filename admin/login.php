@@ -9,10 +9,6 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
 }
 require_once('../config.php'); 
 
-if (!isset($_SESSION['login_attempts'])) {
-  $_SESSION['login_attempts'] = 3; // Set default attempts
-}
-
 // // Allowed IP addresses
 // $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
 
@@ -143,10 +139,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </script>
   <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
-    html, body {
-    height: 100%;
-    overflow: hidden;
-}
    body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
         background-size: cover; 
@@ -155,7 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         backdrop-filter: contrast(1);
         height: 100vh; 
         margin: 0;
-        overflow: hidden;
     }
     #page-title {
         text-shadow: 6px 4px 7px black;
