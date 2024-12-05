@@ -9,18 +9,6 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
 }
 require_once('../config.php'); 
 
-// // Allowed IP addresses
-// $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
-
-// // Get the user's IP address
-// $user_ip = $_SERVER['REMOTE_ADDR'];
-
-// // Check if the user's IP address matches any allowed IPs
-// if (!in_array($user_ip, $allowed_ips)) {
-//     http_response_code(404); // Set the 404 status code
-//     include('./404.html'); // Include the 404 page content
-//     exit();
-// }
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
@@ -55,65 +43,78 @@ function sanitize_input($input) {
     return $input;
 }
 
+// ReCAPTCHA v3 verification
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+    $recaptchaResponse = $_POST['recaptcha_response'] ?? '';
+    $recaptchaSecret = '6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2'; // Replace with your reCAPTCHA v3 secret key
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
-      exit;
-  }
+    $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+    $response = file_get_contents($recaptchaUrl . '?secret=' . $recaptchaSecret . '&response=' . $recaptchaResponse);
+    $responseKeys = json_decode($response, true);
 
-  // Prepared statement to prevent SQL injection
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-  $stmt->bind_param("s", $username);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    if (!$responseKeys['success'] || $responseKeys['score'] < 0.5) {
+        echo 'reCAPTCHA verification failed. Please try again.';
+        exit;
+    }
 
-  $user = $result->fetch_assoc();
+    $username = sanitize_input($_POST['username']);
+    $password = sanitize_input($_POST['password']);
 
-  if ($user) {
-      $storedHash = $user['password'];
+    if (empty($username) || empty($password)) {
+        echo 'Invalid input';
+        exit;
+    }
 
-      // Check if the password is in MD5 format (32 characters long)
-      if (strlen($storedHash) == 32) {
-          // Verify with MD5 first
-          if (md5($password) === $storedHash) {
-              // Re-hash the password with password_hash for future logins
-              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-              $updateStmt->bind_param("ss", $newHashedPassword, $username);
-              $updateStmt->execute();
-              $updateStmt->close();
+    // Prepared statement to prevent SQL injection
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-              // Set session variables after successful login
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      } else {
-          // Verify with password_verify for bcrypt or any other compatible algorithm
-          if (password_verify($password, $storedHash)) {
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      }
-  } else {
-      echo 'Invalid credentials';
-  }
+    $user = $result->fetch_assoc();
 
-  $stmt->close();
+    if ($user) {
+        $storedHash = $user['password'];
+
+        // Check if the password is in MD5 format (32 characters long)
+        if (strlen($storedHash) == 32) {
+            // Verify with MD5 first
+            if (md5($password) === $storedHash) {
+                // Re-hash the password with password_hash for future logins
+                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+                $updateStmt->bind_param("ss", $newHashedPassword, $username);
+                $updateStmt->execute();
+                $updateStmt->close();
+
+                // Set session variables after successful login
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['district'] = $user['district'];
+                error_log("User logged in with district: " . $_SESSION['district']);
+                echo 'Login successful';
+                exit;
+            } else {
+                echo 'Invalid credentials';
+            }
+        } else {
+            // Verify with password_verify for bcrypt or any other compatible algorithm
+            if (password_verify($password, $storedHash)) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['district'] = $user['district'];
+                error_log("User logged in with district: " . $_SESSION['district']);
+                echo 'Login successful';
+                exit;
+            } else {
+                echo 'Invalid credentials';
+            }
+        }
+    } else {
+        echo 'Invalid credentials';
+    }
+
+    $stmt->close();
 }
 ?>
 <!DOCTYPE html>
@@ -123,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -201,7 +202,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
+          <!-- <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div> -->
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
@@ -226,7 +227,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-    let remainingAttempts = 3; // Initial login attempts
+  let remainingAttempts = 3; // Initial login attempts
   let isLocked = false; // Lockout flag
 
   function handleInvalidCredentials() {
@@ -243,10 +244,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Display alert below form
     const alertBox = document.getElementById("alert-box");
     if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+      alertBox.innerHTML = <div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>;
     } else {
       isLocked = true;
-      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
+      alertBox.innerHTML = <div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>;
       lockForm();
       setTimeout(() => {
         isLocked = false;
@@ -281,69 +282,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       alert("Login successful!");
     }
   });
-  //end of limit attempt
 
-    $(document).ready(function(){
-      end_loader();
-    });
+  // Automatically remove disallowed characters as they are typed
+  document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/[<>\/]/g, '');
+  });
 
-    // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+  document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+      e.target.value = e.target.value.replace(/[<>\/]/g, '');
+  });
 
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+  // Toggle password visibility
+  $('#toggle-password').on('click', function() {
+      let passwordField = $('#password');
+      let passwordFieldType = passwordField.attr('type');
+      if (passwordFieldType === 'password') {
+          passwordField.attr('type', 'text');
+          $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+      } else {
+          passwordField.attr('type', 'password');
+          $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+      }
+  });
 
-    // Toggle password visibility
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
+  // Disable inspect element and right-click
+  document.addEventListener('contextmenu', event => event.preventDefault());
+  document.onkeydown = function(e) {
+      if (e.keyCode == 123 || 
+          (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+          (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+          return false;
+      }
+  };
 
-    // Disable inspect element and right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
+  // Insert reCAPTCHA v3 logic
+  document.addEventListener('DOMContentLoaded', function() {
+      const siteKey = '6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2'; // Replace with your reCAPTCHA v3 site key
 
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
+      grecaptcha.ready(function() {
+          document.getElementById('login-frm').addEventListener('submit', function(event) {
+              event.preventDefault(); // Prevent form submission for validation
+              grecaptcha.execute(siteKey, { action: 'login' }).then(function(token) {
+                  // Append the token to the form and submit it
+                  const recaptchaInput = document.createElement('input');
+                  recaptchaInput.type = 'hidden';
+                  recaptchaInput.name = 'recaptcha_response';
+                  recaptchaInput.value = token;
+                  document.getElementById('login-frm').appendChild(recaptchaInput);
+                  document.getElementById('login-frm').submit();
+              });
+          });
+      });
+  });
 </script>
 </body>
 </html>
