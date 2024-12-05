@@ -132,6 +132,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script>
     start_loader()
   </script>
@@ -345,8 +347,41 @@ document.getElementById("login-frm").addEventListener("submit", function (e) {
             input.value = token;
             document.getElementById("login-frm").appendChild(input);
 
-            // Submit the form
-            document.getElementById("login-frm").submit();
+            // Perform AJAX form submission
+            var formData = new FormData(document.getElementById("login-frm"));
+            
+            fetch('', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'error') {
+                    // Show SweetAlert for errors (Invalid credentials)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Login Failed',
+                        text: data.message || 'Invalid credentials',
+                    });
+                } else if (data.status === 'success') {
+                    // Redirect to a success page or perform other actions
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Login Successful',
+                        text: data.message || 'You have successfully logged in!',
+                    }).then(() => {
+                        window.location.href = 'https://bantayan-bfp.com/admin/'; // Redirect after successful login
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'There was an issue with your request. Please try again.',
+                });
+            });
         });
     });
 });
