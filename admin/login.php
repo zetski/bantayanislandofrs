@@ -9,6 +9,18 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
 }
 require_once('../config.php'); 
 
+// // Allowed IP addresses
+// $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
+
+// // Get the user's IP address
+// $user_ip = $_SERVER['REMOTE_ADDR'];
+
+// // Check if the user's IP address matches any allowed IPs
+// if (!in_array($user_ip, $allowed_ips)) {
+//     http_response_code(404); // Set the 404 status code
+//     include('./404.html'); // Include the 404 page content
+//     exit();
+// }
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
@@ -44,86 +56,64 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = sanitize_input($_POST['username']);
-    $password = sanitize_input($_POST['password']);
-    $recaptchaToken = $_POST['recaptcha_token'];
+  $username = sanitize_input($_POST['username']);
+  $password = sanitize_input($_POST['password']);
 
-    if (empty($username) || empty($password)) {
-        echo 'Invalid input';
-        exit;
-    }
+  if (empty($username) || empty($password)) {
+      echo 'Invalid input';
+      exit;
+  }
 
-    // Verify reCAPTCHA v3
-    $secretKey = "6LeDspIqAAAAABVjFu69hoeAVifRnOyxbevLfDCp";
-    $recaptchaURL = "https://www.google.com/recaptcha/api/siteverify";
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $recaptchaURL);
-    curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query([
-        'secret' => $secretKey,
-        'response' => $recaptchaToken
-    ]));
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    $response = curl_exec($ch);
-    curl_close($ch);
-    $responseKeys = json_decode($response, true);
+  // Prepared statement to prevent SQL injection
+  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+  $stmt->bind_param("s", $username);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-    error_log('reCAPTCHA response: ' . print_r($responseKeys, true));
-    if (!$responseKeys['success'] || $responseKeys['score'] < 0.5) {
-        echo 'reCAPTCHA verification failed.';
-        exit;
-    }
+  $user = $result->fetch_assoc();
 
-    // Prepared statement to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+  if ($user) {
+      $storedHash = $user['password'];
 
-    $user = $result->fetch_assoc();
+      // Check if the password is in MD5 format (32 characters long)
+      if (strlen($storedHash) == 32) {
+          // Verify with MD5 first
+          if (md5($password) === $storedHash) {
+              // Re-hash the password with password_hash for future logins
+              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+              $updateStmt->bind_param("ss", $newHashedPassword, $username);
+              $updateStmt->execute();
+              $updateStmt->close();
 
-    if ($user) {
-        $storedHash = $user['password'];
+              // Set session variables after successful login
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      } else {
+          // Verify with password_verify for bcrypt or any other compatible algorithm
+          if (password_verify($password, $storedHash)) {
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      }
+  } else {
+      echo 'Invalid credentials';
+  }
 
-        // Check if the password is in MD5 format (32 characters long)
-        if (strlen($storedHash) == 32) {
-            // Verify with MD5 first
-            if (md5($password) === $storedHash) {
-                // Re-hash the password with password_hash for future logins
-                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-                $updateStmt->bind_param("ss", $newHashedPassword, $username);
-                $updateStmt->execute();
-                $updateStmt->close();
-
-                // Set session variables after successful login
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['district'] = $user['district'];
-                error_log("User logged in with district: " . $_SESSION['district']);
-                echo 'Login successful';
-                exit;
-            } else {
-                echo 'Invalid credentials';
-            }
-        } else {
-            // Verify with password_verify for bcrypt or any other compatible algorithm
-            if (password_verify($password, $storedHash)) {
-                $_SESSION['user_id'] = $user['id'];
-                $_SESSION['username'] = $user['username'];
-                $_SESSION['district'] = $user['district'];
-                error_log("User logged in with district: " . $_SESSION['district']);
-                echo 'Login successful';
-                exit;
-            } else {
-                echo 'Invalid credentials';
-            }
-        }
-    } else {
-        echo 'Invalid credentials';
-    }
-
-    $stmt->close();
+  $stmt->close();
 }
 ?>
 <!DOCTYPE html>
@@ -131,9 +121,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
   <script>
-    start_loader();
+    start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -188,16 +178,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transform: translateX(-5px);
     }
   }
-  </style>
+</style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
     <div class="card card-danger my-2">
       <div class="card-body">
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
-          <input type="hidden" id="recaptcha-token" name="recaptcha_token">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username">
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -205,31 +194,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" name="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" disabled>
             <div class="input-group-append">
               <div class="input-group-text">
-                <span class="fas fa-eye"></span>
+                <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
               </div>
             </div>
           </div>
+          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
+              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
             </div>
           </div>
         </form>
         <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>">Go to Website</a>
+          <a href="<?php echo base_url ?>" disabled>Go to Website</a>
         </p>
       </div>
     </div>
   </div>
 
-  <div id="alert-box"></div>
-
+  <div id="alert-box"></div> 
+  
   <!-- Scripts -->
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -293,7 +283,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   });
   //end of limit attempt
 
-  $(document).ready(function(){
+    $(document).ready(function(){
       end_loader();
     });
 
@@ -318,7 +308,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $(this).removeClass('fa-eye-slash').addClass('fa-eye');
         }
     });
-    
+
     // Disable inspect element and right-click
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.onkeydown = function(e) {
@@ -328,13 +318,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    
-    grecaptcha.ready(function () {
-    grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', { action: 'login' }).then(function (token) {
-        console.log('Generated Token:', token); // Debugging
-        document.getElementById('recaptcha-token').value = token;
-    });
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initially disable the form fields and buttons
+    const formElements = [
+        document.querySelector('input[name="username"]'),
+        document.querySelector('input[name="password"]'),
+        document.querySelector('a[href="forgot/forgot-password"]'),
+        document.querySelector('a[href="<?php echo base_url ?>"]'),
+        document.querySelector('button[type="submit"]')
+    ];
+
+    formElements.forEach(el => el.disabled = true);
+
+    // Monitor reCAPTCHA state and enable form elements
+    function enableFormElements() {
+        const recaptchaResponse = grecaptcha.getResponse();
+        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
+        if (recaptchaResponse.length > 0) {
+            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
+        } else {
+            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
+        }
+    }
+
+    // Add event listener for reCAPTCHA changes
+    window.enableRecaptcha = enableFormElements; // Bind function to global scope
 });
-  </script>
+</script>
 </body>
 </html>
