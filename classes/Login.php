@@ -118,35 +118,10 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Clear session data
-        $_SESSION = array();
-    
-        // Remove the session cookie if it exists
-        if (ini_get("session.use_cookies")) {
-            $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000, 
-                $params["path"], 
-                $params["domain"], 
-                $params["secure"], 
-                $params["httponly"]
-            );
+        if ($this->settings->sess_des()) {
+            unset($_SESSION['last_activity']); // Clear activity timestamp
+            redirect('admin/login.php');
         }
-    
-        // Destroy the session
-        session_destroy();
-    
-        // Prevent caching of the page
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-    
-        // Debugging line: Check if we reach this point
-        echo "Redirecting to login...";
-        exit;  // This will stop the script and output the message above
-    
-        // Redirect to the login page
-        header('Location: admin/login.php');
-        exit;
     }
 
     public function login_user() {
