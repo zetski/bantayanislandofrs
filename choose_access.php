@@ -66,7 +66,7 @@ if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTT
             background-color: #f5f5f5;
         }
         /* Background image settings */{
-            background-image: url('../img/bgfront.jpg'); 
+            background-image: url('./img/bgfront.jpg'); 
             background-size: cover; 
             background-position: center center; 
             background-attachment: fixed; 
