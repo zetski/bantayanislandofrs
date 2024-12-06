@@ -105,7 +105,7 @@ session_start();
             }
 
             if (idleTime >= idleLimit) {
-                window.location.href = "<?php echo base_url ?>logout.php"; // Redirect to logout
+                window.location.href = "<?php echo base_url ?>admin/login.php"; // Redirect to logout
             }
         }
 
