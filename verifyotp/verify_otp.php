@@ -4,7 +4,6 @@ session_start();
 require_once('../initialize.php'); // Include your database connection
 
 $error = ""; // Initialize error variable
-$success = ""; // Initialize success variable
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $entered_otp = $_POST['otp'];
@@ -30,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     // OTP verified successfully
                     $_SESSION['role'] = 'admin'; // Assign the admin role
                     $_SESSION['otp_verified'] = true; //denied to access admin/login bypassing
-                    $success = "OTP verified successfully. Redirecting..."; // Success message
                     header("Location: https://bantayan-bfp.com/admin/login");
                     exit;
                 } else {
@@ -169,20 +167,5 @@ ob_end_flush();
             });
         </script>
     <?php endif; ?>
-
-    <?php if (!empty($success)) : ?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: '<?php echo $success; ?>',
-                showConfirmButton: false,
-                timer: 2000 // Auto close after 2 seconds
-            }).then(() => {
-                window.location.href = 'https://bantayan-bfp.com/admin/login.php'; // Redirect after success
-            });
-        </script>
-    <?php endif; ?>
-
 </body>
 </html>
