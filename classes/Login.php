@@ -29,8 +29,7 @@ class Login extends DBConnection {
     }
 
     public function check_idle_timeout() {
-        // Set the idle timeout duration (in seconds)
-        $idle_timeout = 60; // 1 minute
+        $idle_timeout = 60; 
 
         if (isset($_SESSION['last_activity'])) {
             $elapsed_time = time() - $_SESSION['last_activity'];
@@ -39,7 +38,7 @@ class Login extends DBConnection {
             if ($elapsed_time > $idle_timeout) {
                 $this->logout(); // Automatically logout
                 echo json_encode(['status' => 'timeout', 'message' => 'You have been logged out due to inactivity.']);
-                exit; // Stop further processing
+                exit; 
             }
         }
 
