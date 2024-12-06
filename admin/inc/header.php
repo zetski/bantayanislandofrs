@@ -88,8 +88,8 @@ session_start();
       document.addEventListener("keypress", resetIdleTimer);
 
       function resetIdleTimer() {
-          idleTime = 0; // Reset idle time on activity
-          isAlertShown = false; // Reset alert flag when activity occurs
+          idleTime = 0; 
+          isAlertShown = false;
       }
 
       setInterval(() => {
@@ -97,7 +97,7 @@ session_start();
           if (idleTime >= idleLimit && !isAlertShown) {
               isAlertShown = true; // Prevent multiple alerts
               alert("You have been idle for too long. Logging out...");
-              window.location.href = 'admin/login.php'; // Adjust the logout URL as needed
+              window.location.href = 'admin/login.php'; 
           }
       }, 1000);
     </script>
