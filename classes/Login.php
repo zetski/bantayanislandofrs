@@ -11,15 +11,12 @@ class Login extends DBConnection {
         ini_set('display_error', 1);
         session_start();
         
-        // Initialize session variables for login attempts, timeout, and last activity
+        // Initialize session variables for login attempts and timeout
         if (!isset($_SESSION['login_attempts'])) {
             $_SESSION['login_attempts'] = 3;
         }
         if (!isset($_SESSION['timeout'])) {
             $_SESSION['timeout'] = null;
-        }
-        if (!isset($_SESSION['last_activity'])) {
-            $_SESSION['last_activity'] = time();  // Set the initial last activity time
         }
     }
 
@@ -27,28 +24,11 @@ class Login extends DBConnection {
         parent::__destruct();
     }
 
-    // This function checks if the user has been inactive for too long and logs them out
-    private function checkIdleTimeout() {
-        $inactive_limit = 60;  // Set the idle timeout limit (in seconds)
-        $current_time = time();
-        
-        // Check if the user has been idle for more than the allowed time
-        if (($current_time - $_SESSION['last_activity']) > $inactive_limit) {
-            $this->logout();  // Log out the user
-            exit;  // Stop further execution
-        }
-
-        // Update the last activity time
-        $_SESSION['last_activity'] = $current_time;
-    }
-
     public function index() {
         echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
     }
 
     public function login() {
-        $this->checkIdleTimeout();  // Check for idle timeout before proceeding with the login process
-        
         $current_time = time();
         
         // Check if user is locked out
@@ -121,9 +101,7 @@ class Login extends DBConnection {
 
     public function logout() {
         if ($this->settings->sess_des()) {
-            session_unset();  // Unset session variables
-            session_destroy();  // Destroy the session
-            redirect('admin/login.php');  // Redirect to login page
+            redirect('admin/login.php');
         }
     }
 
