@@ -159,25 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 2em; /* Further reduce title size on very small screens */
         }
     }
-    .shake {
-    animation: shake 0.5s;
-  }
-
-  @keyframes shake {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    50% {
-      transform: translateX(5px);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
-  }
 </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
@@ -204,7 +185,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
+              <a href="forgot/forgot-password.php" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
@@ -218,8 +199,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 
-  <div id="alert-box"></div> 
-  
   <!-- Scripts -->
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -264,29 +243,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     document.addEventListener('DOMContentLoaded', function() {
     // Initially disable the form fields and buttons
     const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
+      document.querySelector('input[name="username"]'),
+      document.querySelector('input[name="password"]'),
+      document.querySelector('a[href="forgot/forgot-password.php"]'),
+      document.querySelector('a[href="<?php echo base_url ?>"]'),
+      document.querySelector('button[type="submit"]')	
     ];
 
     formElements.forEach(el => el.disabled = true);
 
-    // Monitor reCAPTCHA state and enable form elements
+    // Monitor reCAPTCHA state
     function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
+      const recaptchaResponse = grecaptcha.getResponse();
+      if (recaptchaResponse.length > 0) {
+        formElements.forEach(el => el.disabled = false);
+      } else {
+        formElements.forEach(el => el.disabled = true);
+      }
     }
 
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
+  });
 </script>
 </body>
 </html>
