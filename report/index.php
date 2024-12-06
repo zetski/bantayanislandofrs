@@ -232,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 5.3 You may not use our system to engage in illegal activities or to cause harm.</p>
 
                 <p><strong>6. Contacting the Admin</strong></p>
-                <p>6.1 If you have any questions, complaints, or need further information, you may contact the admin via email at bantayanbfp@gmail.com.  
+                <p>6.1 If you have any questions, complaints, or need further information, you may contact the admin via email at <a href="mailto: bantayanbfp@gmail.com">.  
                 6.2 The admin will respond within a reasonable time based on the issues or inquiries submitted.</p>
 
                 <p><strong>7. Changes to Terms and Conditions</strong></p>
@@ -248,11 +248,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 9.2 We are not liable for any damage, loss, or costs arising from the improper use of our service.</p>
 
                 <p><strong>10. Ownership of Content</strong></p>
-                <p>10.1 All materials, designs, text, software, and other content found on the website and mobile app are owned by [Website/App Name] and are protected by copyright and intellectual property laws.  
+                <p>10.1 All materials, designs, text, software, and other content found on the website and mobile app are owned by <b>BANTAYAN ISLAND OFRS</b> and are protected by copyright and intellectual property laws.  
                 10.2 You may not copy, reproduce, modify, or distribute any of these materials without our permission.</p>
 
                 <p><strong>11. Governing Law</strong></p>
-                <p>11.1 These Terms and Conditions are governed by the laws of [Country/State].  
+                <p>11.1 These Terms and Conditions are governed by the laws of <b>BANTAYAN ISLAND</b>.  
                 11.2 Any disputes arising from these Terms and Conditions will be resolved in the courts having jurisdiction in the relevant country or state.</p>
 
                 <p><strong>12. Acknowledgment</strong></p>
