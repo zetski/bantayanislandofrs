@@ -78,44 +78,4 @@ session_start();
         var _base_url_ = '<?php echo base_url ?>';
     </script>
     <script src="<?php echo base_url ?>dist/js/script.js"></script>
-
-    <script>
-        let idleTime = 0;  // Idle time counter (in seconds)
-        let idleLimit = 60; // Timeout for inactivity (60 seconds)
-        let warningLimit = 30; // Show warning 30 seconds before logout
-
-        let warningMessage = "You will be logged out due to inactivity in 30 seconds.";
-        let warningShown = false;
-
-        function resetIdleTime() {
-            idleTime = 0;
-            if (warningShown) {
-                clearTimeout(warningTimeout);
-                document.getElementById("warning").style.display = "none";
-                warningShown = false;
-            }
-        }
-
-        function checkIdleTime() {
-            idleTime++;
-
-            if (idleTime >= (idleLimit - warningLimit) && !warningShown) {
-                document.getElementById("warning").style.display = "block"; // Show warning
-                warningShown = true;
-            }
-
-            if (idleTime >= idleLimit) {
-                window.location.href = "<?php echo base_url ?>admin/login.php"; // Redirect to logout
-            }
-        }
-
-        document.onmousemove = resetIdleTime;
-        document.onkeypress = resetIdleTime;
-        document.onclick = resetIdleTime;
-
-        setInterval(checkIdleTime, 1000); // Check idle time every second
-    </script>
-    
-
-
   </head>
