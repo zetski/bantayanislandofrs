@@ -64,13 +64,13 @@ if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTT
             height: 100vh;
             font-family: Arial, sans-serif;
             background-color: #f5f5f5;
-        }
-        /* Background image settings */{
-            background-image: url('./img/bgfront.jpg'); 
+            /* Background image settings */{
+             background-image: url('./img/bgfront.jpg'); 
             background-size: cover; 
             background-position: center center; 
             background-attachment: fixed; 
             background-repeat: no-repeat; 
+        }
         }
         .container {
             text-align: center;
