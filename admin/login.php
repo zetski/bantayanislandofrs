@@ -155,6 +155,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     start_loader()
   </script>
