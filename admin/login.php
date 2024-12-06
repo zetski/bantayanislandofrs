@@ -252,19 +252,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     formElements.forEach(el => el.disabled = true);
 
-    // Monitor reCAPTCHA state
+    // Monitor reCAPTCHA state and enable form elements
     function enableFormElements() {
-      const recaptchaResponse = grecaptcha.getResponse();
-      if (recaptchaResponse.length > 0) {
-        formElements.forEach(el => el.disabled = false);
-      } else {
-        formElements.forEach(el => el.disabled = true);
-      }
+        const recaptchaResponse = grecaptcha.getResponse();
+        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
+        if (recaptchaResponse.length > 0) {
+            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
+        } else {
+            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
+        }
     }
 
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
-  });
+});
 </script>
 </body>
 </html>
