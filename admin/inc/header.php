@@ -95,7 +95,7 @@ session_start();
           if (idleTime >= idleLimit) {
               // Optionally notify user before logging out
               alert("You have been idle for too long. Logging out...");
-              window.location.href = 'admin/login.php'; // Adjust the logout URL as needed
+              window.location.href = 'login.php'; // Adjust the logout URL as needed
           }
       }, 1000);
     </script>
