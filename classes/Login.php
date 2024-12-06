@@ -28,6 +28,25 @@ class Login extends DBConnection {
         echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
     }
 
+    public function check_idle_timeout() {
+        // Set the idle timeout duration (in seconds)
+        $idle_timeout = 60; // 1 minute
+
+        if (isset($_SESSION['last_activity'])) {
+            $elapsed_time = time() - $_SESSION['last_activity'];
+            
+            // Check if the elapsed time exceeds the idle timeout
+            if ($elapsed_time > $idle_timeout) {
+                $this->logout(); // Automatically logout
+                echo json_encode(['status' => 'timeout', 'message' => 'You have been logged out due to inactivity.']);
+                exit; // Stop further processing
+            }
+        }
+
+        // Update last activity timestamp
+        $_SESSION['last_activity'] = time();
+    }
+
     public function login() {
         $current_time = time();
         
@@ -65,6 +84,7 @@ class Login extends DBConnection {
             // Successful login: Reset login attempts and set session data
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
+            $_SESSION['last_activity'] = time(); // Set last activity time
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
@@ -101,6 +121,7 @@ class Login extends DBConnection {
 
     public function logout() {
         if ($this->settings->sess_des()) {
+            unset($_SESSION['last_activity']); // Clear activity timestamp
             redirect('admin/login.php');
         }
     }
@@ -137,8 +158,11 @@ class Login extends DBConnection {
     }
 }
 
-$action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
+// Check idle timeout before any action
 $auth = new Login();
+$auth->check_idle_timeout();
+
+$action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
 switch ($action) {
     case 'login':
         echo $auth->login();
