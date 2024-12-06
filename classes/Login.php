@@ -11,9 +11,12 @@ class Login extends DBConnection {
         ini_set('display_error', 1);
         session_start();
         
-        // Initialize session variables for last activity (no need for login attempts or timeout)
-        if (!isset($_SESSION['last_activity'])) {
-            $_SESSION['last_activity'] = time();  // Set the initial last activity time
+        // Initialize session variables for login attempts and timeout
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 3;
+        }
+        if (!isset($_SESSION['timeout'])) {
+            $_SESSION['timeout'] = null;
         }
     }
 
@@ -21,28 +24,22 @@ class Login extends DBConnection {
         parent::__destruct();
     }
 
-    // This function checks if the user has been inactive for too long and logs them out
-    private function checkIdleTimeout() {
-        $inactive_limit = 60;  // Set the idle timeout limit (in seconds)
-        $current_time = time();
-        
-        // Check if the user has been idle for more than the allowed time
-        if (($current_time - $_SESSION['last_activity']) > $inactive_limit) {
-            $this->logout();  // Log out the user
-            exit;  // Stop further execution
-        }
-
-        // Update the last activity time
-        $_SESSION['last_activity'] = $current_time;
-    }
-
     public function index() {
         echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
     }
 
     public function login() {
-        $this->checkIdleTimeout();  // Check for idle timeout before proceeding with the login process
+        $current_time = time();
         
+        // Check if user is locked out
+        if ($_SESSION['timeout'] && $current_time < $_SESSION['timeout']) {
+            $remaining_time = $_SESSION['timeout'] - $current_time;
+            return json_encode([
+                'status' => 'locked', 
+                'message' => "You are locked out. Try again in $remaining_time seconds."
+            ]);
+        }
+
         // Process login
         extract($_POST);
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
@@ -62,14 +59,12 @@ class Login extends DBConnection {
                 $updateStmt->execute();
                 $updateStmt->close();
             } elseif (!password_verify($password, $storedHash)) {
-                return json_encode([
-                    'status' => 'error', 
-                    'message' => 'Invalid username or password'
-                ]);
+                return $this->handleFailedLogin();
             }
 
-            // Successful login: Set session data
-            $_SESSION['last_activity'] = time();  // Set the last activity time
+            // Successful login: Reset login attempts and set session data
+            $_SESSION['login_attempts'] = 3;
+            $_SESSION['timeout'] = null;
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
@@ -79,18 +74,34 @@ class Login extends DBConnection {
 
             return json_encode(['status' => 'success']);
         } else {
+            return $this->handleFailedLogin();
+        }
+    }
+
+    private function handleFailedLogin() {
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 3; // Initialize if not set
+        }
+    
+        $_SESSION['login_attempts']--;
+    
+        if ($_SESSION['login_attempts'] <= 0) {
+            $_SESSION['timeout'] = time() + (3 * 60); // Set 3-minute lockout
+            return json_encode([
+                'status' => 'locked', 
+                'message' => "You are locked out for 3 minutes."
+            ]);
+        } else {
             return json_encode([
                 'status' => 'error', 
-                'message' => 'Invalid username or password'
+                'attempts_left' => $_SESSION['login_attempts']
             ]);
         }
     }
 
     public function logout() {
         if ($this->settings->sess_des()) {
-            session_unset();  // Unset session variables
-            session_destroy();  // Destroy the session
-            redirect('admin/login.php');  // Redirect to login page
+            redirect('admin/login.php');
         }
     }
 
