@@ -239,7 +239,7 @@ for ($month = count($monthly_data) + 1; $month <= 12; $month++) {
         if (idleTime >= idleLimit) {
             // Optionally notify user before logging out
             alert("You have been idle for too long. Logging out...");
-            window.location.href = 'logout.php'; // Adjust the logout URL as needed
+            window.location.href = 'admin/login.php'; // Adjust the logout URL as needed
         }
     }, 1000);
 
