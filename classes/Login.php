@@ -11,14 +11,6 @@ class Login extends DBConnection {
         ini_set('display_error', 1);
         session_start();
         
-        // Set the session timeout to 1 minute (60 seconds)
-        if (!isset($_SESSION['last_activity'])) {
-            $_SESSION['last_activity'] = time();  // Save the time of the last activity
-        }
-
-        // Check if the user has been idle for too long and perform logout
-        $this->checkIdleTimeout();
-        
         // Initialize session variables for login attempts and timeout
         if (!isset($_SESSION['login_attempts'])) {
             $_SESSION['login_attempts'] = 3;
@@ -30,18 +22,6 @@ class Login extends DBConnection {
 
     public function __destruct() {
         parent::__destruct();
-    }
-
-    private function checkIdleTimeout() {
-        $idle_time = 60; // Time limit in seconds (1 minute)
-        
-        // If the user has been idle for more than the set time, logout
-        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > $idle_time) {
-            $this->logout();  // Call logout if idle time is exceeded
-        } else {
-            // Update last activity time if the user is active
-            $_SESSION['last_activity'] = time();
-        }
     }
 
     public function index() {
@@ -85,8 +65,6 @@ class Login extends DBConnection {
             // Successful login: Reset login attempts and set session data
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
-            $_SESSION['last_activity'] = time();  // Update the last activity time
-            
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
@@ -122,11 +100,9 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Perform session destruction and logout
-        session_unset();
-        session_destroy();
-        header("Location: https://bantayan-bfp.com/admin/login.php"); // Redirect to the login page
-        exit();
+        if ($this->settings->sess_des()) {
+            redirect('admin/login.php');
+        }
     }
 
     public function login_user() {
@@ -155,7 +131,6 @@ class Login extends DBConnection {
     }
 
     public function logout_user() {
-        // Logout the user and redirect
         if ($this->settings->sess_des()) {
             redirect('tutor');
         }
