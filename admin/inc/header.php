@@ -80,8 +80,7 @@ session_start();
     <script src="<?php echo base_url ?>dist/js/script.js"></script>
 
 
-    <!-- SAKPANNNNN KA HAHAAHAHAHAHHAAHA -->
-    <!-- </?php echo html_entity_decode($_settings->load_data()); ?> -->
+    
 
 
   </head>
