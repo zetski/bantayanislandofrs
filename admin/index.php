@@ -113,8 +113,8 @@
           idleTime++;
           if (idleTime >= idleLimit && !isAlertShown) {
               isAlertShown = true; // Prevent multiple alerts
-              alert("You have been idle for too long. Logging out...");
-              window.location.href = 'https://bantayan-bfp.com/admin/login.php'; // Adjust the logout URL as needed
+              alert("");
+              window.location.href = 'admin/logout'; // Adjust the logout URL as needed
           }
       }, 1000);
     </script>
