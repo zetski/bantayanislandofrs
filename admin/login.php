@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     timerProgressBar: true,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = 'dashboard.php';
+                    window.location.href = 'admin';
                 });
             </script>";
             exit;
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     timerProgressBar: true,
                     showConfirmButton: false
                 }).then(() => {
-                    window.location.href = 'dashboard.php';
+                    window.location.href = 'admin';
                 });
             </script>";
             exit;
