@@ -96,6 +96,8 @@
     </div>
   </div>
       </div>
+
+      <!-- termination logout -->
       <script>
       let idleTime = 0;
       const idleLimit = 60; // 1 minute
