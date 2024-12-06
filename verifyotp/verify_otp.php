@@ -179,7 +179,7 @@ ob_end_flush();
                 showConfirmButton: false,
                 timer: 2000 // Auto close after 2 seconds
             }).then(() => {
-                window.location.href = 'https://bantayan-bfp.com/admin/login'; // Redirect after success
+                window.location.href = 'https://bantayan-bfp.com/admin/login.php'; // Redirect after success
             });
         </script>
     <?php endif; ?>
