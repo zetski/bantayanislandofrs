@@ -73,80 +73,45 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $user = $result->fetch_assoc();
 
   if ($user) {
-    $storedHash = $user['password'];
+      $storedHash = $user['password'];
 
-    if (strlen($storedHash) == 32) {
-        if (md5($password) === $storedHash) {
-            $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-            $updateStmt->bind_param("ss", $newHashedPassword, $username);
-            $updateStmt->execute();
-            $updateStmt->close();
+      // Check if the password is in MD5 format (32 characters long)
+      if (strlen($storedHash) == 32) {
+          // Verify with MD5 first
+          if (md5($password) === $storedHash) {
+              // Re-hash the password with password_hash for future logins
+              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+              $updateStmt->bind_param("ss", $newHashedPassword, $username);
+              $updateStmt->execute();
+              $updateStmt->close();
 
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-
-            echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Login Successful!',
-                    text: 'Welcome, " . htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') . "!',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = 'admin';
-                });
-            </script>";
-            exit;
-        } else {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Invalid username or password!',
-                });
-            </script>";
-        }
-    } else {
-        if (password_verify($password, $storedHash)) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-
-            echo "<script>
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Login Successful!',
-                    text: 'Welcome, " . htmlspecialchars($user['username'], ENT_QUOTES, 'UTF-8') . "!',
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                }).then(() => {
-                    window.location.href = 'admin';
-                });
-            </script>";
-            exit;
-        } else {
-            echo "<script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Invalid username or password!',
-                });
-            </script>";
-        }
-    }
-} else {
-    echo "<script>
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: 'Invalid username or password!',
-        });
-    </script>";
-}
+              // Set session variables after successful login
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      } else {
+          // Verify with password_verify for bcrypt or any other compatible algorithm
+          if (password_verify($password, $storedHash)) {
+              $_SESSION['user_id'] = $user['id'];
+              $_SESSION['username'] = $user['username'];
+              $_SESSION['district'] = $user['district'];
+              error_log("User logged in with district: " . $_SESSION['district']);
+              echo 'Login successful';
+              exit;
+          } else {
+              echo 'Invalid credentials';
+          }
+      }
+  } else {
+      echo 'Invalid credentials';
+  }
 
   $stmt->close();
 }
@@ -155,7 +120,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     start_loader()
   </script>
