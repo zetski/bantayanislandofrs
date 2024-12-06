@@ -232,7 +232,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 5.3 You may not use our system to engage in illegal activities or to cause harm.</p>
 
                 <p><strong>6. Contacting the Admin</strong></p>
-                <p>6.1 If you have any questions, complaints, or need further information, you may contact the admin via email at <a href="bantayanbfp@gmail.com">.  
+                <p>6.1 If you have any questions, complaints, or need further information, you may contact the admin via email at <a href="mailto:">bantayanbfp@gmail.com</a>.  
                 6.2 The admin will respond within a reasonable time based on the issues or inquiries submitted.</p>
 
                 <p><strong>7. Changes to Terms and Conditions</strong></p>
