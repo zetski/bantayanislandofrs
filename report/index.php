@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="terms-checkbox" required>
-                                    <label class="form-check-label" for="terms-checkbox">I agree to the <a href="#" data-toggle="modal" data-target="#termsModal">Terms and Conditions</a></label>
+                                    <label class="form-check-label" for="terms-checkbox">I agree to the <a href="#" data-toggle="modal" data-target="#termsModal" style="background-color: #f46000">Terms and Conditions</a></label>
                                 </div>
                             </form>
                         </div>
