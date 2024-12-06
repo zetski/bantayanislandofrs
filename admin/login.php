@@ -159,25 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 2em; /* Further reduce title size on very small screens */
         }
     }
-    .shake {
-    animation: shake 0.5s;
-  }
-
-  @keyframes shake {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    50% {
-      transform: translateX(5px);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
-  }
 </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
@@ -217,8 +198,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       </div>
     </div>
   </div>
-
-  <div id="alert-box"></div> 
   
   <!-- Scripts -->
   <script src="plugins/jquery/jquery.min.js"></script>
@@ -226,63 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-    let remainingAttempts = 3; // Initial login attempts
-  let isLocked = false; // Lockout flag
-
-  function handleInvalidCredentials() {
-    if (isLocked) return;
-
-    // Decrease attempts
-    remainingAttempts--;
-
-    // Shake the card body
-    const cardBody = document.querySelector(".card-body");
-    cardBody.classList.add("shake");
-    setTimeout(() => cardBody.classList.remove("shake"), 500);
-
-    // Display alert below form
-    const alertBox = document.getElementById("alert-box");
-    if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-    } else {
-      isLocked = true;
-      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-      lockForm();
-      setTimeout(() => {
-        isLocked = false;
-        remainingAttempts = 3;
-        alertBox.innerHTML = ""; // Clear alert
-        unlockForm();
-      }, 3 * 60 * 1000); // 3 minutes
-    }
-  }
-
-  function lockForm() {
-    document.querySelector('input[name="username"]').disabled = true;
-    document.querySelector('input[name="password"]').disabled = true;
-    document.querySelector('button[type="submit"]').disabled = true;
-  }
-
-  function unlockForm() {
-    document.querySelector('input[name="username"]').disabled = false;
-    document.querySelector('input[name="password"]').disabled = false;
-    document.querySelector('button[type="submit"]').disabled = false;
-  }
-
-  document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
-    if (!isValid) {
-      handleInvalidCredentials();
-    } else {
-      // Handle successful login
-      alert("Login successful!");
-    }
-  });
-  //end of limit attempt
-
     $(document).ready(function(){
       end_loader();
     });
