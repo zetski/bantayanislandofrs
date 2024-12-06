@@ -80,27 +80,30 @@ session_start();
     <script src="<?php echo base_url ?>dist/js/script.js"></script>
 
 
-    <script>
-      let idleTime = 0;
-      const idleLimit = 60; // 1 minute
-
-      document.addEventListener("mousemove", resetIdleTimer);
-      document.addEventListener("keypress", resetIdleTimer);
-
-      function resetIdleTimer() {
-          idleTime = 0; // Reset idle time on activity
-      }
-
-      setInterval(() => {
-          idleTime++;
-          if (idleTime >= idleLimit) {
-              // Optionally notify user before logging out
-              alert("You have been idle for too long. Logging out...");
-              window.location.href = 'logout.php'; // Adjust the logout URL as needed
-          }
-      }, 1000);
-
-    </script>
+    
 
 
   </head>
+
+  <!-- termination logout -->
+  <script>
+    let idleTime = 0;
+    const idleLimit = 60; // 1 minute
+
+    document.addEventListener("mousemove", resetIdleTimer);
+    document.addEventListener("keypress", resetIdleTimer);
+
+    function resetIdleTimer() {
+        idleTime = 0; // Reset idle time on activity
+    }
+
+    setInterval(() => {
+        idleTime++;
+        if (idleTime >= idleLimit) {
+            // Optionally notify user before logging out
+            alert("You have been idle for too long. Logging out...");
+            window.location.href = 'logout.php'; // Adjust the logout URL as needed
+        }
+    }, 1000);
+
+  </script>
