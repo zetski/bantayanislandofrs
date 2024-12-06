@@ -197,26 +197,71 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </section>
 <!-- Modal for Terms and Conditions -->
 <div class="modal fade" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="termsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5>Terms and Conditions for Bureau Fire Protection Incident Reporting System</h5>
-                    <p>Please read and agree to the following terms and conditions before submitting your incident report.</p>
-                    <p><strong>1. Acceptance of Terms</strong></p>
-                    <p>By submitting your incident report, you agree to these terms and conditions...</p> <!-- Add the full terms here -->
-                    <p><strong>2. Data Collection</strong></p>
-                    <p>Your personal information will be collected, including but not limited to your full name, contact information, and address...</p>
-                    <!-- Add all other terms here -->
-                </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5>Terms and Conditions for Bureau Fire Protection Incident Reporting System</h5>
+                <p>Please read and agree to the following terms and conditions before submitting your incident report.</p>
+                <p><strong>1. Acceptance of Terms</strong></p>
+                <p>By submitting your incident report, you agree to these terms and conditions...</p>
+
+                <p><strong>2. Registration and Use of Service</strong></p>
+                <p>2.1 To use our online fire reporting system, you must provide accurate information such as your name, contact number, address, and image.  
+                2.2 The information you provide will be used to process your report and address any needs related to the fire incident you report.  
+                2.3 You are responsible for ensuring that all information provided is correct, complete, and accurate.  
+                2.4 You may not provide false information or make fraudulent reports.</p>
+
+                <p><strong>3. Fire Incident Reporting</strong></p>
+                <p>3.1 The purpose of our system is to assist individuals in reporting fire incidents. You should use the service only for this purpose and not for any illegal activities.  
+                3.2 We are not responsible for any false reports or inaccurate information provided by users.  
+                3.3 Reports submitted through the system will be part of our database and may be used by authorities for appropriate action regarding the fire incident.</p>
+
+                <p><strong>4. Privacy and Protection of Personal Information</strong></p>
+                <p>4.1 Your personal information, such as your name, address, and contact details, will be kept confidential and will not be sold or shared with third parties, unless required by law.  
+                4.2 Our system complies with data protection and privacy policies to ensure the security of your information.</p>
+
+                <p><strong>5. User Responsibilities</strong></p>
+                <p>5.1 You are responsible for any content you submit or upload to our platform.  
+                5.2 You may not upload any content containing viruses, malware, or any harmful code that could damage our service.  
+                5.3 You may not use our system to engage in illegal activities or to cause harm.</p>
+
+                <p><strong>6. Contacting the Admin</strong></p>
+                <p>6.1 If you have any questions, complaints, or need further information, you may contact the admin via email at [email address].  
+                6.2 The admin will respond within a reasonable time based on the issues or inquiries submitted.</p>
+
+                <p><strong>7. Changes to Terms and Conditions</strong></p>
+                <p>7.1 We reserve the right to modify or update these Terms and Conditions at any time. We will notify you of any changes via email or notices posted on our website or app.  
+                7.2 Your continued use of our service after any changes to these Terms will signify your acceptance of the updated Terms and Conditions.</p>
+
+                <p><strong>8. Termination of Service</strong></p>
+                <p>8.1 We reserve the right to suspend or terminate your access to our system at any time, at our sole discretion, if we suspect any violation of these Terms and Conditions.  
+                8.2 Termination of access will not affect any obligations that you have incurred prior to termination.</p>
+
+                <p><strong>9. Disclaimer of Liability</strong></p>
+                <p>9.1 While we make every effort to ensure the accuracy and functionality of our system, we are not liable for any errors, delays, or technical issues that may occur in the use of our website and mobile app.  
+                9.2 We are not liable for any damage, loss, or costs arising from the improper use of our service.</p>
+
+                <p><strong>10. Ownership of Content</strong></p>
+                <p>10.1 All materials, designs, text, software, and other content found on the website and mobile app are owned by [Website/App Name] and are protected by copyright and intellectual property laws.  
+                10.2 You may not copy, reproduce, modify, or distribute any of these materials without our permission.</p>
+
+                <p><strong>11. Governing Law</strong></p>
+                <p>11.1 These Terms and Conditions are governed by the laws of [Country/State].  
+                11.2 Any disputes arising from these Terms and Conditions will be resolved in the courts having jurisdiction in the relevant country or state.</p>
+
+                <p><strong>12. Acknowledgment</strong></p>
+                <p>By using our website and mobile app, you acknowledge and agree to the Terms and Conditions outlined above. If you have any questions or concerns, please do not hesitate to contact us.</p>
             </div>
         </div>
     </div>
+</div>
+
 
 
 <style>
