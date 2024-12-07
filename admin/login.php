@@ -159,6 +159,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             font-size: 2em; /* Further reduce title size on very small screens */
         }
     }
+    @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    50% { transform: translateX(10px); }
+    75% { transform: translateX(-10px); }
+    }
+
+    .shake {
+        animation: shake 0.5s;
+    }
 </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
@@ -205,6 +215,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
+    $(document).ready(function() {
+    $('#login-frm').submit(function(e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const formData = form.serialize();
+
+        $.ajax({
+            url: '../classes/Login.php?f=login',
+            type: 'POST',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    window.location.href = 'dashboard.php'; // Redirect on success
+                } else {
+                    // Shake the form and show error message
+                    $('.login-box').addClass('shake');
+                    setTimeout(() => $('.login-box').removeClass('shake'), 500);
+
+                    alert(response.message);
+
+                    if (response.message.includes('wait')) {
+                        $('input, button').prop('disabled', true); // Disable inputs during timeout
+                        setTimeout(() => {
+                            $('input, button').prop('disabled', false);
+                        }, 60000); // Match timeout duration
+                    }
+                }
+            },
+            error: function() {
+                alert('An error occurred. Please try again later.');
+            }
+        });
+    });
+});
+
     $(document).ready(function(){
       end_loader();
     });

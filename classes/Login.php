@@ -21,39 +21,69 @@ class Login extends DBConnection {
     }
 
     public function login() {
+        session_start();
+        $max_attempts = 3; // Maximum login attempts
+        $timeout_duration = 60; // Timeout duration in seconds
+    
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 0;
+            $_SESSION['timeout'] = null;
+        }
+    
+        // Check if user is locked out
+        if ($_SESSION['timeout'] && time() < $_SESSION['timeout']) {
+            $remaining_time = $_SESSION['timeout'] - time();
+            return json_encode([
+                'status' => 'error',
+                'message' => "Too many failed attempts. Please wait $remaining_time seconds before retrying."
+            ]);
+        }
+    
         extract($_POST);
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         if ($result->num_rows > 0) {
             $user = $result->fetch_assoc();
             $storedHash = $user['password'];
-
-            // Handle MD5 or bcrypt password verification
-            if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
-                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                $updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-                $updateStmt->bind_param("ss", $newHashedPassword, $username);
-                $updateStmt->execute();
-                $updateStmt->close();
-            } elseif (!password_verify($password, $storedHash)) {
-                return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
-            }
-
-            // Successful login: Set session data
-            foreach ($user as $k => $v) {
-                if (!is_numeric($k) && $k != 'password') {
-                    $this->settings->set_userdata($k, $v);
+    
+            // Verify password
+            if ((strlen($storedHash) == 32 && md5($password) === $storedHash) || password_verify($password, $storedHash)) {
+                // Reset attempts on successful login
+                $_SESSION['login_attempts'] = 0;
+                $_SESSION['timeout'] = null;
+    
+                foreach ($user as $k => $v) {
+                    if (!is_numeric($k) && $k != 'password') {
+                        $this->settings->set_userdata($k, $v);
+                    }
                 }
+                $this->settings->set_userdata('login_type', 1);
+    
+                return json_encode(['status' => 'success']);
+            } else {
+                $_SESSION['login_attempts']++;
             }
-            $this->settings->set_userdata('login_type', 1);
-
-            return json_encode(['status' => 'success']);
         } else {
-            return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+            $_SESSION['login_attempts']++;
         }
+    
+        // Handle attempts and timeout
+        if ($_SESSION['login_attempts'] >= $max_attempts) {
+            $_SESSION['timeout'] = time() + $timeout_duration;
+            return json_encode([
+                'status' => 'error',
+                'message' => "Too many failed attempts. Please wait $timeout_duration seconds before retrying."
+            ]);
+        }
+    
+        $remaining_attempts = $max_attempts - $_SESSION['login_attempts'];
+        return json_encode([
+            'status' => 'error',
+            'message' => "Invalid credentials. You have $remaining_attempts attempts left."
+        ]);
     }
 
     public function logout() {
