@@ -96,12 +96,27 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Destroy the session and redirect to login page
+        // Start the session if it's not already started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        
+        // Unset specific session variables (e.g., 'userdata')
+        if (isset($_SESSION['userdata'])) {
+            unset($_SESSION['userdata']);
+        }
+    
+        // Optionally, you can unset all session data
         session_unset();
+    
+        // Destroy the session
         session_destroy();
+    
+        // Redirect the user to the login page
         header("Location: " . base_url . "admin/login.php"); 
         exit();
     }
+    
 
     public function login_user() {
         extract($_POST);
