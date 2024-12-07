@@ -116,7 +116,7 @@
           if (idleTime >= idleLimit && !isAlertShown) {
               isAlertShown = true; // Prevent multiple alerts
               alert("");
-              window.location.href = 'admin/login.php'; // Adjust the logout URL as needed
+              window.location.href = 'logout'; // Adjust the logout URL as needed
           }
       }, 1000);
     </script>
