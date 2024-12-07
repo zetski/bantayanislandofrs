@@ -58,7 +58,22 @@ function sanitize_input($input) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = sanitize_input($_POST['username']);
   $password = sanitize_input($_POST['password']);
+  $recaptcha_token = $_POST['recaptcha_token'];  // Get the reCAPTCHA token
 
+  // Your secret key (from reCAPTCHA v3 setup)
+  $secret_key = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH';
+
+  // Verify the reCAPTCHA response with Google's API
+  $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha_token);
+  $response_keys = json_decode($response, true);
+
+  if(intval($response_keys["success"]) !== 1) {
+      // If verification fails (user is likely a bot), show an error
+      echo 'reCAPTCHA verification failed. Please try again.';
+      exit;
+  }
+
+  // Proceed with the login logic if reCAPTCHA verification is successful
   if (empty($username) || empty($password)) {
       echo 'Invalid input';
       exit;
@@ -69,7 +84,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $stmt->bind_param("s", $username);
   $stmt->execute();
   $result = $stmt->get_result();
-
   $user = $result->fetch_assoc();
 
   if ($user) {
@@ -123,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -201,7 +215,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
+          <input type="hidden" name="recaptcha_token" id="recaptcha_token">
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
@@ -318,32 +332,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
+    // Handle reCAPTCHA v3 token
+    function handleRecaptcha() {
+      grecaptcha.ready(function() {
+        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
+          // Set the token in the hidden input field
+          document.getElementById('recaptcha_token').value = token;
+
+          // Enable form elements when the reCAPTCHA is successful
+          enableFormElements();
+        });
+      });
+    }
+
+    // Enable form elements when reCAPTCHA is completed
+    function enableFormElements() {
+      const recaptchaResponse = grecaptcha.getResponse();
+      const formElements = [
         document.querySelector('input[name="username"]'),
         document.querySelector('input[name="password"]'),
         document.querySelector('a[href="forgot/forgot-password"]'),
         document.querySelector('a[href="<?php echo base_url ?>"]'),
         document.querySelector('button[type="submit"]')
-    ];
+      ];
 
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
+      if (recaptchaResponse.length > 0) {
+        formElements.forEach(el => el.disabled = false);  // Enable form fields if reCAPTCHA is successful
+      } else {
+        formElements.forEach(el => el.disabled = true);  // Keep them disabled if reCAPTCHA is incomplete
+      }
     }
 
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
+    document.addEventListener('DOMContentLoaded', handleRecaptcha);  // Call the reCAPTCHA function on load
 </script>
 </body>
 </html>
