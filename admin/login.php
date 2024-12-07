@@ -241,7 +241,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Display alert below form
     const alertBox = document.getElementById("alert-box");
     if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+      alertBox.innerHTML = `<div class="alert alert-warning">Invalid credentials!<br> You have ${remainingAttempts} login attempts left.</div>`;
     } else {
       isLocked = true;
       alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
