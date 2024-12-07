@@ -108,7 +108,7 @@ class Login extends DBConnection {
             $username = $_SESSION['username'];  // Or $_SESSION['user_id'] if you're storing user ID
             
             // Update user's role to 'Offline' in the database
-            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
+            $updateRoleStmt = $this->con->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
             $updateRoleStmt->bind_param("s", $username);
             $updateRoleStmt->execute();
             $updateRoleStmt->close();
