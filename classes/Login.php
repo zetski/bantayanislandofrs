@@ -117,8 +117,7 @@ class Login extends DBConnection {
     //     exit();
     // }
     public function logout() {
-        // Assuming you have a database connection established already
-        global $db; // or use your actual database connection variable
+
         
         // Get the current user's username (Assuming username is stored in the session)
         $username = $_SESSION['username']; // Replace with the appropriate session variable if needed
