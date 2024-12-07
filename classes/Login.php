@@ -116,40 +116,55 @@ class Login extends DBConnection {
     //     header("Location: " . base_url . "admin/login.php");
     //     exit();
     // }
+
+   public function logout() {
+    // Assuming you have a database connection established already
+    global $db; // or use your actual database connection variable
     
-    public function logout() {
-        // Assuming you have a database connection established already
-        global $db; // or use your actual database connection variable
-        
-        // Get the current user's ID (Assuming user ID is stored in the session)
-        $user_id = $_SESSION['user_id']; // Replace with the appropriate session variable if needed
+    // Check if user_id is available in the session
+    if (!isset($_SESSION['user_id'])) {
+        // If there's no user_id in session, show an error or redirect to login page
+        echo "Error: User is not logged in.";
+        exit(); // Prevent further execution
+    }
+
+    $user_id = $_SESSION['user_id']; // Get the current user's ID from session
     
-        // Update the user's status to "Offline" in the database BEFORE logging out
-        $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
-        
-        if ($stmt = $db->prepare($query)) {
-            $stmt->bind_param("i", $user_id); // "i" for integer type
-            $stmt->execute();
+    // Update the user's status to "Offline" in the database before logging out
+    $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
+    
+    if ($stmt = $db->prepare($query)) {
+        $stmt->bind_param("i", $user_id); // "i" for integer type
+        if ($stmt->execute()) {
             $stmt->close();
         } else {
-            // Handle error if the update fails (optional)
-            // You can log the error or display a message
-            error_log("Error updating user status to Offline.");
+            // Log error if the query fails to execute
+            error_log("Error: Failed to update user role to Offline.");
+            echo "Error: Failed to update user role.";
+            exit();
         }
-        
-        // Destroy the session and clear session data after updating the role
-        session_unset();
-        session_destroy();
-    
-        // Prevent caching of the login page and other sensitive pages
-        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
-        header("Pragma: no-cache"); // HTTP 1.0
-        header("Expires: 0"); // Proxies
-    
-        // Redirect to login page
-        header("Location: " . base_url . "admin/login.php");
+    } else {
+        // Log error if the statement preparation fails
+        error_log("Error: Failed to prepare the query.");
+        echo "Error: Failed to prepare the query.";
         exit();
     }
+
+    // Destroy the session and clear session data after updating the role
+    session_unset();
+    session_destroy();
+
+    // Prevent caching of the login page and other sensitive pages
+    header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+    header("Pragma: no-cache"); // HTTP 1.0
+    header("Expires: 0"); // Proxies
+
+    // Ensure the base_url is set correctly
+    $login_url = isset($base_url) ? $base_url : '/'; // Use a fallback if base_url is not defined
+    header("Location: " . $login_url . "admin/login.php");
+    exit();
+}
+
     
     
 
