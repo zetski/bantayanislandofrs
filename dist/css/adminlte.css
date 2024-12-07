@@ -11430,6 +11430,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
   .sidebar-mini-md .main-footer::before,
   .sidebar-mini-md .main-header,
   .sidebar-mini-md .main-header::before {
+    margin-left: 4.6rem;
   }
 }
 
