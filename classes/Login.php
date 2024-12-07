@@ -117,17 +117,17 @@ class Login extends DBConnection {
     //     exit();
     // }
     public function logout() {
-
+        // Assuming you have a database connection established already
+        global $db; // or use your actual database connection variable
         
-        // Get the current user's username (Assuming username is stored in the session)
-        $username = $_SESSION['username']; // Replace with the appropriate session variable if needed
+        // Get the current user's ID (Assuming user ID is stored in the session)
+        $user_id = $_SESSION['user_id']; // Replace with the appropriate session variable if needed
         
-        // Update the last_login field to "Offline" in the database
-        $query = "UPDATE users SET role = 'Offline' WHERE username = ?";
+        // Update the last_login to "Offline" in the database
+        $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
         
         if ($stmt = $db->prepare($query)) {
-            // "s" for string type (since username is likely a string)
-            $stmt->bind_param("s", $username);
+            $stmt->bind_param("i", $user_id); // "i" for integer type
             $stmt->execute();
             $stmt->close();
         }
@@ -135,17 +135,16 @@ class Login extends DBConnection {
         // Destroy the session and clear session data
         session_unset();
         session_destroy();
-        
+    
         // Prevent caching of the login page and other sensitive pages
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
-        
+    
         // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
     }
-    
     
 
     public function login_user() {
