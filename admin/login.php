@@ -205,51 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-    const maxAttempts = 3; // Max login attempts
-    const timeoutDuration = 60000; // 1 minute in milliseconds
-    let attempts = <?php echo isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] : 0; ?>;
-    let timeoutEnd = <?php echo isset($_SESSION['timeout']) ? $_SESSION['timeout'] : 'null'; ?>;
-    const now = Date.now();
-
-    document.addEventListener('DOMContentLoaded', function () {
-        const loginForm = document.querySelector('#login-frm');
-        const submitButton = loginForm.querySelector('button[type="submit"]');
-        const formFields = loginForm.querySelectorAll('input, button');
-
-        function checkTimeout() {
-            if (attempts >= maxAttempts) {
-                const remainingTime = timeoutEnd - now;
-
-                if (remainingTime > 0) {
-                    disableForm();
-                    setTimeout(() => {
-                        enableForm();
-                        resetAttempts();
-                    }, remainingTime);
-                } else {
-                    enableForm();
-                    resetAttempts();
-                }
-            }
-        }
-
-        function disableForm() {
-            formFields.forEach(field => field.disabled = true);
-        }
-
-        function enableForm() {
-            formFields.forEach(field => field.disabled = false);
-        }
-
-        function resetAttempts() {
-            attempts = 0;
-            <?php unset($_SESSION['login_attempts'], $_SESSION['timeout']); ?>
-        }
-
-        checkTimeout();
-    });
-    //end of time
-    
     $(document).ready(function(){
       end_loader();
     });
