@@ -17,8 +17,8 @@ $admin_district = $_settings->userdata('district');
         <h3 class="card-title">List of <?= isset($stat_arr[$status]) ? $stat_arr[$status] : 'All Requests' ?></h3>
     </div>
     <div class="card-body">
-        <div class="container-fluid">
-            <table class="table table-hover table-striped table-bordered" id="list">
+        <div class="table-responsive">
+            <table class="table table-striped" id="list">
                 <colgroup>
                     <col width="5%">
                     <col width="15%">
