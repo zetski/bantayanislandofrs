@@ -113,7 +113,7 @@ class Login extends DBConnection {
             $updateRoleStmt->execute();
             $updateRoleStmt->close();
         }
-        
+    
         // Destroy the session and clear session data
         session_unset();
         session_destroy();
@@ -126,8 +126,7 @@ class Login extends DBConnection {
         // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
-    }
-     
+    } 
     
 
     public function login_user() {
