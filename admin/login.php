@@ -7,20 +7,8 @@ if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
     </script>";
     exit;
 }
-require_once('../config.php'); 
+require_once('../config.php');
 
-// // Allowed IP addresses
-// $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
-
-// // Get the user's IP address
-// $user_ip = $_SERVER['REMOTE_ADDR'];
-
-// // Check if the user's IP address matches any allowed IPs
-// if (!in_array($user_ip, $allowed_ips)) {
-//     http_response_code(404); // Set the 404 status code
-//     include('./404.html'); // Include the 404 page content
-//     exit();
-// }
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
@@ -137,244 +125,120 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="" style="height: auto;">
-<?php require_once('inc/header.php') ?>
-<body class="hold-transition login-page">
-  <script>
-    start_loader()
-  </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <style>
-    body {
-        background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
-        background-size: cover; 
-        background-position: center;
-        background-repeat: no-repeat; 
-        backdrop-filter: contrast(1);
-        height: 100vh; 
-        margin: 0;
-    }
-    #page-title {
-        text-shadow: 6px 4px 7px black;
-        font-size: 3.5em;
-        color: #fff4f4 !important;
-    }
-    .login-box {
-        margin: auto; 
-        max-width: 400px; 
-        width: 90%; 
-    }
-
-    /* Media queries for responsive design */
-    @media (max-width: 768px) {
-        #page-title {
-            font-size: 2.5em; /* Reduce title size on smaller screens */
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
+            background-size: cover; 
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
         }
         .login-box {
-            width: 95%; /* Make the login box wider on smaller screens */
+            max-width: 400px;
+            margin: auto;
         }
-    }
-    @media (max-width: 480px) {
         #page-title {
-            font-size: 2em; /* Further reduce title size on very small screens */
+            font-size: 3.5em;
+            color: white;
+            text-shadow: 6px 4px 7px black;
         }
-    }
-    .shake {
-    animation: shake 0.5s;
-  }
-
-  @keyframes shake {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-    25% {
-      transform: translateX(-5px);
-    }
-    50% {
-      transform: translateX(5px);
-    }
-    75% {
-      transform: translateX(-5px);
-    }
-  }
-</style>
-  <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
-  <div class="login-box" style="height: 100%">
-    <div class="card card-danger my-2">
-      <div class="card-body">
-        <p class="login-box-msg">Please enter your credentials</p>
-        <form id="login-frm" action="" method="post">
-          <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" >
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-user"></span>
-              </div>
+        .shake {
+            animation: shake 0.5s;
+        }
+        @keyframes shake {
+            0%,
+            100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center text-white" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
+    <div class="login-box">
+        <div class="card card-danger my-2">
+            <div class="card-body">
+                <p class="login-box-msg">Please enter your credentials</p>
+                <form id="login-frm" action="" method="POST">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="username" placeholder="Username" required autofocus>
+                        <div class="input-group-append">
+                            <div class="input-group-text"><span class="fas fa-user"></span></div>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
+                    <div class="row">
+                        <div class="col-8">
+                            <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
+                        </div>
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+                <p class="mb-1 mt-3">
+                    <a href="<?php echo base_url ?>">Go to Website</a>
+                </p>
             </div>
-          </div>
-          <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" >
-            <div class="input-group-append">
-              <div class="input-group-text">
-                <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
-              </div>
-            </div>
-          </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
-          <div class="row">
-            <div class="col-8">
-              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
-            </div>
-            <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
-            </div>
-          </div>
-        </form>
-        <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>">Go to Website</a>
-        </p>
-      </div>
+        </div>
     </div>
-  </div>
 
-  <div id="alert-box"></div> 
-  
-  <!-- Scripts -->
-  <script src="plugins/jquery/jquery.min.js"></script>
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="dist/js/adminlte.min.js"></script>
-
-  <script>
-  //   let remainingAttempts = 3; // Initial login attempts
-  // let isLocked = false; // Lockout flag
-
-  // function handleInvalidCredentials() {
-  //   if (isLocked) return;
-
-  //   // Decrease attempts
-  //   remainingAttempts--;
-
-  //   // Shake the card body
-  //   const cardBody = document.querySelector(".card-body");
-  //   cardBody.classList.add("shake");
-  //   setTimeout(() => cardBody.classList.remove("shake"), 500);
-
-  //   // Display alert below form
-  //   const alertBox = document.getElementById("alert-box");
-  //   if (remainingAttempts > 0) {
-  //     alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-  //   } else {
-  //     isLocked = true;
-  //     alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-  //     lockForm();
-  //     setTimeout(() => {
-  //       isLocked = false;
-  //       remainingAttempts = 3;
-  //       alertBox.innerHTML = ""; // Clear alert
-  //       unlockForm();
-  //     }, 3 * 60 * 1000); // 3 minutes
-  //   }
-  // }
-
-  // function lockForm() {
-  //   document.querySelector('input[name="username"]').disabled = true;
-  //   document.querySelector('input[name="password"]').disabled = true;
-  //   document.querySelector('button[type="submit"]').disabled = true;
-  // }
-
-  // function unlockForm() {
-  //   document.querySelector('input[name="username"]').disabled = false;
-  //   document.querySelector('input[name="password"]').disabled = false;
-  //   document.querySelector('button[type="submit"]').disabled = false;
-  // }
-
-  // document.getElementById("login-frm").addEventListener("submit", function (e) {
-  //   e.preventDefault();
-
-  //   // Simulate an invalid login for demonstration (replace with actual AJAX request)
-  //   const isValid = false; // Replace this with actual validation logic
-  //   if (!isValid) {
-  //     handleInvalidCredentials();
-  //   } else {
-  //     // Handle successful login
-  //     alert("Login successful!");
-  //   }
-  // });
-  // //end of limit attempt
-
-    $(document).ready(function(){
-      end_loader();
-    });
-
-    // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
-
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
-
-    // Toggle password visibility
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    // Disable inspect element and right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
-
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
-</script>
-<script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
-<script>
-      function onClick(e) {
-        e.preventDefault();
-        grecaptcha.ready(function() {
-          grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
-              // Add your logic to submit to your backend server here.
-          });
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+        // Toggle password visibility
+        $('#toggle-password').on('click', function() {
+            let passwordField = $('#password');
+            let passwordFieldType = passwordField.attr('type');
+            if (passwordFieldType === 'password') {
+                passwordField.attr('type', 'text');
+                $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+            }
         });
-      }
-  </script>
+
+        // Disable form elements until reCAPTCHA is completed
+        document.addEventListener('DOMContentLoaded', function() {
+            const formElements = [
+                document.querySelector('input[name="username"]'),
+                document.querySelector('input[name="password"]'),
+                document.querySelector('a[href="forgot/forgot-password"]'),
+                document.querySelector('a[href="<?php echo base_url ?>"]'),
+                document.querySelector('button[type="submit"]')
+            ];
+
+            formElements.forEach(el => el.disabled = true);
+
+            function enableFormElements() {
+                const recaptchaResponse = grecaptcha.getResponse();
+                if (recaptchaResponse.length > 0) {
+                    formElements.forEach(el => el.disabled = false); // Enable form fields if recaptcha is successful
+                } else {
+                    formElements.forEach(el => el.disabled = true); // Keep them disabled if recaptcha is incomplete
+                }
+            }
+
+            window.enableRecaptcha = enableFormElements; // Bind function to global scope
+        });
+    </script>
 </body>
 </html>
