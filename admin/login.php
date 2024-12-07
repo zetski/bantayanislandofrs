@@ -54,6 +54,26 @@ function sanitize_input($input) {
 
     return $input;
 }
+// reCAPTCHA secret key
+$secret_key = 'YOUR_SECRET_KEY';
+
+// Check if the reCAPTCHA token is provided
+if (isset($_POST['recaptcha_token'])) {
+    $recaptcha_token = $_POST['recaptcha_token'];
+
+    // Verify reCAPTCHA using Google's API
+    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secret_key&response=$recaptcha_token");
+    $response_keys = json_decode($response, true);
+
+    // If reCAPTCHA verification fails, stop the login process
+    if (intval($response_keys['success']) !== 1) {
+        echo 'reCAPTCHA verification failed. Please try again.';
+        exit;
+    }
+} else {
+    echo 'reCAPTCHA token missing.';
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = sanitize_input($_POST['username']);
@@ -117,13 +137,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en" class="" style="height: auto;">
+<html lang="en">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
+  <script src="https://www.google.com/recaptcha/api.js?render=6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3"></script>
+  
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -144,7 +166,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         max-width: 400px; 
         width: 90%; 
     }
-
     /* Media queries for responsive design */
     @media (max-width: 768px) {
         #page-title {
@@ -179,6 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
   }
 </style>
+
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
     <div class="card card-danger my-2">
@@ -201,7 +223,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
@@ -219,81 +240,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 
   <div id="alert-box"></div> 
-  
-  <!-- Scripts -->
+
   <script src="plugins/jquery/jquery.min.js"></script>
   <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-  //   let remainingAttempts = 3; // Initial login attempts
-  // let isLocked = false; // Lockout flag
-
-  // function handleInvalidCredentials() {
-  //   if (isLocked) return;
-
-  //   // Decrease attempts
-  //   remainingAttempts--;
-
-  //   // Shake the card body
-  //   const cardBody = document.querySelector(".card-body");
-  //   cardBody.classList.add("shake");
-  //   setTimeout(() => cardBody.classList.remove("shake"), 500);
-
-  //   // Display alert below form
-  //   const alertBox = document.getElementById("alert-box");
-  //   if (remainingAttempts > 0) {
-  //     alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-  //   } else {
-  //     isLocked = true;
-  //     alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-  //     lockForm();
-  //     setTimeout(() => {
-  //       isLocked = false;
-  //       remainingAttempts = 3;
-  //       alertBox.innerHTML = ""; // Clear alert
-  //       unlockForm();
-  //     }, 3 * 60 * 1000); // 3 minutes
-  //   }
-  // }
-
-  // function lockForm() {
-  //   document.querySelector('input[name="username"]').disabled = true;
-  //   document.querySelector('input[name="password"]').disabled = true;
-  //   document.querySelector('button[type="submit"]').disabled = true;
-  // }
-
-  // function unlockForm() {
-  //   document.querySelector('input[name="username"]').disabled = false;
-  //   document.querySelector('input[name="password"]').disabled = false;
-  //   document.querySelector('button[type="submit"]').disabled = false;
-  // }
-
-  // document.getElementById("login-frm").addEventListener("submit", function (e) {
-  //   e.preventDefault();
-
-  //   // Simulate an invalid login for demonstration (replace with actual AJAX request)
-  //   const isValid = false; // Replace this with actual validation logic
-  //   if (!isValid) {
-  //     handleInvalidCredentials();
-  //   } else {
-  //     // Handle successful login
-  //     alert("Login successful!");
-  //   }
-  // });
-  // //end of limit attempt
-
     $(document).ready(function(){
       end_loader();
-    });
-
-    // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
-
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
     });
 
     // Toggle password visibility
@@ -318,32 +272,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
 
-    formElements.forEach(el => el.disabled = true);
+    // Form submission with reCAPTCHA v3 token
+    $('#login-frm').on('submit', function(e) {
+        e.preventDefault(); // Prevent the default form submission
 
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
+        grecaptcha.ready(function() {
+            grecaptcha.execute('6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3', {action: 'login'}).then(function(token) {
+                // Add the reCAPTCHA token to the form
+                $('<input>').attr({
+                    type: 'hidden',
+                    name: 'recaptcha_token',
+                    value: token
+                }).appendTo('#login-frm');
 
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
-</script>
+                // Submit the form with the token
+                $('#login-frm')[0].submit();
+            });
+        });
+    });
+  </script>
 </body>
 </html>
