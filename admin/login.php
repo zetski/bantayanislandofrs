@@ -364,9 +364,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Add event listener for reCAPTCHA changes
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
 });
+function onClick(e) {
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+          });
+        });
+      }
 </script>
 <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
-<script>
+<!-- <script>
       function onClick(e) {
         e.preventDefault();
         grecaptcha.ready(function() {
@@ -375,6 +383,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           });
         });
       }
-  </script>
+  </script> -->
 </body>
 </html>
