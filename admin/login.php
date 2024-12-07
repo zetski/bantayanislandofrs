@@ -144,7 +144,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     start_loader()
   </script>
   
-  <script src="https://www.google.com/recaptcha/api.js?render=6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   
   <style>
     body {
@@ -278,7 +278,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         e.preventDefault(); // Prevent the default form submission
 
         grecaptcha.ready(function() {
-            grecaptcha.execute('6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3', {action: 'login'}).then(function(token) {
+            grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
                 // Add the reCAPTCHA token to the form
                 $('<input>').attr({
                     type: 'hidden',
