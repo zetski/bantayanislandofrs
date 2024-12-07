@@ -103,35 +103,30 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Ensure username is retrieved from session
+        // Check if user is logged in and session variable exists (assuming username is stored in session)
         if (isset($_SESSION['username'])) {
-            $username = $_SESSION['username'];
+            $username = $_SESSION['username'];  // Or $_SESSION['user_id'] if you're storing user ID
             
-            // Update user's status to 'Offline' in the database
-            $updateStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
-            if ($updateStatusStmt) {
-                $updateStatusStmt->bind_param("s", $username);
-                $updateStatusStmt->execute();
-                $updateStatusStmt->close();
-            } else {
-                error_log("Failed to prepare logout statement: " . $this->conn->error);
-            }
+            // Update user's role to 'Offline' in the database
+            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
+            $updateRoleStmt->bind_param("s", $username);
+            $updateRoleStmt->execute();
+            $updateRoleStmt->close();
         }
     
-        // Destroy session and clear session variables
+        // Destroy the session and clear session data
         session_unset();
         session_destroy();
-    
-        // Set caching headers to prevent unauthorized back navigation
+        
+        // Prevent caching of the login page and other sensitive pages
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
-    
-        // Redirect to the login page
+        
+        // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
-    }
-    
+    }    
     
 
     public function login_user() {
