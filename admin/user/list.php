@@ -77,7 +77,7 @@
                                     N/A
                                 <?php endif; ?>
                             </td>
-							<td><td><?php echo $row['last_login'] ?></td></td>
+							<td><td><?php echo $row['role'] ?></td></td>
 							<td align="center">
 								 <button type="button" class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
 				                  		Action
