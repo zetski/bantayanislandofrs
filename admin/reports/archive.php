@@ -81,7 +81,9 @@ if ($admin_district) {
 </head>
 <body>
     <h1>Archived Reports</h1>
-    <table class="table display">
+    <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-striped">
         <thead>
             <tr>
                 <th>#</th>
@@ -124,6 +126,8 @@ if ($admin_district) {
             ?>
         </tbody>
     </table>
+        </div>
+    </div>
     <script>
     $(document).ready(function(){
         // Restore functionality
