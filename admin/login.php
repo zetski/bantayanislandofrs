@@ -28,6 +28,9 @@ header("X-Frame-Options: SAMEORIGIN"); // Prevent clickjacking
 header("X-XSS-Protection: 1; mode=block"); // Enable XSS filtering
 header("Referrer-Policy: no-referrer-when-downgrade"); // Control referrer information
 header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Require HTTPS (HSTS)
+header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+header("Pragma: no-cache"); // HTTP 1.0
+header("Expires: 0");
 
 // Start the session with HttpOnly and Secure cookie settings
 ini_set('session.cookie_httponly', 1); // Prevent JavaScript access to session cookie

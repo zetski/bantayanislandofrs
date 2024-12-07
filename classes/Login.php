@@ -96,10 +96,17 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Destroy the session and redirect to login page
+        // Destroy the session and clear session data
         session_unset();
         session_destroy();
-        header("Location: " . base_url . "admin/login.php"); 
+    
+        // Prevent caching of the login page and other sensitive pages
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+        header("Pragma: no-cache"); // HTTP 1.0
+        header("Expires: 0"); // Proxies
+    
+        // Redirect to login page
+        header("Location: " . base_url . "admin/login.php");
         exit();
     }
 
