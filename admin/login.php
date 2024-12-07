@@ -164,6 +164,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     animation: shake 0.5s;
   }
 
+  .grecaptcha-badge {
+        z-index: 1000;  /* Make sure it appears on top */
+        display: block;  /* Ensure it's visible */
+    }
+    
   @keyframes shake {
     0%,
     100% {
