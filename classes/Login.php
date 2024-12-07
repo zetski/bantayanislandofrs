@@ -105,13 +105,7 @@ class Login extends DBConnection {
     public function logout() {
         // Assuming you have a database connection established already
         global $db; // or use your actual database connection variable
-        
-        // Check if user_id is available in the session
-        if (!isset($_SESSION['id'])) {
-            // If there's no user_id in session, show an error or redirect to login page
-            echo "Error: User is not logged in.";
-            exit(); // Prevent further execution
-        }
+
     
         $user_id = $_SESSION['id']; // Get the current user's ID from session
         
