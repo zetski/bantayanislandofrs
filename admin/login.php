@@ -44,13 +44,26 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+  // Get the reCAPTCHA response
+  $recaptcha_response = $_POST['g-recaptcha-response'];
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
+  // Secret Key for reCAPTCHA
+  $secret_key = 'YOUR_SECRET_KEY';
+
+  // Verify reCAPTCHA
+  $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
+  $response = file_get_contents("$recaptcha_url?secret=$secret_key&response=$recaptcha_response");
+  $response_keys = json_decode($response, true);
+
+  // Check if reCAPTCHA verification is successful
+  if(intval($response_keys['success']) !== 1) {
+      echo 'reCAPTCHA verification failed. Please try again.';
       exit;
   }
+
+  // Continue with your login logic
+  $username = sanitize_input($_POST['username']);
+  $password = sanitize_input($_POST['password']);
 
   // Prepared statement to prevent SQL injection
   $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
@@ -111,6 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -196,6 +210,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
           </div>
+          <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
         </form>
         <p class="mb-1 mt-3">
           <a href="<?php echo base_url ?>">Go to Website</a>
@@ -294,6 +309,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
+    grecaptcha.ready(function() {
+        // Execute reCAPTCHA and get the token
+        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
+            // Append the token to the form
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
   </script>
 </body>
 </html>
