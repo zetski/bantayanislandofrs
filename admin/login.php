@@ -56,11 +56,29 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+  $recaptchaToken = $_POST['recaptchaToken'];
+  $recaptchaSecretKey = "6LePpJQqAAAAABUQ_xrz-sbY5RkbR3cGnaNJ3o_8"; // Replace with your secret key
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
+  // Verify the token with Google's reCAPTCHA API
+  $url = 'https://www.google.com/recaptcha/api/siteverify';
+  $data = [
+      'secret' => $recaptchaSecretKey,
+      'response' => $recaptchaToken
+  ];
+
+  $options = [
+      'http' => [
+          'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+          'method'  => 'POST',
+          'content' => http_build_query($data),
+      ],
+  ];
+  $context  = stream_context_create($options);
+  $response = file_get_contents($url, false, $context);
+  $result = json_decode($response, true);
+
+  if (!$result['success'] || $result['score'] < 0.5) {
+      echo 'reCAPTCHA verification failed. Please try again.';
       exit;
   }
 
@@ -123,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -185,6 +203,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="card-body">
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
+        <input type="hidden" id="recaptchaToken" name="recaptchaToken" />
           <div class="input-group mb-3">
             <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
             <div class="input-group-append">
@@ -318,32 +337,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function(token) {
+            // Add the token to a hidden input in the form
+            document.getElementById('recaptchaToken').value = token;
+        });
+    });
 
-    formElements.forEach(el => el.disabled = true);
-
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
+    document.getElementById("login-frm").addEventListener("submit", function (e) {
+        const token = document.getElementById('recaptchaToken').value;
+        if (!token) {
+            e.preventDefault(); // Prevent form submission if reCAPTCHA token is missing
+            alert('reCAPTCHA verification failed. Please try again.');
         }
-    }
-
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
-});
+    });
 </script>
 </body>
 </html>
