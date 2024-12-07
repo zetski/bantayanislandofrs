@@ -229,7 +229,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    window.location.href = 'dashboard.php'; // Redirect on success
+                    window.location.href = 'admin'; // Redirect on success
                 } else {
                     // Shake the form and show error message
                     $('.login-box').addClass('shake');
