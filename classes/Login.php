@@ -8,52 +8,63 @@ class Login extends DBConnection {
         global $_settings;
         $this->settings = $_settings;
         parent::__construct();
-        ini_set('display_error', 1);
-        session_start();
-    }
-
-    public function __destruct() {
-        parent::__destruct();
-    }
-
-    public function index() {
-        echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
+        ini_set('display_errors', 1);
+        session_start(); // Only call session_start() once
     }
 
     public function login() {
-        extract($_POST);
+        $maxAttempts = 3;
+        $timeoutDuration = 60; // 60 seconds
+        $currentAttempts = $_SESSION['login_attempts'] ?? 0;
+
+        // Check timeout
+        if (isset($_SESSION['timeout']) && time() < $_SESSION['timeout']) {
+            $remainingTime = $_SESSION['timeout'] - time();
+            echo json_encode([
+                'status' => 'error',
+                'message' => 'Too many failed attempts. Please wait ' . $remainingTime . ' seconds.',
+            ]);
+            exit;
+        }
+
+        // Reset attempts if timeout passed
+        if (isset($_SESSION['timeout']) && time() >= $_SESSION['timeout']) {
+            unset($_SESSION['login_attempts'], $_SESSION['timeout']);
+            $currentAttempts = 0;
+        }
+
+        // Your login validation logic
+        $username = sanitize_input($_POST['username']);
+        $password = sanitize_input($_POST['password']);
+
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
 
-        if ($result->num_rows > 0) {
-            $user = $result->fetch_assoc();
-            $storedHash = $user['password'];
-
-            // Handle MD5 or bcrypt password verification
-            if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
-                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-                $updateStmt = $this->conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-                $updateStmt->bind_param("ss", $newHashedPassword, $username);
-                $updateStmt->execute();
-                $updateStmt->close();
-            } elseif (!password_verify($password, $storedHash)) {
-                return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
-            }
-
-            // Successful login: Set session data
-            foreach ($user as $k => $v) {
-                if (!is_numeric($k) && $k != 'password') {
-                    $this->settings->set_userdata($k, $v);
-                }
-            }
-            $this->settings->set_userdata('login_type', 1);
-
-            return json_encode(['status' => 'success']);
+        $user = $result->fetch_assoc();
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            echo json_encode(['status' => 'success']);
+            unset($_SESSION['login_attempts'], $_SESSION['timeout']);
         } else {
-            return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+            $currentAttempts++;
+            $_SESSION['login_attempts'] = $currentAttempts;
+
+            if ($currentAttempts >= $maxAttempts) {
+                $_SESSION['timeout'] = time() + $timeoutDuration;
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Too many failed attempts. Please wait 1 minute.',
+                ]);
+            } else {
+                echo json_encode([
+                    'status' => 'error',
+                    'message' => 'Invalid credentials. Remaining attempts: ' . ($maxAttempts - $currentAttempts),
+                ]);
+            }
         }
+        exit;
     }
 
     public function logout() {
@@ -64,11 +75,12 @@ class Login extends DBConnection {
 
     public function login_user() {
         extract($_POST);
-        $stmt = $this->conn->prepare("SELECT * from tutor_list where email = ? and `password` = ? and `status` != 3 and `delete_flag` = 0");
-        $password = md5($password);
+        $stmt = $this->conn->prepare("SELECT * from tutor_list WHERE email = ? AND `password` = ? AND `status` != 3 AND `delete_flag` = 0");
+        $password = md5($password); // Consider using password_hash instead of md5
         $stmt->bind_param('ss', $email, $password);
         $stmt->execute();
         $result = $stmt->get_result();
+
         if ($result->num_rows > 0) {
             $res = $result->fetch_array();
             foreach ($res as $k => $v) {
@@ -80,10 +92,12 @@ class Login extends DBConnection {
             $resp['status'] = 'failed';
             $resp['msg'] = 'Incorrect Email or Password';
         }
+
         if ($this->conn->error) {
             $resp['status'] = 'failed';
             $resp['_error'] = $this->conn->error;
         }
+
         return json_encode($resp);
     }
 
@@ -92,10 +106,19 @@ class Login extends DBConnection {
             redirect('tutor');
         }
     }
+
+    public function index() {
+        echo "<h1>Access Denied</h1> <a href='" . base_url . "'>Go Back.</a>";
+    }
+
+    public function __destruct() {
+        parent::__destruct();
+    }
 }
 
-$action = !isset($_GET['f']) ? 'none' : strtolower($_GET['f']);
+$action = isset($_GET['f']) ? strtolower($_GET['f']) : 'none';
 $auth = new Login();
+
 switch ($action) {
     case 'login':
         echo $auth->login();
@@ -113,3 +136,4 @@ switch ($action) {
         echo $auth->index();
         break;
 }
+?>
