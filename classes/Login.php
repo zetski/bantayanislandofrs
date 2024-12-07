@@ -99,7 +99,7 @@ class Login extends DBConnection {
         // Destroy the session and redirect to login page
         session_unset();
         session_destroy();
-        header("Location: " . base_url . "admin/login.php"); // Redirect to login page
+        header("Location: " . base_url . "admin/login.php"); 
         exit();
     }
 
