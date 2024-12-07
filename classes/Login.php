@@ -126,7 +126,7 @@ class Login extends DBConnection {
         // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
-    }
+    }    
     
 
     public function login_user() {
