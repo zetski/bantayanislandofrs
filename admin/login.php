@@ -333,17 +333,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     };
     // Handle reCAPTCHA v3 token
-    function handleRecaptcha() {
-      grecaptcha.ready(function() {
-        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
-          // Set the token in the hidden input field
-          document.getElementById('recaptcha_token').value = token;
-
-          // Enable form elements when the reCAPTCHA is successful
-          enableFormElements();
-        });
-      });
-    }
+    grecaptcha.ready(function() {
+    grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
+        document.getElementById('recaptcha_token').value = token;
+    });
+  });
 
     // Enable form elements when reCAPTCHA is completed
     function enableFormElements() {
