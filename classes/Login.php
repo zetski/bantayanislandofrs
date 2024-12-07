@@ -103,7 +103,39 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Destroy the session and clear session data
+        // Assuming you have a database connection established already
+        global $db; // or use your actual database connection variable
+        
+        // Check if user_id is available in the session
+        if (!isset($_SESSION['user_id'])) {
+            // If there's no user_id in session, show an error or redirect to login page
+            echo "Error: User is not logged in.";
+            exit(); // Prevent further execution
+        }
+    
+        $user_id = $_SESSION['user_id']; // Get the current user's ID from session
+        
+        // Update the user's status to "Offline" in the database before logging out
+        $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
+        
+        if ($stmt = $db->prepare($query)) {
+            $stmt->bind_param("i", $user_id); // "i" for integer type
+            if ($stmt->execute()) {
+                $stmt->close();
+            } else {
+                // Log error if the query fails to execute
+                error_log("Error: Failed to update user role to Offline.");
+                echo "Error: Failed to update user role.";
+                exit();
+            }
+        } else {
+            // Log error if the statement preparation fails
+            error_log("Error: Failed to prepare the query.");
+            echo "Error: Failed to prepare the query.";
+            exit();
+        }
+    
+        // Destroy the session and clear session data after updating the role
         session_unset();
         session_destroy();
     
@@ -112,10 +144,12 @@ class Login extends DBConnection {
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
     
-        // Redirect to login page
-        header("Location: " . base_url . "admin/login.php");
+        // Ensure the base_url is set correctly
+        $login_url = isset($base_url) ? $base_url : '/'; // Use a fallback if base_url is not defined
+        header("Location: " . $login_url . "admin/login.php");
         exit();
     }
+    
 
     public function login_user() {
         extract($_POST);
