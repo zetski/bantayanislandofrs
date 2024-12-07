@@ -338,11 +338,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     };
     grecaptcha.ready(function() {
-        grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function(token) {
-            // Add the token to a hidden input in the form
-            document.getElementById('recaptchaToken').value = token;
-        });
+    grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function(token) {
+        // Set the token to the hidden input
+        document.getElementById('recaptchaToken').value = token;
+        
+        // Enable the submit button after reCAPTCHA verification
+        document.querySelector('button[type="submit"]').disabled = false;
     });
+});
 
     document.getElementById("login-frm").addEventListener("submit", function (e) {
         const token = document.getElementById('recaptchaToken').value;
