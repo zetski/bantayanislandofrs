@@ -22,7 +22,7 @@ require_once('../config.php');
 //     exit();
 // }
 // Set HTTP security headers
-header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
+header("Content-Security-Policy: default-src 'self'; script-src 'self' https://www.google.com; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
 header("X-Frame-Options: SAMEORIGIN"); // Prevent clickjacking
 header("X-XSS-Protection: 1; mode=block"); // Enable XSS filtering
