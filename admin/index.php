@@ -96,30 +96,6 @@
     </div>
   </div>
       </div>
-
-      <!-- termination logout -->
-      <script>
-      let idleTime = 0;
-      const idleLimit = 60; // 1 minute
-      let isAlertShown = false; // Flag to track if alert is shown
-
-      document.addEventListener("mousemove", resetIdleTimer);
-      document.addEventListener("keypress", resetIdleTimer);
-
-      function resetIdleTimer() {
-          idleTime = 0; // Reset idle time on activity
-          isAlertShown = false; // Reset alert flag when activity occurs
-      }
-
-      setInterval(() => {
-          idleTime++;
-          if (idleTime >= idleLimit && !isAlertShown) {
-              isAlertShown = true; // Prevent multiple alerts
-              alert("");
-              window.location.href = 'logout'; // Adjust the logout URL as needed
-          }
-      }, 1000);
-    </script>
       <!-- /.content-wrapper -->
       <?php require_once('inc/footer.php') ?>
   </body>
