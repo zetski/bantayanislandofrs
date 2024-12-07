@@ -66,11 +66,14 @@ class Login extends DBConnection {
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
 
-             // Update 'last_login' to 'Online' in the database
-                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE username = ?");
-                $updateLoginStatusStmt->bind_param("s", $username);
-                $updateLoginStatusStmt->execute();
-                $updateLoginStatusStmt->close();
+            // Save user ID in session for logout tracking
+            $_SESSION['user_id'] = $user['id'];
+
+            // Update 'role' to 'Online' in the database
+            $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE id = ?");
+            $updateLoginStatusStmt->bind_param("i", $user['id']);
+            $updateLoginStatusStmt->execute();
+            $updateLoginStatusStmt->close();
 
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
@@ -103,31 +106,36 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        // Check if user is logged in and session variable exists (assuming username is stored in session)
-        if (isset($_SESSION['username'])) {
-            $username = $_SESSION['username'];  // Or $_SESSION['user_id'] if you're storing user ID
-            
-            // Update user's role to 'Offline' in the database
-            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
-            $updateRoleStmt->bind_param("s", $username);
-            $updateRoleStmt->execute();
-            $updateRoleStmt->close();
+        // Check if user is logged in and session variable exists
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+
+            // Update user's role/status in the database
+            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE id = ?");
+            if ($updateRoleStmt) {
+                $updateRoleStmt->bind_param("i", $user_id);
+                $updateRoleStmt->execute();
+                $updateRoleStmt->close();
+            } else {
+                error_log("Error updating user status: " . $this->conn->error);
+            }
         }
-    
+
         // Destroy the session and clear session data
         session_unset();
         session_destroy();
-        
+
         // Prevent caching of the login page and other sensitive pages
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
-        
+
         // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
-    }    
-    
+    }
+
+
 
     public function login_user() {
         extract($_POST);
