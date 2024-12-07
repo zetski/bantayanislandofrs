@@ -32,7 +32,7 @@ function sanitize_input($input) {
 }
 
 // reCAPTCHA secret key
-$secret_key = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH';
+$secret_key = '6LflOZUqAAAAABPtamTAWplZnWIQqnk89Duk9jJ_';
 
 // Check if reCAPTCHA token is provided
 if (isset($_POST['recaptcha_token'])) {
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="hold-transition login-page">
   <script>start_loader()</script>
 
-  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR"></script>
 
   <style>
     body {
@@ -240,7 +240,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         e.preventDefault(); 
 
         grecaptcha.ready(function() {
-            grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
+            grecaptcha.execute('6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR', {action: 'login'}).then(function(token) {
                 $('<input>').attr({
                     type: 'hidden',
                     name: 'recaptcha_token',
