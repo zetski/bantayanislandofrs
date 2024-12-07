@@ -103,19 +103,31 @@ class Login extends DBConnection {
     }
 
     public function logout() {
+        // Check if user is logged in and session variable exists (assuming username is stored in session)
+        if (isset($_SESSION['username'])) {
+            $username = $_SESSION['username'];  // Or $_SESSION['user_id'] if you're storing user ID
+            
+            // Update user's role to 'Offline' in the database
+            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
+            $updateRoleStmt->bind_param("s", $username);
+            $updateRoleStmt->execute();
+            $updateRoleStmt->close();
+        }
+    
         // Destroy the session and clear session data
         session_unset();
         session_destroy();
-    
+        
         // Prevent caching of the login page and other sensitive pages
         header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
         header("Pragma: no-cache"); // HTTP 1.0
         header("Expires: 0"); // Proxies
-    
+        
         // Redirect to login page
         header("Location: " . base_url . "admin/login.php");
         exit();
     }
+    
 
     public function login_user() {
         extract($_POST);
