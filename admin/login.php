@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $recaptcha_token = $_POST['recaptcha_token'];  // Get the reCAPTCHA token
 
   // Your secret key (from reCAPTCHA v3 setup)
-  $secret_key = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH';
+  $secret_key = '6LePpJQqAAAAABUQ_xrz-sbY5RkbR3cGnaNJ3o_8';
 
   // Verify the reCAPTCHA response with Google's API
   $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $recaptcha_token);
@@ -335,7 +335,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Handle reCAPTCHA v3 token
     function handleRecaptcha() {
       grecaptcha.ready(function() {
-        grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
+        grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', {action: 'login'}).then(function(token) {
           // Set the token in the hidden input field
           document.getElementById('recaptcha_token').value = token;
 
