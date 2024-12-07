@@ -55,7 +55,7 @@ function sanitize_input($input) {
     return $input;
 }
 // reCAPTCHA secret key
-$secret_key = 'YOUR_SECRET_KEY';
+$secret_key = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH';
 
 // Check if the reCAPTCHA token is provided
 if (isset($_POST['recaptcha_token'])) {
