@@ -3,7 +3,6 @@ require_once '../config.php';
 
 class Login extends DBConnection {
     private $settings;
-    private $idleLimit = 60;  // Set idle timeout limit to 60 seconds (1 minute)
     
     public function __construct() {
         global $_settings;
@@ -12,15 +11,12 @@ class Login extends DBConnection {
         ini_set('display_error', 1);
         session_start();
         
-        // Initialize session variables for login attempts, timeout, and last activity
+        // Initialize session variables for login attempts and timeout
         if (!isset($_SESSION['login_attempts'])) {
             $_SESSION['login_attempts'] = 3;
         }
         if (!isset($_SESSION['timeout'])) {
             $_SESSION['timeout'] = null;
-        }
-        if (!isset($_SESSION['last_activity'])) {
-            $_SESSION['last_activity'] = time(); // Set last activity timestamp when the session starts
         }
     }
 
@@ -28,28 +24,11 @@ class Login extends DBConnection {
         parent::__destruct();
     }
 
-    // Check for idle timeout
-    public function checkIdleTimeout() {
-        $current_time = time();
-        $last_activity = $_SESSION['last_activity'];
-        
-        // Check if idle time exceeds the timeout limit
-        if ($current_time - $last_activity > $this->idleLimit) {
-            $this->logout(); // Force logout if idle timeout exceeded
-        } else {
-            // Update the last activity timestamp on every request
-            $_SESSION['last_activity'] = $current_time;
-        }
-    }
-
     public function index() {
         echo "<h1>Access Denied</h1> <a href='".base_url."'>Go Back.</a>";
     }
 
     public function login() {
-        // Check if idle timeout has been exceeded
-        $this->checkIdleTimeout();
-        
         $current_time = time();
         
         // Check if user is locked out
@@ -93,9 +72,6 @@ class Login extends DBConnection {
             }
             $this->settings->set_userdata('login_type', 1);
 
-            // Update the last activity timestamp upon successful login
-            $_SESSION['last_activity'] = time();
-            
             return json_encode(['status' => 'success']);
         } else {
             return $this->handleFailedLogin();
@@ -123,7 +99,7 @@ class Login extends DBConnection {
         // Destroy the session and redirect to login page
         session_unset();
         session_destroy();
-        header("Location: " . base_url . "login.php"); // Redirect to login page
+        header("Location: " . base_url . "admin/login.php"); // Redirect to login page
         exit();
     }
 
