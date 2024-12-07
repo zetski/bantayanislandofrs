@@ -65,6 +65,13 @@ class Login extends DBConnection {
             // Successful login: Reset login attempts and set session data
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
+
+             // Update 'last_login' to 'Online' in the database
+                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET last_login = 'Online' WHERE username = ?");
+                $updateLoginStatusStmt->bind_param("s", $username);
+                $updateLoginStatusStmt->execute();
+                $updateLoginStatusStmt->close();
+
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
