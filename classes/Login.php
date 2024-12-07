@@ -116,23 +116,28 @@ class Login extends DBConnection {
     //     header("Location: " . base_url . "admin/login.php");
     //     exit();
     // }
+    
     public function logout() {
         // Assuming you have a database connection established already
         global $db; // or use your actual database connection variable
         
         // Get the current user's ID (Assuming user ID is stored in the session)
         $user_id = $_SESSION['user_id']; // Replace with the appropriate session variable if needed
-        
-        // Update the last_login to "Offline" in the database
+    
+        // Update the user's status to "Offline" in the database BEFORE logging out
         $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
         
         if ($stmt = $db->prepare($query)) {
             $stmt->bind_param("i", $user_id); // "i" for integer type
             $stmt->execute();
             $stmt->close();
+        } else {
+            // Handle error if the update fails (optional)
+            // You can log the error or display a message
+            error_log("Error updating user status to Offline.");
         }
         
-        // Destroy the session and clear session data
+        // Destroy the session and clear session data after updating the role
         session_unset();
         session_destroy();
     
@@ -145,6 +150,7 @@ class Login extends DBConnection {
         header("Location: " . base_url . "admin/login.php");
         exit();
     }
+    
     
 
     public function login_user() {
