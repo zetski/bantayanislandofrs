@@ -310,9 +310,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     };
     grecaptcha.ready(function() {
-        // Execute reCAPTCHA and get the token
+        // Display the reCAPTCHA badge
         grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'login'}).then(function(token) {
-            // Append the token to the form
+            // Set the token value in the hidden field
             document.getElementById('g-recaptcha-response').value = token;
         });
     });
