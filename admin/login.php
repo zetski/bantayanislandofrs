@@ -186,7 +186,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <p class="login-box-msg">Please enter your credentials</p>
         <form id="login-frm" action="" method="post">
           <div class="input-group mb-3">
-            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" disabled>
+            <input type="text" class="form-control" name="username" autofocus placeholder="Username" value="<?php echo htmlspecialchars($_POST['username'] ?? ''); ?>" >
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-user"></span>
@@ -194,7 +194,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
           <div class="input-group mb-3">
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password" disabled>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password" >
             <div class="input-group-append">
               <div class="input-group-text">
                 <span class="fas fa-eye" id="toggle-password" style="cursor: pointer;"></span>
@@ -207,12 +207,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
+              <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
           </div>
         </form>
         <p class="mb-1 mt-3">
-          <a href="<?php echo base_url ?>" disabled>Go to Website</a>
+          <a href="<?php echo base_url ?>">Go to Website</a>
         </p>
       </div>
     </div>
@@ -226,62 +226,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-    let remainingAttempts = 3; // Initial login attempts
-  let isLocked = false; // Lockout flag
+  //   let remainingAttempts = 3; // Initial login attempts
+  // let isLocked = false; // Lockout flag
 
-  function handleInvalidCredentials() {
-    if (isLocked) return;
+  // function handleInvalidCredentials() {
+  //   if (isLocked) return;
 
-    // Decrease attempts
-    remainingAttempts--;
+  //   // Decrease attempts
+  //   remainingAttempts--;
 
-    // Shake the card body
-    const cardBody = document.querySelector(".card-body");
-    cardBody.classList.add("shake");
-    setTimeout(() => cardBody.classList.remove("shake"), 500);
+  //   // Shake the card body
+  //   const cardBody = document.querySelector(".card-body");
+  //   cardBody.classList.add("shake");
+  //   setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-    // Display alert below form
-    const alertBox = document.getElementById("alert-box");
-    if (remainingAttempts > 0) {
-      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-    } else {
-      isLocked = true;
-      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-      lockForm();
-      setTimeout(() => {
-        isLocked = false;
-        remainingAttempts = 3;
-        alertBox.innerHTML = ""; // Clear alert
-        unlockForm();
-      }, 3 * 60 * 1000); // 3 minutes
-    }
-  }
+  //   // Display alert below form
+  //   const alertBox = document.getElementById("alert-box");
+  //   if (remainingAttempts > 0) {
+  //     alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+  //   } else {
+  //     isLocked = true;
+  //     alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
+  //     lockForm();
+  //     setTimeout(() => {
+  //       isLocked = false;
+  //       remainingAttempts = 3;
+  //       alertBox.innerHTML = ""; // Clear alert
+  //       unlockForm();
+  //     }, 3 * 60 * 1000); // 3 minutes
+  //   }
+  // }
 
-  function lockForm() {
-    document.querySelector('input[name="username"]').disabled = true;
-    document.querySelector('input[name="password"]').disabled = true;
-    document.querySelector('button[type="submit"]').disabled = true;
-  }
+  // function lockForm() {
+  //   document.querySelector('input[name="username"]').disabled = true;
+  //   document.querySelector('input[name="password"]').disabled = true;
+  //   document.querySelector('button[type="submit"]').disabled = true;
+  // }
 
-  function unlockForm() {
-    document.querySelector('input[name="username"]').disabled = false;
-    document.querySelector('input[name="password"]').disabled = false;
-    document.querySelector('button[type="submit"]').disabled = false;
-  }
+  // function unlockForm() {
+  //   document.querySelector('input[name="username"]').disabled = false;
+  //   document.querySelector('input[name="password"]').disabled = false;
+  //   document.querySelector('button[type="submit"]').disabled = false;
+  // }
 
-  document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  // document.getElementById("login-frm").addEventListener("submit", function (e) {
+  //   e.preventDefault();
 
-    // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
-    if (!isValid) {
-      handleInvalidCredentials();
-    } else {
-      // Handle successful login
-      alert("Login successful!");
-    }
-  });
-  //end of limit attempt
+  //   // Simulate an invalid login for demonstration (replace with actual AJAX request)
+  //   const isValid = false; // Replace this with actual validation logic
+  //   if (!isValid) {
+  //     handleInvalidCredentials();
+  //   } else {
+  //     // Handle successful login
+  //     alert("Login successful!");
+  //   }
+  // });
+  // //end of limit attempt
 
     $(document).ready(function(){
       end_loader();
