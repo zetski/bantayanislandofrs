@@ -9,7 +9,7 @@ header("Expires: 0"); // Proxies
 
 // Check if user role is already set, otherwise redirect to gateway
 if (!isset($_SESSION['role'])) {
-    header("Location: ./login.php"); // Redirect to the new gateway page
+    header("Location: ./choose_access"); // Redirect to the new gateway page
     exit; // Ensure no further code is executed
 }
 ?>
