@@ -55,20 +55,6 @@ function sanitize_input($input) {
     return $input;
 }
 
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-  $recaptcha_token = $_POST['recaptcha_token'] ?? '';
-  $recaptcha_secret = '6LePpJQqAAAAABUQ_xrz-sbY5RkbR3cGnaNJ3o_8';
-
-  $verify_url = 'https://www.google.com/recaptcha/api/siteverify';
-  $response = file_get_contents($verify_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_token);
-  $response_data = json_decode($response);
-
-  if (!$response_data->success || $response_data->score < 0.5) {
-      echo json_encode(['status' => 'error', 'message' => 'reCAPTCHA verification failed']);
-      exit;
-  }
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $username = sanitize_input($_POST['username']);
   $password = sanitize_input($_POST['password']);
@@ -137,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78"></script>
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -215,12 +201,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
+          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
           <div class="row">
             <div class="col-8">
               <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
             </div>
             <div class="col-4">
-            <input type="hidden" name="recaptcha_token" id="recaptcha_token">
               <button type="submit" class="btn btn-primary btn-block" disabled>Sign In</button>
             </div>
           </div>
@@ -344,10 +330,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     formElements.forEach(el => el.disabled = true);
 
-    grecaptcha.ready(function () {
-    grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function (token) {
-        document.getElementById('recaptcha_token').value = token;
-    });
+    // Monitor reCAPTCHA state and enable form elements
+    function enableFormElements() {
+        const recaptchaResponse = grecaptcha.getResponse();
+        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
+        if (recaptchaResponse.length > 0) {
+            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
+        } else {
+            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
+        }
+    }
+
+    // Add event listener for reCAPTCHA changes
+    window.enableRecaptcha = enableFormElements; // Bind function to global scope
 });
 </script>
 </body>
