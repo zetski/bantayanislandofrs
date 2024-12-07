@@ -17,7 +17,7 @@ if ($admin_district) {
 ?>
 <!DOCTYPE html>
 <html>
-<style>
+<!-- <style>
   .dataTables_length select {
     width: auto; /* Makes the dropdown width proper */
     padding: 5px; /* Ensures proper spacing */
@@ -66,7 +66,7 @@ if ($admin_district) {
   th.sorting_desc::after {
     content: "\f0dd"; /* Descending arrow */
   }
-</style>
+</style> -->
 <head>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
