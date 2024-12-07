@@ -67,8 +67,8 @@ class Login extends DBConnection {
             $_SESSION['timeout'] = null;
 
              // Update 'last_login' to 'Online' in the database
-                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE username = ?");
-                $updateLoginStatusStmt->bind_param("s", $username);
+                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE id = ?");
+                $updateLoginStatusStmt->bind_param("s", $id);
                 $updateLoginStatusStmt->execute();
                 $updateLoginStatusStmt->close();
 
@@ -104,12 +104,12 @@ class Login extends DBConnection {
 
     public function logout() {
         // Check if user is logged in and session variable exists (assuming username is stored in session)
-        if (isset($_SESSION['username'])) {
-            $username = $_SESSION['username'];  // Or $_SESSION['user_id'] if you're storing user ID
+        if (isset($_SESSION['id'])) {
+            $id = $_SESSION['id'];  // Or $_SESSION['user_id'] if you're storing user ID
             
             // Update user's role to 'Offline' in the database
-            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE username = ?");
-            $updateRoleStmt->bind_param("s", $username);
+            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE id = ?");
+            $updateRoleStmt->bind_param("s", $id);
             $updateRoleStmt->execute();
             $updateRoleStmt->close();
         }
