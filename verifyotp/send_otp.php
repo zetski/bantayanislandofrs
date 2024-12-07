@@ -3,6 +3,11 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 ob_start();
 session_start();
+if (!isset($_SESSION['userdata'])) {
+    // If not, redirect to the login page
+    header("Location: login.php");
+    exit();
+}
 require_once('../initialize.php'); // Include database connection
 require 'phpmailer/class.phpmailer.php';
 require 'phpmailer/class.smtp.php';
