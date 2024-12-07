@@ -67,7 +67,7 @@ class Login extends DBConnection {
             $_SESSION['timeout'] = null;
 
              // Update 'last_login' to 'Online' in the database
-                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET last_login = 'Online' WHERE username = ?");
+                $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE username = ?");
                 $updateLoginStatusStmt->bind_param("s", $username);
                 $updateLoginStatusStmt->execute();
                 $updateLoginStatusStmt->close();
