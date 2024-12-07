@@ -12,6 +12,14 @@ $stat_arr = ['Pending Requests', 'Assigned to a Team', 'Request where a Team is 
 $admin_district = $_settings->userdata('district');
 
 ?>
+<style>
+    @media (max-width: 768px) {
+            .card-body {
+                padding: 10px; /* Adjust padding for smaller screens */
+                font-size: 14px; /* Adjust font size for better readability */
+            }
+        }
+</style>
 <div class="card card-outline rounded-0 card-danger">
     <div class="card-header">
         <h3 class="card-title">List of <?= isset($stat_arr[$status]) ? $stat_arr[$status] : 'All Requests' ?></h3>
