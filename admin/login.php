@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $recaptcha_response = $_POST['g-recaptcha-response'];
 
   // Secret Key for reCAPTCHA
-  $secret_key = 'YOUR_SECRET_KEY';
+  $secret_key = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH';
 
   // Verify reCAPTCHA
   $recaptcha_url = 'https://www.google.com/recaptcha/api/siteverify';
