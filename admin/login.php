@@ -224,18 +224,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-   function handleInvalidCredentials() {
+   let remainingAttempts = 3;
+let isLocked = false;
+
+function handleInvalidCredentials() {
     if (isLocked) return;
 
-    // Decrease attempts
     remainingAttempts--;
 
-    // Shake the card body
+    // Shake effect
     const cardBody = document.querySelector(".card-body");
     cardBody.classList.add("shake");
     setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-    // Display SweetAlert alerts
+    // SweetAlert for login attempts
     if (remainingAttempts > 0) {
         Swal.fire({
             icon: "warning",
@@ -259,7 +261,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         setTimeout(() => {
             isLocked = false;
             remainingAttempts = 3;
-
             Swal.fire({
                 icon: "info",
                 title: "Lockout Expired",
@@ -273,6 +274,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }, 3 * 60 * 1000); // 3 minutes
     }
 }
+
+function lockForm() {
+    document.querySelector('input[name="username"]').disabled = true;
+    document.querySelector('input[name="password"]').disabled = true;
+    document.querySelector('button[type="submit"]').disabled = true;
+}
+
+function unlockForm() {
+    document.querySelector('input[name="username"]').disabled = false;
+    document.querySelector('input[name="password"]').disabled = false;
+    document.querySelector('button[type="submit"]').disabled = false;
+}
+
+document.getElementById("login-frm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const isValid = false; // Simulated for testing
+    if (!isValid) {
+        handleInvalidCredentials();
+    } else {
+        Swal.fire({
+            icon: "success",
+            title: "Login Successful!",
+        });
+    }
+});
   //end of limit attempt
 
     $(document).ready(function(){
