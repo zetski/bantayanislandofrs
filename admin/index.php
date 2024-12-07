@@ -116,7 +116,7 @@
           if (idleTime >= idleLimit && !isAlertShown) {
               isAlertShown = true; // Prevent multiple alerts
               alert("");
-              window.location.href = 'logout'; // Adjust the logout URL as needed
+              header('Location: https://bantayan-bfp.com/admin/login.php')
           }
       }, 1000);
     </script>
