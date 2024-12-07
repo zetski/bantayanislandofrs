@@ -2,7 +2,12 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 ob_start();
-session_start();
+// Start the session if not already started
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Check if the user is logged in (i.e., 'userdata' exists in the session)
 if (!isset($_SESSION['userdata'])) {
     // If not, redirect to the login page
     header("Location: login.php");
