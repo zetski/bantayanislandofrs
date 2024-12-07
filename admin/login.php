@@ -123,8 +123,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -226,81 +224,61 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-   let remainingAttempts = 3;
-let isLocked = false;
+    let remainingAttempts = 3; // Initial login attempts
+  let isLocked = false; // Lockout flag
 
-function handleInvalidCredentials() {
+  function handleInvalidCredentials() {
     if (isLocked) return;
 
+    // Decrease attempts
     remainingAttempts--;
 
-    // Shake effect
+    // Shake the card body
     const cardBody = document.querySelector(".card-body");
     cardBody.classList.add("shake");
     setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-    // SweetAlert for login attempts
+    // Display alert below form
+    const alertBox = document.getElementById("alert-box");
     if (remainingAttempts > 0) {
-        Swal.fire({
-            icon: "warning",
-            title: "Invalid Credentials!",
-            html: `You have <b>${remainingAttempts}</b> login attempts left.`,
-            timer: 3000,
-            timerProgressBar: true,
-            showConfirmButton: false,
-        });
+      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
     } else {
-        isLocked = true;
-        Swal.fire({
-            icon: "error",
-            title: "Account Locked!",
-            text: "You have been locked out for 3 minutes due to multiple failed login attempts.",
-            showConfirmButton: false,
-        });
-
-        lockForm();
-
-        setTimeout(() => {
-            isLocked = false;
-            remainingAttempts = 3;
-            Swal.fire({
-                icon: "info",
-                title: "Lockout Expired",
-                text: "You can now try logging in again.",
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-            });
-
-            unlockForm();
-        }, 3 * 60 * 1000); // 3 minutes
+      isLocked = true;
+      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
+      lockForm();
+      setTimeout(() => {
+        isLocked = false;
+        remainingAttempts = 3;
+        alertBox.innerHTML = ""; // Clear alert
+        unlockForm();
+      }, 3 * 60 * 1000); // 3 minutes
     }
-}
+  }
 
-function lockForm() {
+  function lockForm() {
     document.querySelector('input[name="username"]').disabled = true;
     document.querySelector('input[name="password"]').disabled = true;
     document.querySelector('button[type="submit"]').disabled = true;
-}
+  }
 
-function unlockForm() {
+  function unlockForm() {
     document.querySelector('input[name="username"]').disabled = false;
     document.querySelector('input[name="password"]').disabled = false;
     document.querySelector('button[type="submit"]').disabled = false;
-}
+  }
 
-document.getElementById("login-frm").addEventListener("submit", function (e) {
+  document.getElementById("login-frm").addEventListener("submit", function (e) {
     e.preventDefault();
-    const isValid = false; // Simulated for testing
+
+    // Simulate an invalid login for demonstration (replace with actual AJAX request)
+    const isValid = false; // Replace this with actual validation logic
     if (!isValid) {
-        handleInvalidCredentials();
+      handleInvalidCredentials();
     } else {
-        Swal.fire({
-            icon: "success",
-            title: "Login Successful!",
-        });
+      // Handle successful login
+      alert("Login successful!");
     }
-});
+  });
   //end of limit attempt
 
     $(document).ready(function(){
