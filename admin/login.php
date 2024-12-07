@@ -59,6 +59,23 @@ function sanitize_input($input) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Step 1: Verify reCAPTCHA response
+  $recaptcha_secret = '6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH'; // Replace with your actual secret key
+  $recaptcha_response = $_POST['g-recaptcha-response']; // Get the reCAPTCHA response from the form submission
+  
+  // Google reCAPTCHA verification endpoint
+  $recaptcha_verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+  
+  // Send the reCAPTCHA response to Google for validation
+  $response = file_get_contents($recaptcha_verify_url . '?secret=' . $recaptcha_secret . '&response=' . $recaptcha_response);
+  $response_keys = json_decode($response, true);
+
+  if(intval($response_keys["success"]) !== 1) {
+      echo 'Please complete the reCAPTCHA.';
+      exit;
+  }
+
+  // Step 2: Proceed with the rest of your logic if reCAPTCHA is successful
   $username = sanitize_input($_POST['username']);
   $password = sanitize_input($_POST['password']);
 
@@ -348,5 +365,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     window.enableRecaptcha = enableFormElements; // Bind function to global scope
 });
 </script>
+<script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
+<script>
+      function onClick(e) {
+        e.preventDefault();
+        grecaptcha.ready(function() {
+          grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', {action: 'submit'}).then(function(token) {
+              // Add your logic to submit to your backend server here.
+          });
+        });
+      }
+  </script>
 </body>
 </html>
