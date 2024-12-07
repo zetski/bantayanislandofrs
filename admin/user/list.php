@@ -29,6 +29,7 @@
 					<col width="25%">
 					<col width="15%">
 					<col width="10%">
+					<col width="10%">
 					<col width="15%">
 				</colgroup>
 				<thead>
