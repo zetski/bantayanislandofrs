@@ -337,6 +337,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
+
+    function lockForm() {
+    document.querySelector('input[name="username"]').disabled = true;
+    document.querySelector('input[name="password"]').disabled = true;
+    document.querySelector('button[type="submit"]').disabled = true;
+    document.querySelector('.g-recaptcha').style.pointerEvents = 'none'; // Disable reCAPTCHA widget
+    }
+
+    function unlockForm() {
+        document.querySelector('input[name="username"]').disabled = false;
+        document.querySelector('input[name="password"]').disabled = false;
+        document.querySelector('button[type="submit"]').disabled = false;
+        document.querySelector('.g-recaptcha').style.pointerEvents = 'auto'; // Re-enable reCAPTCHA widget
+    }
+
     grecaptcha.ready(function() {
     grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function(token) {
         // Set the token to the hidden input
