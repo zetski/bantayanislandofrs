@@ -57,7 +57,7 @@ function sanitize_input($input) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $recaptchaToken = $_POST['recaptchaToken'];
-  $recaptchaSecretKey = "6LePpJQqAAAAABUQ_xrz-sbY5RkbR3cGnaNJ3o_8"; // Replace with your secret key
+  $recaptchaSecretKey = "6Ldlu5IqAAAAAFJmSpmDCIrtSwgEa4-eI0WDumKH"; // Replace with your secret key
 
   // Verify the token with Google's reCAPTCHA API
   $url = 'https://www.google.com/recaptcha/api/siteverify';
@@ -141,7 +141,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js?render=6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78"></script>
+  <script src="https://www.google.com/recaptcha/api.js?render=6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2"></script>
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -337,7 +337,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     };
     grecaptcha.ready(function() {
-    grecaptcha.execute('6LePpJQqAAAAACWPnwA6MhU0mN38k9HXGvU3ZC78', { action: 'login' }).then(function(token) {
+    grecaptcha.execute('6Ldlu5IqAAAAAEKupyqazokK9AkLoYyxM4MX7ac2', { action: 'login' }).then(function(token) {
         // Set the token to the hidden input
         document.getElementById('recaptchaToken').value = token;
         
