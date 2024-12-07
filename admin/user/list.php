@@ -40,7 +40,7 @@
 						<th>Name</th>
 						<th>Username</th>
 						<th>Type</th>
-						<th>Last login</th>
+						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
