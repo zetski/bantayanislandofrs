@@ -11424,7 +11424,7 @@ body.sidebar-collapse:not(.sidebar-mini-md):not(.sidebar-mini) .main-header::bef
   }
 }
 
-@media (max-width: 991.98px) {
+@media (max-width: 100%) {
   .sidebar-mini-md .content-wrapper, .sidebar-mini-md .content-wrapper::before,
   .sidebar-mini-md .main-footer,
   .sidebar-mini-md .main-footer::before,
