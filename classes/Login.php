@@ -3,13 +3,21 @@ require_once '../config.php';
 
 class Login extends DBConnection {
     private $settings;
-
+    
     public function __construct() {
         global $_settings;
         $this->settings = $_settings;
         parent::__construct();
         ini_set('display_error', 1);
         session_start();
+        
+        // Initialize session variables for login attempts and timeout
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = 3;
+        }
+        if (!isset($_SESSION['timeout'])) {
+            $_SESSION['timeout'] = null;
+        }
     }
 
     public function __destruct() {
@@ -21,6 +29,18 @@ class Login extends DBConnection {
     }
 
     public function login() {
+        $current_time = time();
+        
+        // Check if user is locked out
+        if ($_SESSION['timeout'] && $current_time < $_SESSION['timeout']) {
+            $remaining_time = $_SESSION['timeout'] - $current_time;
+            return json_encode([
+                'status' => 'locked', 
+                'message' => "You are locked out. Try again in $remaining_time seconds."
+            ]);
+        }
+
+        // Process login
         extract($_POST);
         $stmt = $this->conn->prepare("SELECT * FROM users WHERE username = ?");
         $stmt->bind_param("s", $username);
@@ -39,10 +59,12 @@ class Login extends DBConnection {
                 $updateStmt->execute();
                 $updateStmt->close();
             } elseif (!password_verify($password, $storedHash)) {
-                return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+                return $this->handleFailedLogin();
             }
 
-            // Successful login: Set session data
+            // Successful login: Reset login attempts and set session data
+            $_SESSION['login_attempts'] = 3;
+            $_SESSION['timeout'] = null;
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
@@ -52,7 +74,24 @@ class Login extends DBConnection {
 
             return json_encode(['status' => 'success']);
         } else {
-            return json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+            return $this->handleFailedLogin();
+        }
+    }
+
+    private function handleFailedLogin() {
+        $_SESSION['login_attempts']--;
+
+        if ($_SESSION['login_attempts'] <= 0) {
+            $_SESSION['timeout'] = time() + (3 * 60); // Set 3-minute lockout
+            return json_encode([
+                'status' => 'locked', 
+                'message' => "You are locked out for 3 minutes."
+            ]);
+        } else {
+            return json_encode([
+                'status' => 'error', 
+                'attempts_left' => $_SESSION['login_attempts']
+            ]);
         }
     }
 
