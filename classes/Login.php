@@ -122,19 +122,19 @@ class Login extends DBConnection {
     global $db; // or use your actual database connection variable
     
     // Check if user_id is available in the session
-    if (!isset($_SESSION['user_id'])) {
+    if (!isset($_SESSION['username'])) {
         // If there's no user_id in session, show an error or redirect to login page
         echo "Error: User is not logged in.";
         exit(); // Prevent further execution
     }
 
-    $user_id = $_SESSION['user_id']; // Get the current user's ID from session
+    $username = $_SESSION['username']; // Get the current user's ID from session
     
     // Update the user's status to "Offline" in the database before logging out
-    $query = "UPDATE users SET role = 'Offline' WHERE user_id = ?";
+    $query = "UPDATE users SET role = 'Offline' WHERE username = ?";
     
     if ($stmt = $db->prepare($query)) {
-        $stmt->bind_param("i", $user_id); // "i" for integer type
+        $stmt->bind_param("i", $username); // "i" for integer type
         if ($stmt->execute()) {
             $stmt->close();
         } else {
