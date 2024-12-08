@@ -80,7 +80,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="hold-transition login-page">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    /* Your existing styles */
+   body {
+        background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        margin: 0;
+    }
+    #page-title {
+        text-shadow: 6px 4px 7px black;
+        font-size: 3.5em;
+        color: #fff4f4 !important;
+    }
+    .login-box {
+        margin: none;
+        max-width: 400px;
+        width: 90%;
+    }
+    @media (max-width: 768px) {
+        #page-title {
+            font-size: 2.5em;
+        }
+        .login-box {
+            width: 95%;
+        }
+    }
 </style>
 <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
 <div class="login-box">
