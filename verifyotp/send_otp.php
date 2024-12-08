@@ -145,6 +145,15 @@ ob_end_flush();
             background-color: #0056b3;
         }
 
+        .back-button {
+            background-color: #6c757d;
+            color: #ffffff;
+        }
+
+        .back-button:hover {
+            background-color: #5a6268;
+        }
+
         .error, .success {
             font-size: 14px;
             margin-top: 15px;
@@ -173,6 +182,7 @@ ob_end_flush();
             <label for="email">Admin Email</label>
             <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Send OTP</button>
+            <button type="button" class="back-button" onclick="window.history.back();">Back</button>
         </form>
     </div>
 
@@ -206,6 +216,14 @@ ob_end_flush();
                         window.location.reload();
                     };
                 }
+            
+                if (window.history && window.history.pushState) {
+                window.history.pushState("back", null, window.location.href);
+                window.onpopstate = function () {
+                    // If the user presses the back button, force a reload
+                    window.location.reload();
+                };
+            }    
         </script>
     <?php endif; ?>
 </body>
