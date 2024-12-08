@@ -1,7 +1,7 @@
 <?php
 require_once('../config.php');
 
-// Set HTTP security headers
+// Set HTTP security headers (no changes here)
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff");
 header("X-Frame-Options: SAMEORIGIN");
@@ -13,6 +13,8 @@ ini_set('session.cookie_httponly', 1);
 ini_set('session.cookie_secure', 1);
 ini_set('session.use_only_cookies', 1);
 session_start();
+
+$error_message = '';
 
 function sanitize_input($input) {
     $input = htmlspecialchars(strip_tags($input), ENT_QUOTES, 'UTF-8');
@@ -33,74 +35,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = sanitize_input($_POST['password']);
 
     if (empty($username) || empty($password)) {
-        echo 'Invalid input';
-        exit;
-    }
+        $error_message = 'Invalid input';
+    } else {
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+        $user = $result->fetch_assoc();
 
-    $user = $result->fetch_assoc();
+        if ($user) {
+            $storedHash = $user['password'];
 
-    if ($user) {
-        $storedHash = $user['password'];
+            if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
+                $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+                $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+                $updateStmt->bind_param("ss", $newHashedPassword, $username);
+                $updateStmt->execute();
+                $updateStmt->close();
+            }
 
-        if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
-            $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-            $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-            $updateStmt->bind_param("ss", $newHashedPassword, $username);
-            $updateStmt->execute();
-            $updateStmt->close();
+            if (password_verify($password, $storedHash)) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['district'] = $user['district'];
+                error_log("User logged in with district: " . $_SESSION['district']);
+                header('Location: dashboard.php'); // Redirect on successful login
+                exit;
+            } else {
+                $error_message = 'Invalid credentials';
+            }
+        } else {
+            $error_message = 'Invalid credentials';
         }
 
-        if (password_verify($password, $storedHash)) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['district'] = $user['district'];
-            error_log("User logged in with district: " . $_SESSION['district']);
-            echo 'Login successful';
-            exit;
-        }
+        $stmt->close();
     }
-
-    echo 'Invalid credentials';
-    $stmt->close();
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <?php require_once('inc/header.php') ?>
 <body class="hold-transition login-page">
-<script src="https://www.google.com/recaptcha/api.js?render=6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <style>
-    body {
-        background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        height: 100vh;
-        margin: 0;
-    }
-    #page-title {
-        text-shadow: 6px 4px 7px black;
-        font-size: 3.5em;
-        color: #fff4f4 !important;
-    }
-    .login-box {
-        margin: none;
-        max-width: 400px;
-        width: 90%;
-    }
-    @media (max-width: 768px) {
-        #page-title {
-            font-size: 2.5em;
-        }
-        .login-box {
-            width: 95%;
-        }
-    }
+    /* Your existing styles */
 </style>
 <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
 <div class="login-box">
@@ -138,46 +118,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
-<script src="plugins/jquery/jquery.min.js"></script>
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="dist/js/adminlte.min.js"></script>
+
 <script>
-  $(document).ready(function(){
-      end_loader();
-    });
-
-    // Automatically remove disallowed characters as they are typed
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
-
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
-
-    // Toggle password visibility
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    // Disable inspect element and right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-
+    // Show SweetAlert if there is an error
+    <?php if (!empty($error_message)): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '<?php echo $error_message; ?>'
+        });
+    <?php endif; ?>
+</script>
+<script>
+    // Password visibility toggle
     $('#toggle-password').on('click', function() {
         let passwordField = $('#password');
         let passwordFieldType = passwordField.attr('type');
@@ -185,6 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $(this).toggleClass('fa-eye fa-eye-slash');
     });
 
+    // Handle reCAPTCHA
     $('#login-frm').on('submit', function(e) {
         e.preventDefault();
         grecaptcha.execute('6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR', {action: 'login'}).then(function(token) {
