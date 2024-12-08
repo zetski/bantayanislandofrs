@@ -168,6 +168,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         end_loader();
     });
 
+    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
+
     $('#toggle-password').on('click', function() {
         let passwordField = $('#password');
         let passwordFieldType = passwordField.attr('type');
