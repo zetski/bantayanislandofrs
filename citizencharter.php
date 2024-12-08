@@ -59,7 +59,7 @@ if (strpos($request, '.php') !== false) {
 
         .content {
             text-align: center;
-            padding: 70px;
+            padding: 20px;
             color: #fff;
         }
 
