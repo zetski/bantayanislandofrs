@@ -142,6 +142,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="dist/js/adminlte.min.js"></script>
 <script>
+  $(document).ready(function(){
+      end_loader();
+    });
+
+    // Automatically remove disallowed characters as they are typed
+    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
+        e.target.value = e.target.value.replace(/[<>\/]/g, '');
+    });
+
+    // Toggle password visibility
+    $('#toggle-password').on('click', function() {
+        let passwordField = $('#password');
+        let passwordFieldType = passwordField.attr('type');
+        if (passwordFieldType === 'password') {
+            passwordField.attr('type', 'text');
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
+        } else {
+            passwordField.attr('type', 'password');
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
+        }
+    });
+
+    // Disable inspect element and right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || 
+            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
+            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
+            return false;
+        }
+    };
+    
     $('#toggle-password').on('click', function() {
         let passwordField = $('#password');
         let passwordFieldType = passwordField.attr('type');
