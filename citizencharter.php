@@ -64,116 +64,87 @@ if (strpos($request, '.php') !== false) {
         }
 
         .certificate {
-            background-color: transparent !important;
+            background-color: #fff;
             border-radius: 8px;
-            margin: 20px auto; /* Increased margin to provide more spacing */
-            padding: 20px; /* Increased padding for better readability */
-            width: 100%; /* Ensures all certificates are consistent */
-            max-width: 600px; /* Restrict the maximum size */
+            margin: 10px auto;
+            padding: 15px;
+            width: 90%;
+            max-width: 600px;
             display: flex;
             align-items: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
         }
+        .certificate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
         .certificate img {
-            width: 70px; /* Ensures consistent image size */
-            height: 70px;
-            margin-right: 20px; /* Provides consistent spacing */
+            width: 50px;
+            height: 50px;
+            margin-right: 15px;
             border-radius: 5px;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 20px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        p {
+            margin: 0;
+            font-size: 16px;
+            color: #777;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none; /* Ensure modal is hidden by default */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
         }
 
         .modal-content {
             background-color: #fff;
-            margin: 50px auto; /* Adds spacing from the top */
-            padding: 30px; /* Increased padding for better appearance */
+            margin: 10px;
+            padding: 20px;
             border-radius: 8px;
-            width: 100%; /* Ensures responsiveness */
-            max-width: 600px; /* Restrict maximum width */
+            width: 90%;
+            max-width: 600px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             position: relative;
         }
 
-        .modal-content {
-    background-color: #fff;
-    margin: 50px auto; /* Center the modal vertically */
-    padding: 20px; /* Adjusted padding for better layout */
-    border-radius: 8px;
-    width: 90%; /* Default width for smaller screens */
-    max-width: 600px; /* Restrict maximum width for larger screens */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
+        .close {
+            color: #aaa;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        .close:hover {
+            color: #333;
+        }
 
-/* Modal spacing */
-.modal {
-    display: none; /* Ensure modal is hidden by default */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    align-items: center;
-    justify-content: center;
-    padding-top: 10px; /* Reduced padding to fit smaller screens */
-}
-
-/* Media Queries for Smaller Screens */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%; /* Increase width for smaller screens */
-        max-width: 400px; /* Limit maximum width */
-        padding: 15px; /* Reduce padding to save space */
-    }
-
-    .certificate {
-        padding: 15px; /* Reduce certificate padding */
-        margin: 15px auto; /* Adjust spacing for smaller screens */
-    }
-
-    .certificate img {
-        width: 50px; /* Reduce image size */
-        height: 50px;
-        margin-right: 10px;
-    }
-
-    h2 {
-        font-size: 18px; /* Reduce font size for titles */
-    }
-
-    p {
-        font-size: 14px; /* Reduce font size for text */
-    }
-}
-
-@media (max-width: 480px) {
-    .modal-content {
-        width: 100%; /* Use full width for very small screens */
-        max-width: 300px; /* Further limit max width */
-        padding: 10px; /* Minimize padding for small screens */
-    }
-
-    .certificate {
-        padding: 10px; /* Minimize padding for certificates */
-        margin: 10px auto;
-    }
-
-    .certificate img {
-        width: 40px; /* Smaller image size */
-        height: 40px;
-    }
-
-    h2 {
-        font-size: 16px; /* Smaller font size for titles */
-    }
-
-    p {
-        font-size: 12px; /* Smaller font size for text */
-    }
-}
+        ol {
+            padding-left: 20px;
+            text-align: left;
+            color: #000;
+        }
     </style>
 </head>
 <body>
