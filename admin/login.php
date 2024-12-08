@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = sanitize_input($_POST['password']);
 
     if (empty($username) || empty($password)) {
-        echo 'Invalid input';
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
         exit;
     }
 
@@ -64,10 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['district'] = $user['district'];
                 error_log("User logged in with district: " . $_SESSION['district']);
-                echo 'Login successful';
+                echo json_encode(['status' => 'success', 'message' => 'Login successful']);
                 exit;
             } else {
-                echo 'Invalid credentials';
+                echo json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+                exit;
             }
         } else {
             if (password_verify($password, $storedHash)) {
@@ -75,14 +76,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['district'] = $user['district'];
                 error_log("User logged in with district: " . $_SESSION['district']);
-                echo 'Login successful';
+                echo json_encode(['status' => 'success', 'message' => 'Login successful']);
                 exit;
             } else {
-                echo 'Invalid credentials';
+                echo json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+                exit;
             }
         }
     } else {
-        echo 'Invalid credentials';
+        echo json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
     }
 
     $stmt->close();
@@ -96,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   start_loader()
 </script>
 <script src="https://www.google.com/recaptcha/api.js?render=6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
   body {
@@ -168,42 +171,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         end_loader();
     });
 
-    document.querySelector('input[name="username"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+    $('#login-frm').on('submit', function(e) {
+        e.preventDefault();
 
-    document.querySelector('input[name="password"]').addEventListener('input', function(e) {
-        e.target.value = e.target.value.replace(/[<>\/]/g, '');
-    });
+        grecaptcha.execute('6LflOZUqAAAAABPtamTAWplZnWIQqnk89Duk9jJ_', {action: 'login'}).then(function(token) {
+            $('#recaptcha-token').val(token);
 
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function(e) {
-        if (e.keyCode == 123 || 
-            (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0))) || 
-            (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0))) {
-            return false;
-        }
-    };
-
-    $('#toggle-password').on('click', function() {
-        let passwordField = $('#password');
-        let passwordFieldType = passwordField.attr('type');
-        if (passwordFieldType === 'password') {
-            passwordField.attr('type', 'text');
-            $(this).removeClass('fa-eye').addClass('fa-eye-slash');
-        } else {
-            passwordField.attr('type', 'password');
-            $(this).removeClass('fa-eye-slash').addClass('fa-eye');
-        }
-    });
-
-    $(document).ready(function() {
-        $('#login-frm').on('submit', function(e) {
-            e.preventDefault();  
-
-            grecaptcha.execute('6LflOZUqAAAAABPtamTAWplZnWIQqnk89Duk9jJ_', {action: 'login'}).then(function(token) {
-                $('#recaptcha-token').val(token);
-                $('#login-frm')[0].submit();
+            $.ajax({
+                url: '',
+                method: 'POST',
+                data: $('#login-frm').serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Welcome!',
+                            text: response.message,
+                            confirmButtonText: 'Continue',
+                        }).then(() => {
+                            location.reload();
+                        });
+                    } else if (response.status === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: response.message,
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Server Error',
+                        text: 'Something went wrong. Please try again.',
+                    });
+                },
             });
         });
     });
