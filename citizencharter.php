@@ -95,51 +95,85 @@ if (strpos($request, '.php') !== false) {
             position: relative;
         }
 
-        /* Additional top margin for modal */
-        .modal {
-            display: none; /* Ensure modal is hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-            padding-top: 20px; /* Adds padding to prevent overlapping at the top */
-        }
-
         .modal-content {
-            background-color: #fff;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
+    background-color: #fff;
+    margin: 50px auto; /* Center the modal vertically */
+    padding: 20px; /* Adjusted padding for better layout */
+    border-radius: 8px;
+    width: 90%; /* Default width for smaller screens */
+    max-width: 600px; /* Restrict maximum width for larger screens */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
 
-        .close {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .close:hover {
-            color: #333;
-        }
+/* Modal spacing */
+.modal {
+    display: none; /* Ensure modal is hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding-top: 10px; /* Reduced padding to fit smaller screens */
+}
 
-        ol {
-            padding-left: 20px;
-            text-align: left;
-            color: #000;
-        }
+/* Media Queries for Smaller Screens */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%; /* Increase width for smaller screens */
+        max-width: 400px; /* Limit maximum width */
+        padding: 15px; /* Reduce padding to save space */
+    }
+
+    .certificate {
+        padding: 15px; /* Reduce certificate padding */
+        margin: 15px auto; /* Adjust spacing for smaller screens */
+    }
+
+    .certificate img {
+        width: 50px; /* Reduce image size */
+        height: 50px;
+        margin-right: 10px;
+    }
+
+    h2 {
+        font-size: 18px; /* Reduce font size for titles */
+    }
+
+    p {
+        font-size: 14px; /* Reduce font size for text */
+    }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        width: 100%; /* Use full width for very small screens */
+        max-width: 300px; /* Further limit max width */
+        padding: 10px; /* Minimize padding for small screens */
+    }
+
+    .certificate {
+        padding: 10px; /* Minimize padding for certificates */
+        margin: 10px auto;
+    }
+
+    .certificate img {
+        width: 40px; /* Smaller image size */
+        height: 40px;
+    }
+
+    h2 {
+        font-size: 16px; /* Smaller font size for titles */
+    }
+
+    p {
+        font-size: 12px; /* Smaller font size for text */
+    }
+}
     </style>
 </head>
 <body>
