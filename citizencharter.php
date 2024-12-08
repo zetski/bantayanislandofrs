@@ -16,135 +16,150 @@ if (strpos($request, '.php') !== false) {
     <title>Online Fire Reporting System</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(to right, #ff7e5f, #feb47b);
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
+        /* General Styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #ff7e5f, #feb47b);
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            padding: 20px;
-        }
+/* Header and Content */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
 
-        .back-button {
-            position: absolute;
-            left: 20px;
-            font-size: 24px;
-            padding: 10px;
-            text-decoration: none;
-            color: #fff;
-            background-color: #dc3545;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.3s;
-        }
-        .back-button:hover {
-            background-color: #c82333;
-        }
+h1 {
+    font-size: 2.5rem;
+    margin: 0;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
 
-        h1 {
-            font-size: 36px;
-            margin: 0;
-            color: #fff;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
+.content {
+    text-align: center;
+    padding: 20px;
+    color: #fff;
+}
 
-        .content {
-            text-align: center;
-            padding: 20px;
-            color: #fff;
-        }
+/* Certificate Styles */
+.certificate {
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 10px auto;
+    padding: 15px;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.certificate:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+.certificate img {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+    border-radius: 5px;
+}
 
-        .certificate {
-            background-color: #fff;
-            border-radius: 8px;
-            margin: 10px auto;
-            padding: 15px;
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .certificate:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    font-weight: bold;
+}
 
-        .certificate img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+.close {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+.close:hover {
+    color: #333;
+}
 
-        h2 {
-            color: #333;
-            font-size: 20px;
-            margin: 0;
-            font-weight: bold;
-        }
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
 
-        p {
-            margin: 0;
-            font-size: 16px;
-            color: #777;
-        }
+    .certificate {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+    }
 
-        /* Modal styles */
-        .modal {
-            display: none; /* Ensure modal is hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
+    .certificate img {
+        width: 40px;
+        height: 40px;
+        margin: 0 0 10px 0;
+    }
 
-        .modal-content {
-            background-color: #fff;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
+    h2 {
+        font-size: 1.1rem;
+    }
 
-        .close {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .close:hover {
-            color: #333;
-        }
+    .modal-content {
+        padding: 15px;
+        width: 95%;
+    }
+}
 
-        ol {
-            padding-left: 20px;
-            text-align: left;
-            color: #000;
-        }
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    .certificate {
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1rem;
+    }
+
+    .modal-content {
+        padding: 10px;
+    }
+}
     </style>
 </head>
 <body>
