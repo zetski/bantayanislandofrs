@@ -159,7 +159,7 @@ ob_end_flush();
         .back-button:hover {
             text-decoration: underline;
         }
-
+        
         .error, .success {
             font-size: 14px;
             margin-top: 15px;
@@ -189,7 +189,7 @@ ob_end_flush();
             <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Send OTP</button>
 
-            <a href="./choose_access" class="back-button">Back</a>
+            <button type="button" class="back-button" onclick="window.history.back();">Back</button>
         </form>
     </div>
 
@@ -223,6 +223,14 @@ ob_end_flush();
                         window.location.reload();
                     };
                 }
+
+                if (window.history && window.history.pushState) {
+                window.history.pushState("back", null, window.location.href);
+                window.onpopstate = function () {
+                    // If the user presses the back button, force a reload
+                    window.location.reload();
+                };
+            }    
         </script>
     <?php endif; ?>
 </body>
