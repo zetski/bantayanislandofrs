@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         color: #fff4f4 !important;
     }
     .login-box {
-        margin: auto;
+        margin: none;
         max-width: 400px;
         width: 90%;
     }
@@ -177,7 +177,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    
+
     $('#toggle-password').on('click', function() {
         let passwordField = $('#password');
         let passwordFieldType = passwordField.attr('type');
