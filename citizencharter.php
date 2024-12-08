@@ -64,56 +64,51 @@ if (strpos($request, '.php') !== false) {
         }
 
         .certificate {
-            background-color: #fff;
-            border-radius: 8px;
-            margin: 10px auto;
-            padding: 15px;
-            width: 90%;
-            max-width: 600px;
-            display: flex;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-        }
-        .certificate:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-        }
+    background-color: #fff;
+    border-radius: 8px;
+    margin: 20px auto; /* Increased margin to provide more spacing */
+    padding: 20px; /* Increased padding for better readability */
+    width: 100%; /* Ensures all certificates are consistent */
+    max-width: 600px; /* Restrict the maximum size */
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
 
-        .certificate img {
-            width: 50px;
-            height: 50px;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
+.certificate img {
+    width: 70px; /* Ensures consistent image size */
+    height: 70px;
+    margin-right: 20px; /* Provides consistent spacing */
+    border-radius: 5px;
+}
 
-        h2 {
-            color: #333;
-            font-size: 20px;
-            margin: 0;
-            font-weight: bold;
-        }
+.modal-content {
+    background-color: #fff;
+    margin: 50px auto; /* Adds spacing from the top */
+    padding: 30px; /* Increased padding for better appearance */
+    border-radius: 8px;
+    width: 100%; /* Ensures responsiveness */
+    max-width: 600px; /* Restrict maximum width */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    position: relative;
+}
 
-        p {
-            margin: 0;
-            font-size: 16px;
-            color: #777;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none; /* Ensure modal is hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
+/* Additional top margin for modal */
+.modal {
+    display: none; /* Ensure modal is hidden by default */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px; /* Adds padding to prevent overlapping at the top */
+}
 
         .modal-content {
             background-color: #fff;
