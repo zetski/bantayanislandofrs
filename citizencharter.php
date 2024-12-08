@@ -64,7 +64,7 @@ if (strpos($request, '.php') !== false) {
         }
 
         .certificate {
-    background-color: #fff;
+    background-color: #;808080
     border-radius: 8px;
     margin: 20px auto; /* Increased margin to provide more spacing */
     padding: 20px; /* Increased padding for better readability */
