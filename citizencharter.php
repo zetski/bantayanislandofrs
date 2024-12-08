@@ -61,6 +61,7 @@ if (strpos($request, '.php') !== false) {
             text-align: center;
             padding: 70px;
             color: #fff;
+            width: 100%;
         }
 
         .certificate {
