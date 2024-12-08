@@ -189,7 +189,7 @@ ob_end_flush();
             <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Send OTP</button>
 
-            <a href="choose_access.php" class="back-button">Back</a>
+            <a href="./choose_access" class="back-button">Back</a>
         </form>
     </div>
 
