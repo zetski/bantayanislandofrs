@@ -173,6 +173,8 @@ ob_end_flush();
             <label for="email">Admin Email</label>
             <input type="email" name="email" id="email" placeholder="Enter your email" required>
             <button type="submit">Send OTP</button>
+
+            <button type="button" onclick="window.history.back();" style="margin-top: 10px; background-color: #6c757d; color: #ffffff;">Back</button>
         </form>
     </div>
 
