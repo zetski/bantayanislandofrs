@@ -223,14 +223,6 @@ ob_end_flush();
                         window.location.reload();
                     };
                 }
-
-                if (window.history && window.history.pushState) {
-                window.history.pushState("back", null, window.location.href);
-                window.onpopstate = function () {
-                    // If the user presses the back button, force a reload
-                    window.location.reload();
-                };
-            }    
         </script>
     <?php endif; ?>
 </body>
