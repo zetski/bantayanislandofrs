@@ -146,13 +146,10 @@ ob_end_flush();
         }
 
         .back-button {
-            background-color: #6c757d;
+            text-decoration: none;
             color: #ffffff;
         }
 
-        .back-button:hover {
-            background-color: #5a6268;
-        }
         .error, .success {
             font-size: 14px;
             margin-top: 15px;
