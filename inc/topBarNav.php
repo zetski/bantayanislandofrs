@@ -15,6 +15,7 @@
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
+    overflow: hidden;
   }
 
   /* Navbar Dropdown - Show on Hover */
