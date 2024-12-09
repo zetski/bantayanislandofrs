@@ -178,10 +178,10 @@
 
     <!-- Modal template -->
     <div id="modal-template" class="modal">
-        <div class="modal-content">
+        <!-- <div class="modal-content">
             <span class="close">&times;</span>
             <div id="modal-details"></div>
-        </div>
+        </div> -->
     </div>
 
     <script>
@@ -338,37 +338,31 @@
             // Add more certificates here
         ];
 
-        // Render certificates
-        const content = document.getElementById('content');
-        certificates.forEach((certificate, index) => {
-            const certDiv = document.createElement('div');
-            certDiv.classList.add('certificate');
-            certDiv.id = `certificate-${index}`;
-            certDiv.innerHTML = `
-                <img src="${certificate.image}" alt="${certificate.title}">
-                <div>
-                    <h2>${certificate.title}</h2>
-                    <p>${certificate.description}</p>
-                </div>
-            `;
-            content.appendChild(certDiv);
-
-            certDiv.addEventListener('click', () => showDetails(certificate));
-        });
-
-        // Modal functionality
-        const modalTemplate = document.getElementById('modal-template');
-        const modalDetails = document.getElementById('modal-details');
-        const closeModal = modalTemplate.querySelector('.close');
-
         function showDetails(certificate) {
-            modalDetails.innerHTML = certificate.details;
-            modalTemplate.style.display = 'flex';
-        }
+        const detailsSection = document.createElement('div');
+        detailsSection.classList.add('certificate-details');
+        detailsSection.innerHTML = `
+            <h2>${certificate.title}</h2>
+            <p>${certificate.description}</p>
+            <img src="${certificate.image}" alt="${certificate.title}" class="image">
+            <div>${certificate.details}</div>
+        `;
+        content.appendChild(detailsSection);
+    }
 
-        closeModal.addEventListener('click', () => {
-            modalTemplate.style.display = 'none';
-        });
+        // // Modal functionality
+        // const modalTemplate = document.getElementById('modal-template');
+        // const modalDetails = document.getElementById('modal-details');
+        // const closeModal = modalTemplate.querySelector('.close');
+
+        // function showDetails(certificate) {
+        //     modalDetails.innerHTML = certificate.details;
+        //     modalTemplate.style.display = 'flex';
+        // }
+
+        // closeModal.addEventListener('click', () => {
+        //     modalTemplate.style.display = 'none';
+        // });
 
         window.addEventListener('click', (event) => {
             if (event.target === modalTemplate) {
