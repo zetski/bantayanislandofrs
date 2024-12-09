@@ -82,7 +82,7 @@ class Login extends DBConnection {
             }
             $this->settings->set_userdata('login_type', 1);
 
-            return json_encode(['status' => 'success']);
+            return json_encode(['status' => 'success', 'message' => 'Login successful.']);
         } else {
             return $this->handleFailedLogin();
         }
