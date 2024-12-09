@@ -4285,7 +4285,7 @@ fieldset:disabled .btn {
 .navbar > .container-fluid,
 .navbar > .container-sm,
 .navbar > .container-md,
-.navbar > .container-lg,
+.navbar > .container-sm,
 .navbar > .container-xl,
 .navbar > .container-xxl {
     display: flex;
