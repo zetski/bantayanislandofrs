@@ -10,7 +10,6 @@
     position: fixed;
     left: -250px;
     top: 0;
-    position: sticky;
     width: 250px;
     height: 100%;
     background-color: #333333; /* Darker sidebar background */
