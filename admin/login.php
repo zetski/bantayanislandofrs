@@ -252,32 +252,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevent the form's default submission
+    e.preventDefault(); // Prevent the default form submission
 
-    // Get form data
+    // Create a FormData object to collect the form data
     const formData = new FormData(this);
 
-    // Perform an AJAX request to validate the credentials
-    fetch('', { // Use the same PHP script as the action
+    // Perform an AJAX request to validate credentials
+    fetch('', { // Keep the current file handling the submission
         method: 'POST',
-        body: formData,
+        body: formData
     })
-    .then(response => response.text()) // Parse the response as text
+    .then(response => response.text()) // Assuming the server responds with text
     .then(data => {
-        const alertBox = document.getElementById("alert-box");
-
-        if (data.trim() === 'Login successful') {
-            alertBox.innerHTML = `<div class="alert alert-success">Login successful!</div>`;
-            document.getElementById("login-frm").reset();
+        if (data === '1') {
+            // Successful login
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                text: 'Welcome!',
+                confirmButtonText: 'OK',
+                allowOutsideClick: false
+            }).then(() => {
+                location.reload(); // Refresh the page
+            });
         } else {
-            handleInvalidCredentials(); // Call the existing invalid credentials handler
+            // Invalid credentials
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid Login',
+                text: 'Please check your username and password.',
+                confirmButtonText: 'Retry'
+            });
         }
     })
     .catch(error => {
-        console.error('Error during login request:', error);
+        // Handle unexpected errors
+        console.error('Error during login:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Something went wrong. Please try again later.',
+            confirmButtonText: 'OK'
+        });
     });
 });
-
   // //end of limit attempt
 
     $(document).ready(function(){
