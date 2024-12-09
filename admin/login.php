@@ -273,6 +273,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 text: 'Login successful!',
                 showConfirmButton: false,
                 timer: 2000 // Automatically close after 2 seconds
+                backdrop: 'rgba(0, 0, 0, 0.4)'
             });
             // No redirection; backend should handle admin-side transition
         } else {
@@ -280,6 +281,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Invalid username or password!',
+                backdrop: 'rgba(0, 0, 0, 0.4)'
             });
         }
     })
