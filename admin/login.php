@@ -169,6 +169,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <script>
     $(document).ready(function(){
         end_loader();
+
+        // Toggle password visibility
+        $('#toggle-password').on('click', function() {
+            const passwordField = $('#password');
+            const icon = $(this);
+
+            if (passwordField.attr('type') === 'password') {
+                passwordField.attr('type', 'text');
+                icon.removeClass('fa-eye').addClass('fa-eye-slash');
+            } else {
+                passwordField.attr('type', 'password');
+                icon.removeClass('fa-eye-slash').addClass('fa-eye');
+            }
+        });
     });
 
     $('#login-frm').on('submit', function(e) {
@@ -213,3 +227,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </script>
 </body>
 </html>
+
