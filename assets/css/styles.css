@@ -258,8 +258,8 @@ kbd,
 samp {
     font-family: var(--bs-font-monospace);
     font-size: 1em;
-    /* direction: ltr; */
-    /* unicode-bidi: bidi-override; */
+    direction: ltr;
+    unicode-bidi: bidi-override;
 }
 
 pre {
