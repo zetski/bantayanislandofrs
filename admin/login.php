@@ -252,50 +252,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault(); // Prevent the default form submission
+    e.preventDefault();
 
-    // Create a FormData object to collect the form data
-    const formData = new FormData(this);
-
-    // Perform an AJAX request to validate credentials
-    fetch('', { // Keep the current file handling the submission
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text()) // Assuming the server responds with text
-    .then(data => {
-        if (data === '1') {
-            // Successful login
-            Swal.fire({
-                icon: 'success',
-                title: 'Login Successful',
-                text: 'Welcome!',
-                confirmButtonText: 'OK',
-                allowOutsideClick: false
-            }).then(() => {
-                location.reload(); // Refresh the page
-            });
-        } else {
-            // Invalid credentials
-            Swal.fire({
-                icon: 'error',
-                title: 'Invalid Login',
-                text: 'Please check your username and password.',
-                confirmButtonText: 'Retry'
-            });
-        }
-    })
-    .catch(error => {
-        // Handle unexpected errors
-        console.error('Error during login:', error);
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Something went wrong. Please try again later.',
-            confirmButtonText: 'OK'
-        });
-    });
-});
+    // Simulate an invalid login for demonstration (replace with actual AJAX request)
+    const isValid = false; // Replace this with actual validation logic
+    if (!isValid) {
+      handleInvalidCredentials();
+    } else {
+      // Handle successful login
+      alert("Login successful!");
+    }
+  });
   // //end of limit attempt
 
     $(document).ready(function(){
