@@ -6,16 +6,15 @@
   }
 
   /* Sidebar styling with formal hover effect */
-    .sidebar {
+  .sidebar {
     position: fixed;
     left: -250px;
     top: 0;
     width: 250px;
-    height: 100vh; /* Full viewport height */
+    height: 100%;
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
-    overflow: hidden; /* Prevent scrolling */
   }
 
   /* Navbar Dropdown - Show on Hover */
