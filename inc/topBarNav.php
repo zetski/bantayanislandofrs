@@ -6,15 +6,16 @@
   }
 
   /* Sidebar styling with formal hover effect */
-  .sidebar {
+    .sidebar {
     position: fixed;
     left: -250px;
     top: 0;
     width: 250px;
-    height: 100%;
+    height: 100vh; /* Full viewport height */
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
+    overflow: hidden; /* Prevent scrolling */
   }
 
   /* Navbar Dropdown - Show on Hover */
@@ -82,10 +83,12 @@
   }
 
   .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  overflow-y: auto; /* Add vertical scroll only if content overflows */
+  height: calc(100vh - 20px); /* Adjust for internal padding if needed */
+}
 
   .sidebar ul li {
     padding: 0;
