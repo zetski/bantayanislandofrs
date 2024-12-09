@@ -268,8 +268,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (data.trim() === 'Login successful') {
             alertBox.innerHTML = `<div class="alert alert-success">Login successful!</div>`;
-            alert("Login successful!"); // Optional alert for confirmation
-            // Optionally clear the form or disable it
             document.getElementById("login-frm").reset();
         } else {
             handleInvalidCredentials(); // Call the existing invalid credentials handler
