@@ -83,12 +83,10 @@
   }
 
   .sidebar ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto; /* Add vertical scroll only if content overflows */
-  height: calc(100vh - 20px); /* Adjust for internal padding if needed */
-}
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
 
   .sidebar ul li {
     padding: 0;
