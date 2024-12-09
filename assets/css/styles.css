@@ -683,7 +683,7 @@ progress {
     }
 }
 
-/* @media (min-width: 1200px) {
+@media (min-width: 1200px) {
     .container-xl,
     .container-lg,
     .container-md,
@@ -691,7 +691,7 @@ progress {
     .container {
         max-width: 1140px;
     }
-} */
+}
 
 @media (min-width: 1400px) {
     .container-xxl,
