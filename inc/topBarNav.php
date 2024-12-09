@@ -15,7 +15,6 @@
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
-    overflow: hidden;
   }
 
   /* Navbar Dropdown - Show on Hover */
@@ -136,7 +135,7 @@ session_start();
       <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
       Bantayan Fire Station
     </a>
-    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px; padding-top: 13px;">
+    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
