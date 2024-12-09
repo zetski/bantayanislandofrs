@@ -255,7 +255,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     e.preventDefault();
 
     // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
+    const isValid = true; // Replace this with actual validation logic
     if (!isValid) {
       handleInvalidCredentials();
     } else {
