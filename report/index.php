@@ -53,49 +53,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $municipality = sanitizeInput($_POST['municipality']);
     $barangay = sanitizeInput($_POST['barangay']);
     $sitio_street = sanitizeInput($_POST['sitio_street']);
-
-    // Check for duplicate reports
-    $stmt = $conn->prepare("SELECT COUNT(*) FROM request_list WHERE municipality = ? AND barangay = ? AND sitio_street = ?");
-    $stmt->bind_param("sss", $municipality, $barangay, $sitio_street);
-    $stmt->execute();
-    $stmt->bind_result($count);
-    $stmt->fetch();
-    $stmt->close();
-
-    if ($count > 0) {
-        // Duplicate report found
-        echo "<script>alert('A report for this location has already been submitted. Please check your details or contact the administrator.');</script>";
-    } else {
-        // Proceed with file upload and data insertion
+    
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['image']['tmp_name'];
             $fileName = $_FILES['image']['name'];
             $fileSize = $_FILES['image']['size'];
             $fileType = mime_content_type($fileTmpPath);
             $allowedMimeTypes = ['image/jpeg'];
-
+    
+            // Validate MIME type
             if (!in_array($fileType, $allowedMimeTypes)) {
                 die('Invalid file type. Only JPEG/JPG images are allowed.');
             }
-
+    
+            // Validate file extension
             $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
             if (!in_array($fileExtension, ['jpg', 'jpeg'])) {
                 die('Invalid file extension. Only .jpg and .jpeg are allowed.');
             }
-
+    
+            // Process the image (e.g., move to a specific folder)
             $uploadFileDir = './uploads/';
             $destPath = $uploadFileDir . $fileName;
             if (move_uploaded_file($fileTmpPath, $destPath)) {
-                // Insert sanitized data into the database
-                $stmt = $conn->prepare("INSERT INTO request_list (lastname, firstname, middlename, contact, subject, message, municipality, barangay, sitio_street, image_path) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt->bind_param("ssssssssss", $lastname, $firstname, $middlename, $contact, $subject, $message, $municipality, $barangay, $sitio_street, $destPath);
-
-                if ($stmt->execute()) {
-                    echo "<script>alert('Your report has been successfully submitted.');</script>";
-                } else {
-                    echo "<script>alert('Failed to submit your report. Please try again.');</script>";
-                }
-                $stmt->close();
+                echo 'File successfully uploaded.';
             } else {
                 die('File upload failed.');
             }
@@ -103,8 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             die('No file uploaded or upload error occurred.');
         }
     }
-
-    $conn->close();
+    // Process the sanitized data (e.g., insert into database)
 }
 ?>
 
