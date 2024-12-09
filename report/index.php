@@ -87,47 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     // Process the sanitized data (e.g., insert into database)
 }
-function handleReportSubmission() {
-    // Access POST data
-    $municipality = $_POST['municipality'];
-    $barangay = $_POST['barangay'];
-    $sitio_street = $_POST['sitio_street'];
-
-    // Check for duplicates
-    $query = "SELECT COUNT(*) FROM reports 
-              WHERE municipality = :municipality 
-              AND barangay = :barangay 
-              AND sitio_street = :sitio_street";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([
-        ':municipality' => $municipality,
-        ':barangay' => $barangay,
-        ':sitio_street' => $sitio_street
-    ]);
-
-    $duplicateCount = $stmt->fetchColumn();
-
-    if ($duplicateCount > 0) {
-        // Respond with duplicate error
-        echo json_encode(['status' => 'error', 'message' => 'This incident has already been reported.']);
-        return;
-    }
-
-    // Proceed with inserting new report
-    $query = "INSERT INTO reports (municipality, barangay, sitio_street, other_columns) 
-              VALUES (:municipality, :barangay, :sitio_street, :other_values)";
-    $stmt = $pdo->prepare($query);
-    $stmt->execute([
-        ':municipality' => $municipality,
-        ':barangay' => $barangay,
-        ':sitio_street' => $sitio_street,
-        // Include other values as necessary
-    ]);
-
-    // Respond with success
-    echo json_encode(['status' => 'success', 'message' => 'Report submitted successfully.']);
-}
-
 ?>
 
 <section class="py-3">
@@ -316,46 +275,6 @@ function handleReportSubmission() {
 </style>
 
 <script>
-    $('#reportForm').on('submit', function (e) {
-    e.preventDefault(); // Prevent form's default submission behavior
-
-    const formData = $(this).serialize(); // Collect all form data
-
-    $.ajax({
-        type: 'POST', // Assuming POST request
-        data: formData, // Send form data
-        dataType: 'json',
-        success: function (response) {
-            if (response.status === 'error') {
-                // SweetAlert for duplicate report
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Duplicate Report',
-                    text: response.message,
-                });
-            } else if (response.status === 'success') {
-                // SweetAlert for success
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Report Submitted',
-                    text: response.message,
-                }).then(() => {
-                    // Optionally, reload or redirect
-                    window.location.reload();
-                });
-            }
-        },
-        error: function () {
-            // SweetAlert for server errors
-            Swal.fire({
-                icon: 'error',
-                title: 'Submission Error',
-                text: 'An error occurred. Please try again later.',
-            });
-        }
-    });
-});
-
      // Get the checkbox and submit button elements
      const termsCheckbox = document.getElementById('terms-checkbox');
     const submitButton = document.getElementById('submit-button');
