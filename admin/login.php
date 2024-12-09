@@ -267,10 +267,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const alertBox = document.getElementById("alert-box");
 
         if (data.trim() === 'Login successful') {
-            alert("Login successful"); // Alert on successful login
-            // Do nothing further; rely on server-side handling (e.g., refreshing to load admin content)
+            Swal.fire({
+                icon: 'success',
+                title: 'Welcome!',
+                text: 'Login successful!',
+                showConfirmButton: false,
+                timer: 2000 // Automatically close after 2 seconds
+            });
+            // No redirection; backend should handle admin-side transition
         } else {
-            handleInvalidCredentials(); // Handle invalid credentials with warnings and shake
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Invalid username or password!',
+            });
         }
     })
     .catch(error => {
