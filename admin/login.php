@@ -252,17 +252,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   document.getElementById("login-frm").addEventListener("submit", function (e) {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the form's default submission
 
-    // Simulate an invalid login for demonstration (replace with actual AJAX request)
-    const isValid = false; // Replace this with actual validation logic
-    if (!isValid) {
-      handleInvalidCredentials();
-    } else {
-      // Handle successful login
-      alert("Login successful!");
-    }
-  });
+    // Get form data
+    const formData = new FormData(this);
+
+    // Perform an AJAX request to validate the credentials
+    fetch('', { // Use the same PHP script as the action
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text()) // Parse the response as text
+    .then(data => {
+        const alertBox = document.getElementById("alert-box");
+
+        if (data.trim() === 'Login successful') {
+            alert("Login successful"); // Alert on successful login
+            // Do nothing further; rely on server-side handling (e.g., refreshing to load admin content)
+        } else {
+            handleInvalidCredentials(); // Handle invalid credentials with warnings and shake
+        }
+    })
+    .catch(error => {
+        console.error('Error during login request:', error);
+    });
+});
   // //end of limit attempt
 
     $(document).ready(function(){
