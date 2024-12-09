@@ -1,100 +1,62 @@
 <?php 
 require_once('../config.php'); 
-// Set HTTP security headers
-header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
-header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
-header("X-Frame-Options: SAMEORIGIN"); // Prevent clickjacking
-header("X-XSS-Protection: 1; mode=block"); // Enable XSS filtering
-header("Referrer-Policy: no-referrer-when-downgrade"); // Control referrer information
-header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload"); // Require HTTPS (HSTS)
 
-// Start the session with HttpOnly and Secure cookie settings
-ini_set('session.cookie_httponly', 1); // Prevent JavaScript access to session cookie
-ini_set('session.cookie_secure', 1); // Ensure cookies are only sent over HTTPS
-ini_set('session.use_only_cookies', 1); // Only use cookies for sessions, no URL parameters
+header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: SAMEORIGIN");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: no-referrer-when-downgrade");
+header("Strict-Transport-Security: max-age=31536000; includeSubDomains; preload");
+
+ini_set('session.cookie_httponly', 1);
+ini_set('session.cookie_secure', 1);
+ini_set('session.use_only_cookies', 1);
 session_start();
 
-// Sanitize and validate input
 function sanitize_input($input) {
-    $input = strip_tags($input);
-    $input = htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
-    
-    // Disallow dangerous symbols and the word "script"
-    $disallowed_symbols = ['<', '>', '/', '"', "'"];
-    foreach ($disallowed_symbols as $symbol) {
-        if (strpos($input, $symbol) !== false) {
-            return '';
-        }
-    }
-
-    if (preg_match('/script/i', $input)) {
-        return '';
-    }
-
-    return $input;
+    $input = htmlspecialchars(strip_tags($input), ENT_QUOTES, 'UTF-8');
+    return preg_match('/script/i', $input) ? '' : $input;
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $username = sanitize_input($_POST['username']);
-  $password = sanitize_input($_POST['password']);
+    $username = sanitize_input($_POST['username']);
+    $password = sanitize_input($_POST['password']);
 
-  if (empty($username) || empty($password)) {
-      echo 'Invalid input';
-      exit;
-  }
+    if (empty($username) || empty($password)) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid input']);
+        exit;
+    }
 
-  // Prepared statement to prevent SQL injection
-  $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
-  $stmt->bind_param("s", $username);
-  $stmt->execute();
-  $result = $stmt->get_result();
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-  $user = $result->fetch_assoc();
-
-  if ($user) {
-      $storedHash = $user['password'];
-
-      // Check if the password is in MD5 format (32 characters long)
-      if (strlen($storedHash) == 32) {
-          // Verify with MD5 first
-          if (md5($password) === $storedHash) {
-              // Re-hash the password with password_hash for future logins
-              $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
-              $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
-              $updateStmt->bind_param("ss", $newHashedPassword, $username);
-              $updateStmt->execute();
-              $updateStmt->close();
-
-              // Set session variables after successful login
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      } else {
-          // Verify with password_verify for bcrypt or any other compatible algorithm
-          if (password_verify($password, $storedHash)) {
-              $_SESSION['user_id'] = $user['id'];
-              $_SESSION['username'] = $user['username'];
-              $_SESSION['district'] = $user['district'];
-              error_log("User logged in with district: " . $_SESSION['district']);
-              echo 'Login successful';
-              exit;
-          } else {
-              echo 'Invalid credentials';
-          }
-      }
-  } else {
-      echo 'Invalid credentials';
-  }
-
-  $stmt->close();
+    if ($user) {
+        $storedHash = $user['password'];
+        if (strlen($storedHash) == 32 && md5($password) === $storedHash) {
+            $newHashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            $updateStmt = $conn->prepare("UPDATE users SET password = ? WHERE username = ?");
+            $updateStmt->bind_param("ss", $newHashedPassword, $username);
+            $updateStmt->execute();
+        }
+        if (password_verify($password, $storedHash)) {
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['username'] = $user['username'];
+            $_SESSION['district'] = $user['district'];
+            echo json_encode(['status' => 'success', 'message' => 'Login successful']);
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+        }
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid credentials']);
+    }
+    $stmt->close();
+    exit;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en" class="" style="height: auto;">
 <?php require_once('inc/header.php') ?>
