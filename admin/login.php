@@ -159,6 +159,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transform: translateX(-5px);
     }
   }
+  .swal2-container {
+    background: rgba(0, 0, 0, 0.4) !important; /* Semi-transparent background */
+}
+
+.swal2-popup {
+    background-color: #fff !important; /* Ensure the popup background is white */
+}
+
 </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
@@ -264,21 +272,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     })
     .then(response => response.text()) // Parse the response as text
     .then(data => {
+        const alertBox = document.getElementById("alert-box");
+
         if (data.trim() === 'Login successful') {
             Swal.fire({
                 icon: 'success',
                 title: 'Welcome!',
                 text: 'Login successful!',
                 showConfirmButton: false,
-                timer: 2000, // Automatically close after 2 seconds
-                backdrop: 'rgba(0, 0, 0, 0.4)' // Adjust backdrop transparency
+                timer: 2000 // Automatically close after 2 seconds
             });
+            // No redirection; backend should handle admin-side transition
         } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Invalid username or password!',
-                backdrop: 'rgba(0, 0, 0, 0.4)' // Adjust backdrop transparency
             });
         }
     })
@@ -286,6 +295,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         console.error('Error during login request:', error);
     });
 });
+
   // //end of limit attempt
 
     $(document).ready(function(){
