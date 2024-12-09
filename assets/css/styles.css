@@ -4329,7 +4329,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-toggler {
-    padding: 0.25rem 0.75rem;
+    padding: auto;
     font-size: 1.25rem;
     line-height: 1;
     background-color: transparent;
