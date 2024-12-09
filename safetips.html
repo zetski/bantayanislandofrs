@@ -29,12 +29,12 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: #ff4500;
-            color: #fff;
+            background-color: #ff4500; /* Fire orange-red background */
+            color: #fff; /* White icon */
             border: none;
             padding: 12px;
             border-radius: 50%;
-            font-size: 18px;
+            font-size: 18px; /* Icon size */
             text-align: center;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
@@ -42,16 +42,16 @@
         }
 
         .back-button i {
-            pointer-events: none;
+            pointer-events: none; /* Prevents the icon from affecting the button's hover */
         }
 
         .back-button:hover {
-            background-color: #ff6347;
+            background-color: #ff6347; /* Slightly lighter red-orange on hover */
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .back-button:focus {
-            outline: none;
+            outline: none; /* Remove outline when focused */
         }
 
         h1 {
@@ -107,19 +107,20 @@
 
         /* Modal styles */
         .modal {
-        display: none;
-        position: fixed;
-        z-index: 1;
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* On top */
         left: 0;
         top: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
         display: flex;
-        align-items: center;
-        justify-content: center;
+        align-items: center; /* Vertically center */
+        justify-content: center; /* Horizontally center */
     }
 
+    /* Modal content box */
     .modal-content {
         background-color: #fff;
         border-radius: 8px;
@@ -132,14 +133,16 @@
         position: relative;
     }
 
+    /* Modal image */
     .modal-content img {
         max-width: 100%;
-        max-height: 50vh;
-        height: auto;
+        max-height: 50vh; /* Adjust to fit within viewport */
+        height: auto; /* Maintain aspect ratio */
         display: block;
-        margin: 0 auto;
+        margin: 0 auto; /* Center the image */
     }
 
+    /* Close button */
     .close {
         position: absolute;
         top: 10px;
@@ -154,12 +157,11 @@
     .close:hover {
         color: #333;
     }
-
-    ol {
-        padding-left: 20px;
-        margin-top: 20px;
-        color: #000;
-    }
+        ol {
+            padding-left: 20px;
+            margin-top: 20px;
+            color: #000;
+        }
     </style>
 </head>
 <body>
@@ -174,7 +176,7 @@
         <!-- Certificates will be dynamically generated here -->
     </div>
 
-    <!-- Modal template (hidden by default) -->
+    <!-- Modal template -->
     <div id="modal-template" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -222,7 +224,118 @@
                 </ol>`,
                 image: 'img/during.jpg'
             },
-            // Add other certificates...
+            {
+                title: 'AFTER',
+                description: 'What to do AFTER a fire?',
+                details: `<img src="img/after_cover.jpg" alt="After description" class="image">
+                <p>Ano ang mga dapat gawin MATAPOS may mangyaring sunog?</p>
+                <ol>
+                  <li>If someone gets burned, immediately palce the wound under cool water for 10 to 15 minutes. If the wound blisters, see a doctor immediately.</li>
+                  <li>If someone inhaled smoke or fumes, immediately seek medical attention.</li>
+                  <li>Remove any clothing or jewelry near the burnt area of skin. However, do not try to remove anything that is stuck to the burnt skin because this could cause more damage.</li>
+                  <li>Cover burnt area with sterilized bandage.</li>
+                  <li>Do not pick the blisters from the burn.</li>
+                  <li>Honey or Aloe Vera is good for instant relief for minor burns and scalds.</li>
+                  </ol>`,
+                image: 'img/after.png'
+            },
+            {
+                title: 'FIRE EXTINGUISHER',
+                description: 'How to use a FIRE EXTINGUISHER',
+                details: `<img src="img/pass.png" alt="After description" class="image">
+                <p>Paano gamitin ang FIRE EXTINGUISHER?</p>
+                <ol>
+               <br><b>PULL</b> THE PIN - Pull the pin that locks the operation lever with the handle of the Fire Extinguisher.
+               <br><b>AIM</b> THE NOZZLE - Hitting the top of the flame with the fire at its base.
+               <br><b>SQUEEZE</b> THE LEVER - In a controlled manner, squeeze the lever to release the agent.
+               <br><b>SWEEP</b> SIDE TO SIDE - Sweep the nozzle from side to side until the fire is put out. Keep aiming at the base while you do so. Most extinguishers will give you about 10-20 seconds of discharge time.
+                </ol>`,
+                image:'img/extinguisher.png'
+            },
+            {
+                title: 'SUMMER FIRE SAFETY TIPS',
+                description: 'Fire Safety Tips for the Hot Summer Season',
+                details: `<img src="img/summer_cover.png" alt="After description" class="image">
+                <p>Here are some key summer time for fire safety tips to consider and embrace</p>
+                <ol>
+                <li><b>REMOVE CLUTTER AND UNNECESSARY STORAGE IN YOUR HOME</b>
+                <br>Clutter and excessive storage can be added fuel to an unwanted fire and can impede escape from a home fire.</br></li>
+                <li><b>CLEAR A FIRE-SAFE ZONE AROUND YOUR HOME</b>
+                <br>Clear all dry vegetation, mulch, and trash from around your home exterior.</br></li>
+                <li><b>GASOLINE AND OTHER FLAMMABLE LIQUIDS</b>
+                <br>Store gasoline and other flammables in approved containers in cool, dark environments out of your home or basement.<br></li>
+                <li><b>BARBEQUE GRILL SAFETY</b>
+                <br>Keep all barbeque grills at a safe operating distance from your home or other structures.</br></li>
+                <li><b>RESIDENTIAL RECREATIONAL FIRE</b>
+                <br>When using a commercial chiminea, fire pit or outdoor fireplace unit, always read and observe all manufacturer use, care and safety specifications.</br></li>
+                <li><b>HAVE A HOME FIRE ESCAPE PLAN AND PRACTICE IT WITH FAMILY MEMBERS</b>
+                <br>During this challenging time with increased numbers of people staying at home - and truthfully all-year-round-families should develop, review and practice their plan regarding what to do if a fire occurs in their home.</br></li>
+                </ol>`,
+                image: 'img/summer.jpg'
+            },
+            {
+                title: 'SMOKE INHALATION',
+                description: 'What to do if you Inhale Smoke?',
+                details: `<img src="img/smoke_cover.jpg" alt="After description" class="image">
+                <p>Ano ang mga dapat gawin kapag na ka langhap nang usok?</p>
+                <ol>
+                  <li>Get the person safety and into fresh air if it is safe to do so. Otherwise, filter the smoke with a P2 mask. </li>
+                  <li>If they are showing signs of smoke inhalation (e.g., dizziness, grey/black saliva, chest pain) call emergency.</li>
+                  <li>If the person is conscious, sit them down or lay them on their side.</li>
+                  <li>If the person is alert, ask them whether they have any medical conditions.</li>
+                  <li>If the person is not breathing, perform CPR.</li>
+                  <li>Ensure the person seeks medical attention to be assessed for more serious health implications.</li>
+                  </ol>`,
+                  image: 'img/smoke.png'
+            },
+            {
+                title: 'CLOTHES CATCH FIRE',
+                description: 'What to do if your Clothes Catch Fire',
+                details: `<img src="img/stop-drop-and-roll.jpg" alt="After description" class="image">
+                <p>Ano ang mga dapat gawin kapag nagkaroon nang apoy ang iyong damit?</p>
+                <ol>
+                  <li><b>STOP</b>
+                  <br>Stop where you are.</br></li>
+                  <li><b>DROP</b>
+                  <br>Drop to the ground.</br></li>
+                  <li><b>ROLL</b>
+                  <br>Cover your face with hands, and roll over and over until the fire is out.</br></li>
+                  </ol>`,
+                image: 'img/clothes_fire.png'
+            },
+            {
+                title: 'BURNS',
+                description:  'first Aid for Minor Burns',
+                details: `<img src="img/burn-arm-first-aid.jpg" alt="After description" class="image">
+                <p>First Aid treatment for Minor-degree and small second-degree burns</p>
+                <ol>
+                <li>Place the the burn area under running cool water for at least 5 minutes reduce swelling.</li>
+                <li>Apply on atiseptic spray, antibiotic ointment, or aloe vera cream to soothe the area</li>
+                <li>Loosely wrap a gauze bandage around the burn if risk of damage or contamination is inevitable</li>
+                <li>Never put butter on a burn or pop any blisters that form. You could damage the skin and cause an infection.</li>
+                <li>Seek immediate medical attention or go to the nearest hospital if necessary.</li>`,
+                image: 'img/burn.png'
+            },
+            {
+                title: 'CUTS AND SCRAPES',
+                description: 'First Aid for Cuts and Scrapes',
+                details: `<img src="img/cut_scrapes_cover.png" alt="After description" class="image">
+                <p>First Aid treatment keep Cuts clean and prevent infections and scars</p>
+                <ol>
+                <li>Wash your hands.
+                <br>First, wash up with soap and water so you do not get bacteria into the cut and cause an infection. If you are on the go, use hand sanitizer.</li>
+                <li>Stop the bleeding.
+                <br>Put pressure on the cut with a gauze pad or clean cloth. Keep the pressure on for a few minutes.</li>
+                <li>Clean the wound.
+                <br>Once you have stopped the bleeding, rinse the cut under cool running water or use a saline wound wash.
+                <br>Clean the are around the wound with soap and a wet wash cloth.
+                <br>Do not get soap in the cut, because it can irritate the skin and do not use hydrogen peroxide or iodine, which is could irritate the cut.</br></li>
+                <li>Remove any dirt or debris.
+                <br>Use a pair of tweezers cleaned with alcohol to gently pick out any dirt, gravel, or other material in the cut.</br></li>
+                <li>Seek immediate medical treatment attention or go to the nearest hospital if necessary.</li>`,
+                image: 'img/cuts_scrapes.png'
+            },
+            // Add more certificates here
         ];
 
         // Render certificates
@@ -240,30 +353,28 @@
             `;
             content.appendChild(certDiv);
 
-            certDiv.addEventListener('click', () => {
-                showModal(certificate);
-            });
+            certDiv.addEventListener('click', () => showDetails(certificate));
         });
 
-        // Show modal with certificate details
-        function showModal(certificate) {
-            const modal = document.getElementById('modal-template');
-            const modalDetails = document.getElementById('modal-details');
+        // Modal functionality
+        const modalTemplate = document.getElementById('modal-template');
+        const modalDetails = document.getElementById('modal-details');
+        const closeModal = modalTemplate.querySelector('.close');
+
+        function showDetails(certificate) {
             modalDetails.innerHTML = certificate.details;
-            modal.style.display = 'flex';
-
-            const closeBtn = document.querySelector('.close');
-            closeBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
-
-            // Close modal if user clicks outside of the modal-content
-            window.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                }
-            });
+            modalTemplate.style.display = 'flex';
         }
+
+        closeModal.addEventListener('click', () => {
+            modalTemplate.style.display = 'none';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modalTemplate) {
+                modalTemplate.style.display = 'none';
+            }
+        });
     </script>
 </body>
 </html>
