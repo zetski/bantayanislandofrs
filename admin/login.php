@@ -159,14 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       transform: translateX(-5px);
     }
   }
-  .swal2-container {
-    background: rgba(0, 0, 0, 0.4) !important; /* Semi-transparent background */
-}
-
-.swal2-popup {
-    background-color: #fff !important; /* Ensure the popup background is white */
-}
-
 </style>
   <h1 class="text-center text-white px-4 py-5" id="page-title"><b><?php echo htmlspecialchars($_settings->info('name')) ?></b></h1>
   <div class="login-box" style="height: 100%">
@@ -295,7 +287,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         console.error('Error during login request:', error);
     });
 });
-
   // //end of limit attempt
 
     $(document).ready(function(){
