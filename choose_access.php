@@ -76,7 +76,7 @@ if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTT
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            background-color: transparent !important;
+            background-color: #fff;
         }
         .btn {
             margin: 10px;
