@@ -264,24 +264,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     })
     .then(response => response.text()) // Parse the response as text
     .then(data => {
-        const alertBox = document.getElementById("alert-box");
-
         if (data.trim() === 'Login successful') {
             Swal.fire({
                 icon: 'success',
                 title: 'Welcome!',
                 text: 'Login successful!',
                 showConfirmButton: false,
-                timer: 2000 // Automatically close after 2 seconds
-                backdrop: 'rgba(0, 0, 0, 0.4)'
+                timer: 2000, // Automatically close after 2 seconds
+                backdrop: 'rgba(0, 0, 0, 0.4)' // Adjust backdrop transparency
             });
-            // No redirection; backend should handle admin-side transition
         } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Invalid username or password!',
-                backdrop: 'rgba(0, 0, 0, 0.4)'
+                backdrop: 'rgba(0, 0, 0, 0.4)' // Adjust backdrop transparency
             });
         }
     })
