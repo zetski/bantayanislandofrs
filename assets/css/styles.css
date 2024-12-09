@@ -4277,19 +4277,23 @@ fieldset:disabled .btn {
     justify-content: space-between;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    width: 100%;  /* Ensures the navbar takes full width of the parent container */
+    height: 60px; /* Adjust the height of the navbar as desired */
 }
 
-.navbar>.container,
-.navbar>.container-fluid,
-.navbar>.container-sm,
-.navbar>.container-md,
-.navbar>.container-lg,
-.navbar>.container-xl,
-.navbar>.container-xxl {
+.navbar > .container,
+.navbar > .container-fluid,
+.navbar > .container-sm,
+.navbar > .container-md,
+.navbar > .container-lg,
+.navbar > .container-xl,
+.navbar > .container-xxl {
     display: flex;
     flex-wrap: inherit;
     align-items: center;
     justify-content: space-between;
+    width: 100%;  /* Ensure the navbar containers fill the width */
+    height: 100%;  /* Ensures containers take full height of the navbar */
 }
 
 .navbar-brand {
