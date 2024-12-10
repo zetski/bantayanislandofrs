@@ -1,6 +1,6 @@
 <style>
     body {
-        overflow: hidden;
+        overflow-x: hidden;
         padding-top: 10px;
         margin-top: 40px;
     }
