@@ -1,5 +1,11 @@
-<style>
-    /* Remove sidebar-related styles */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bantayan Fire Station</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
     .navbar-brand img {
       border-radius: 50%;
     }
@@ -15,7 +21,7 @@
     }
 
     .dropdown-menu {
-      background-color: #333333; /* Match the dark background */
+      background-color: #333333;
     }
 
     .dropdown-item {
@@ -27,21 +33,13 @@
       background-color: #ff4600;
     }
   </style>
-<?php
-session_start();
-// Example roles for testing
-// Uncomment or modify these to simulate different roles.
-// $_SESSION['role'] = 'guest'; // Uncomment to simulate guest role
-// $_SESSION['role'] = 'admin'; // Uncomment to simulate admin role
-?>
+</head>
+<body>
+  <?php
+  session_start();
+  ?>
 
-<div class="pos-f-t">
-    <div class="collapse" id="navbarToggleExternalContent">
-      <div class="bg-dark p-4">
-        <h4 class="text-white">Collapsed content</h4>
-        <span class="text-muted">Toggleable via the navbar brand.</span>
-      </div>
-    </div>
+  <div class="pos-f-t">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
       <div class="container px-4 px-lg-5">
         <a class="navbar-brand" href="./">
@@ -69,38 +67,53 @@ session_start();
             <li class="nav-item"><a href="./citizen_chart.html" class="nav-link text-white">Citizen Charter</a></li>
             <li class="nav-item"><a href="./safetips.html" class="nav-link text-white">Safety Tips</a></li>
           </ul>
-          <div class="d-flex align-items-center">
-            <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
-              <!-- Show Login link for admin only -->
-              <!-- <a class="font-weight-bolder text-light mx-2 text-decoration-none" href="logout.php">Logout</a> -->
-            <?php endif; ?>
-          </div>
         </div>
       </div>
     </nav>
   </div>
 
+  <div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modal Title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Loading content...</p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function() {
-    // Initialize the navbar dropdown for "About Us"
-    $('#aboutDropdown').on('click', function (e) {
-      var $el = $(this).next('.dropdown-menu');
-      var isVisible = $el.is(':visible');
-      // Slide up all dropdowns
-      $('.dropdown-menu').slideUp('400');
-      // If this wasn't already visible, slide it down
-      if (!isVisible) {
-        $el.stop(true, true).slideDown('400');
+      $('#aboutDropdown').on('click', function() {
+        var $el = $(this).next('.dropdown-menu');
+        var isVisible = $el.is(':visible');
+        $('.dropdown-menu').slideUp(400);
+        if (!isVisible) {
+          $el.stop(true, true).slideDown(400);
+        }
+      });
+
+      // Open modal for "View Status"
+      $('#search_report').click(function() {
+        uni_modal("Search Request Report", "report/search.php");
+      });
+
+      function uni_modal(title, url) {
+        $('#modal-container .modal-title').text(title);
+        $('#modal-container .modal-body').load(url, function() {
+          $('#modal-container').modal('show');
+        });
       }
     });
-
-    // Modal for search report
-    $('#search_report, #search_report_sidebar').click(function() {
-      uni_modal("Search Request Report", "report/search.php");
-    });
-  });
   </script>
+</body>
+</html>
