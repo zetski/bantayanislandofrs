@@ -4509,9 +4509,9 @@ fieldset:disabled .btn {
     justify-content: flex-start;
 }
 
-/* .navbar-expand .navbar-nav {
+.navbar-expand .navbar-nav {
     flex-direction: row;
-} */
+}
 
 .navbar-expand .navbar-nav .dropdown-menu {
     position: absolute;
