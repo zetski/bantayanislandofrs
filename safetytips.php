@@ -77,6 +77,7 @@ if (strpos($request, '.php') !== false) {
         }
 
         .certificate {
+            color: white;
             background-color: #808080;
             border-radius: 8px;
             margin: 10px auto;
