@@ -4450,7 +4450,7 @@ fieldset:disabled .btn {
     }
 }
 
-@media (min-width: 1200px) {
+/* @media (min-width: 1200px) {
     .navbar-expand-xl {
         flex-wrap: nowrap;
         justify-content: flex-start;
@@ -4475,7 +4475,7 @@ fieldset:disabled .btn {
     .navbar-expand-xl .navbar-toggler {
         display: none;
     }
-}
+} */
 
 @media (min-width: 1400px) {
     .navbar-expand-xxl {
