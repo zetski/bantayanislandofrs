@@ -1,24 +1,167 @@
 <style>
-    body {
-        padding-top: 10px;
-        margin-top: 40px;
+  /* General Body Styling */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+  }
+
+  /* Topbar Adjustment */
+  nav.navbar {
+    z-index: 1050;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background-color: #ff4600;
+  }
+
+  /* Ensure topbar doesn't overlap the carousel */
+  body {
+    padding-top: 60px; /* Adjust for fixed navbar height */
+  }
+
+  /* Carousel Styling */
+  .carousel-item > img {
+    object-fit: cover !important;
+    height: 20em; /* Desktop height */
+    width: 100%;
+  }
+
+  #carouselExampleControls .carousel-inner {
+    height: 20em; /* Match carousel image height */
+  }
+
+  /* Button Styling */
+  .btn {
+    color: #fff;
+    margin-top: 15px;
+    background-color: #f46000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .btn:focus,
+  .btn:hover {
+    outline: none;
+    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.24), 0 17px 50px rgba(0, 0, 0, 0.19);
+    background-color: #e35000;
+  }
+
+  /* Card Section Styling */
+  .card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  /* Sidebar Styling */
+  .sidebar {
+    position: fixed;
+    top: 60px; /* Matches the navbar height */
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #333333;
+    z-index: 1000;
+    transition: left 0.3s ease-in-out;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  .sidebar ul li a:hover {
+    background-color: #ff4600;
+  }
+
+  /* Media Queries */
+  @media (max-width: 992px) {
+    .carousel-item > img {
+      height: 15em; /* Tablet height */
     }
-    .carousel-item>img {
-        object-fit: cover !important;
-        height: 20em; /* Adjust the height to your desired value */
-    }
+
     #carouselExampleControls .carousel-inner {
-        height: 20em !important; /* Ensure this matches the image height */
+      height: 15em; /* Match carousel image height */
     }
-    .btn{
-        color: #fff;
-        margin-left: 30px;
-        background-color: #f46000;
+
+    .btn {
+      font-size: 14px;
+      padding: 8px 15px;
     }
-    .btn:focus, .btn:hover{
-        outline: none;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+  }
+
+  @media (max-width: 768px) {
+    .carousel-item > img {
+      height: 12em; /* Mobile height */
     }
+
+    #carouselExampleControls .carousel-inner {
+      height: 12em; /* Match carousel image height */
+    }
+
+    .btn {
+      font-size: 12px;
+      padding: 6px 10px;
+      margin-left: 10px;
+    }
+
+    .card-body {
+      padding: 1rem;
+    }
+
+    .sidebar {
+      width: 200px;
+    }
+
+    nav.navbar .navbar-toggler {
+      margin-left: auto;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .carousel-item > img {
+      height: 10em; /* Smaller mobile height */
+    }
+
+    #carouselExampleControls .carousel-inner {
+      height: 10em; /* Match carousel image height */
+    }
+
+    .btn {
+      font-size: 10px;
+      padding: 5px 8px;
+      margin-left: 5px;
+    }
+
+    nav.navbar .navbar-brand {
+      font-size: 14px;
+    }
+
+    .sidebar {
+      width: 180px;
+    }
+  }
 </style>
 <section class="py-3">
     <div class="container">
