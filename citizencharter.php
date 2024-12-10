@@ -79,7 +79,6 @@ if (strpos($request, '.php') !== false) {
         .certificate {
             background-color: #fff;
             border-radius: 8px;
-            margin: 10px auto;
             padding: 15px;
             width: 90%;
             max-width: 600px;
