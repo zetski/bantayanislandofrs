@@ -113,15 +113,6 @@ if (strpos($request, '.php') !== false) {
             word-wrap: break-word; /* Break words to avoid overflow */
         }
 
-        .certificate p.description {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 3; /* Limit to 3 lines */
-            -webkit-box-orient: vertical;
-            color: #777; /* Adjust color if necessary */
-            font-size: 14px; /* Adjust font size as needed */
-        }
         /* Modal styles */
         .modal {
         display: none; /* Ensure modal is hidden by default */
