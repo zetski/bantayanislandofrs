@@ -64,6 +64,7 @@
 
   .navbar-brand,
   .navbar-nav {
+    align-items: center;
     margin-left: -70px; /* Adjust this value to move more or less */
   }
 
@@ -131,11 +132,10 @@ session_start();
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
   <div class="container px-4 px-lg-5">
-   <center><a class="navbar-brand" href="./">
+    <a class="navbar-brand" href="./">
       <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
       Bantayan Fire Station
     </a>
-    </center> 
     <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px; padding-top: 11px;">
       <span class="navbar-toggler-icon"></span>
     </button>
