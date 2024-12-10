@@ -43,6 +43,26 @@ function sanitizeInput($data) {
 }
 
 // Process Form Submission
+// Assuming you have a PDO connection already established
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $municipality = sanitizeInput($_POST['municipality']);
+    $barangay = sanitizeInput($_POST['barangay']);
+    $sitio_street = sanitizeInput($_POST['sitio_street']);
+
+    // Check if the incident already exists in the database
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM request_list WHERE municipality = ? AND barangay = ? AND sitio_street = ?");
+    $stmt->execute([$municipality, $barangay, $sitio_street]);
+    $incidentCount = $stmt->fetchColumn();
+
+    if ($incidentCount > 0) {
+        // Incident already reported, show an alert
+        echo json_encode(['status' => 'error', 'message' => 'This incident has already been reported for this address.']);
+        exit;
+    }
+
+    // Proceed with processing the form (image upload, saving data to the database, etc.)
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastname = sanitizeInput($_POST['lastname']);
     $firstname = sanitizeInput($_POST['firstname']);
