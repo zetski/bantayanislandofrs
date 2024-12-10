@@ -65,6 +65,16 @@ class Login extends DBConnection {
             // Successful login: Reset login attempts and set session data
             $_SESSION['login_attempts'] = 3;
             $_SESSION['timeout'] = null;
+
+            // Save user ID in session for logout tracking
+            $_SESSION['user_id'] = $user['id'];
+
+            // Update 'role' to 'Online' in the database
+            $updateLoginStatusStmt = $this->conn->prepare("UPDATE users SET role = 'Online' WHERE id = ?");
+            $updateLoginStatusStmt->bind_param("i", $user['id']);
+            $updateLoginStatusStmt->execute();
+            $updateLoginStatusStmt->close();
+
             foreach ($user as $k => $v) {
                 if (!is_numeric($k) && $k != 'password') {
                     $this->settings->set_userdata($k, $v);
@@ -96,10 +106,36 @@ class Login extends DBConnection {
     }
 
     public function logout() {
-        if ($this->settings->sess_des()) {
-            redirect('admin/login.php');
+        // Check if user is logged in and session variable exists
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+
+            // Update user's role/status in the database
+            $updateRoleStmt = $this->conn->prepare("UPDATE users SET role = 'Offline' WHERE id = ?");
+            if ($updateRoleStmt) {
+                $updateRoleStmt->bind_param("i", $user_id);
+                $updateRoleStmt->execute();
+                $updateRoleStmt->close();
+            } else {
+                error_log("Error updating user status: " . $this->conn->error);
+            }
         }
+
+        // Destroy the session and clear session data
+        session_unset();
+        session_destroy();
+
+        // Prevent caching of the login page and other sensitive pages
+        header("Cache-Control: no-cache, no-store, must-revalidate"); // HTTP 1.1
+        header("Pragma: no-cache"); // HTTP 1.0
+        header("Expires: 0"); // Proxies
+
+        // Redirect to login page
+        header("Location: " . base_url . "admin/login.php");
+        exit();
     }
+
+
 
     public function login_user() {
         extract($_POST);

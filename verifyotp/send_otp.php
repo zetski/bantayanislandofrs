@@ -198,6 +198,15 @@ ob_end_flush();
                 window.location.href = 'https://bantayan-bfp.com/verifyotp/verify_otp'; // Redirect after confirmation
             });
         </script>
+        <script>
+            if (window.history && window.history.pushState) {
+                    window.history.pushState("back", null, window.location.href);
+                    window.onpopstate = function () {
+                        // If the user presses the back button, force a reload
+                        window.location.reload();
+                    };
+                }
+        </script>
     <?php endif; ?>
 </body>
 </html>

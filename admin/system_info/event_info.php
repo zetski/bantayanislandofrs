@@ -219,7 +219,8 @@
             </form>
 
             <h5 class="mt-4">Event List</h5>
-            <table class="table table-bordered table-striped">
+            <div class="table-responsive">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -268,6 +269,7 @@
                     <?php endwhile; ?>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </div>

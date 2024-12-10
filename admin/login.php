@@ -1,26 +1,5 @@
 <?php 
-session_start(); // Start session at the beginning
-if (!isset($_SESSION['otp_verified']) || $_SESSION['otp_verified'] !== true) {
-    echo "<script>
-        alert('OTP not verified. Please verify it first.');
-        window.location.href = 'https://bantayan-bfp.com/verifyotp/send_otp';
-    </script>";
-    exit;
-}
 require_once('../config.php'); 
-
-// // Allowed IP addresses
-// $allowed_ips = ['124.217.6.22', '::1', '127.0.0.1'];
-
-// // Get the user's IP address
-// $user_ip = $_SERVER['REMOTE_ADDR'];
-
-// // Check if the user's IP address matches any allowed IPs
-// if (!in_array($user_ip, $allowed_ips)) {
-//     http_response_code(404); // Set the 404 status code
-//     include('./404.html'); // Include the 404 page content
-//     exit();
-// }
 // Set HTTP security headers
 header("Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:;");
 header("X-Content-Type-Options: nosniff"); // Prevent MIME-type sniffing
@@ -123,7 +102,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script>
     start_loader()
   </script>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+   <!-- Add the reCAPTCHA v3 script -->
+<script src="https://www.google.com/recaptcha/api.js?render=6LflOZUqAAAAAOhcDi8kHNOcjwfQf6XJ4BN1fsVR"></script>
+
   <style>
     body {
         background-image: url("<?php echo validate_image($_settings->info('cover')) ?>");
@@ -201,10 +182,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <div class="g-recaptcha" data-sitekey="6Lc_f4AqAAAAAP79JvQbC6_KbdOJQt9TRXxabqP3" data-callback="enableRecaptcha"></div>
+               <!-- Hidden reCAPTCHA token field -->
+              <input type="hidden" name="recaptcha_token" id="recaptcha-token">
           <div class="row">
             <div class="col-8">
-              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;" disabled>Forgot password?</a>
+              <a href="forgot/forgot-password" style="display: inline-block; margin-top: 5px;">Forgot password?</a>
             </div>
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
@@ -226,61 +208,75 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <script src="dist/js/adminlte.min.js"></script>
 
   <script>
-  //   let remainingAttempts = 3; // Initial login attempts
-  // let isLocked = false; // Lockout flag
+    let remainingAttempts = 3; // Initial login attempts
+  let isLocked = false; // Lockout flag
 
-  // function handleInvalidCredentials() {
-  //   if (isLocked) return;
+  function handleInvalidCredentials() {
+    if (isLocked) return;
 
-  //   // Decrease attempts
-  //   remainingAttempts--;
+    // Decrease attempts
+    remainingAttempts--;
 
-  //   // Shake the card body
-  //   const cardBody = document.querySelector(".card-body");
-  //   cardBody.classList.add("shake");
-  //   setTimeout(() => cardBody.classList.remove("shake"), 500);
+    // Shake the card body
+    const cardBody = document.querySelector(".card-body");
+    cardBody.classList.add("shake");
+    setTimeout(() => cardBody.classList.remove("shake"), 500);
 
-  //   // Display alert below form
-  //   const alertBox = document.getElementById("alert-box");
-  //   if (remainingAttempts > 0) {
-  //     alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
-  //   } else {
-  //     isLocked = true;
-  //     alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
-  //     lockForm();
-  //     setTimeout(() => {
-  //       isLocked = false;
-  //       remainingAttempts = 3;
-  //       alertBox.innerHTML = ""; // Clear alert
-  //       unlockForm();
-  //     }, 3 * 60 * 1000); // 3 minutes
-  //   }
-  // }
+    // Display alert below form
+    const alertBox = document.getElementById("alert-box");
+    if (remainingAttempts > 0) {
+      alertBox.innerHTML = `<div class="alert alert-warning">You have ${remainingAttempts} login attempts left.</div>`;
+    } else {
+      isLocked = true;
+      alertBox.innerHTML = `<div class="alert alert-danger">You have been locked out for 3 minutes due to multiple failed login attempts.</div>`;
+      lockForm();
+      setTimeout(() => {
+        isLocked = false;
+        remainingAttempts = 3;
+        alertBox.innerHTML = ""; // Clear alert
+        unlockForm();
+      }, 3 * 60 * 1000); // 3 minutes
+    }
+  }
 
-  // function lockForm() {
-  //   document.querySelector('input[name="username"]').disabled = true;
-  //   document.querySelector('input[name="password"]').disabled = true;
-  //   document.querySelector('button[type="submit"]').disabled = true;
-  // }
+  function lockForm() {
+    document.querySelector('input[name="username"]').disabled = true;
+    document.querySelector('input[name="password"]').disabled = true;
+    document.querySelector('button[type="submit"]').disabled = true;
+  }
 
-  // function unlockForm() {
-  //   document.querySelector('input[name="username"]').disabled = false;
-  //   document.querySelector('input[name="password"]').disabled = false;
-  //   document.querySelector('button[type="submit"]').disabled = false;
-  // }
+  function unlockForm() {
+    document.querySelector('input[name="username"]').disabled = false;
+    document.querySelector('input[name="password"]').disabled = false;
+    document.querySelector('button[type="submit"]').disabled = false;
+  }
 
-  // document.getElementById("login-frm").addEventListener("submit", function (e) {
-  //   e.preventDefault();
+  document.getElementById("login-frm").addEventListener("submit", function (e) {
+    e.preventDefault(); // Prevent the form's default submission
 
-  //   // Simulate an invalid login for demonstration (replace with actual AJAX request)
-  //   const isValid = false; // Replace this with actual validation logic
-  //   if (!isValid) {
-  //     handleInvalidCredentials();
-  //   } else {
-  //     // Handle successful login
-  //     alert("Login successful!");
-  //   }
-  // });
+    // Get form data
+    const formData = new FormData(this);
+
+    // Perform an AJAX request to validate the credentials
+    fetch('', { // Use the same PHP script as the action
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.text()) // Parse the response as text
+    .then(data => {
+        const alertBox = document.getElementById("alert-box");
+
+        if (data.trim() === 'Login successful') {
+            alert("Login successful"); // Alert on successful login
+            // Do nothing further; rely on server-side handling (e.g., refreshing to load admin content)
+        } else {
+            handleInvalidCredentials(); // Handle invalid credentials with warnings and shake
+        }
+    })
+    .catch(error => {
+        console.error('Error during login request:', error);
+    });
+});
   // //end of limit attempt
 
     $(document).ready(function(){
@@ -318,32 +314,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
     };
-    document.addEventListener('DOMContentLoaded', function() {
-    // Initially disable the form fields and buttons
-    const formElements = [
-        document.querySelector('input[name="username"]'),
-        document.querySelector('input[name="password"]'),
-        document.querySelector('a[href="forgot/forgot-password"]'),
-        document.querySelector('a[href="<?php echo base_url ?>"]'),
-        document.querySelector('button[type="submit"]')
-    ];
 
-    formElements.forEach(el => el.disabled = true);
+$(document).ready(function() {
+    // Add event listener for form submission
+    $('#login-frm').on('submit', function(e) {
+        e.preventDefault();  // Prevent the form from submitting immediately
 
-    // Monitor reCAPTCHA state and enable form elements
-    function enableFormElements() {
-        const recaptchaResponse = grecaptcha.getResponse();
-        console.log('reCAPTCHA response:', recaptchaResponse);  // Debugging line
-        if (recaptchaResponse.length > 0) {
-            formElements.forEach(el => el.disabled = false);  // Enable form fields if recaptcha is successful
-        } else {
-            formElements.forEach(el => el.disabled = true);  // Keep them disabled if recaptcha is incomplete
-        }
-    }
+        // Trigger reCAPTCHA to get the token
+        grecaptcha.execute('6LflOZUqAAAAABPtamTAWplZnWIQqnk89Duk9jJ_', {action: 'login'}).then(function(token) {
+            // Set the token to the hidden input field
+            $('#recaptcha-token').val(token);
 
-    // Add event listener for reCAPTCHA changes
-    window.enableRecaptcha = enableFormElements; // Bind function to global scope
+            // Now submit the form
+            $('#login-frm')[0].submit();
+        });
+    });
 });
+
 </script>
 </body>
 </html>

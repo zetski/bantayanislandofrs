@@ -20,16 +20,17 @@
 		</div>
 	</div>
 	<div class="card-body">
-        <div class="container-fluid">
-			<table class="table table-hover table-striped table-bordered" id="list">
+        <div class="table-responsive">
+			<table class="table table-striped" id="list">
 				<colgroup>
 					<col width="5%">
 					<col width="15%">
 					<col width="15%">
-					<col width="25%">
+					<col width="20%">
 					<col width="15%">
 					<col width="10%">
-					<col width="15%">
+					<col width="10%">
+					<col width="10%">
 				</colgroup>
 				<thead>
 					<tr>
@@ -39,6 +40,7 @@
 						<th>Name</th>
 						<th>Username</th>
 						<th>Type</th>
+						<th>Status</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -75,6 +77,7 @@
                                     N/A
                                 <?php endif; ?>
                             </td>
+							<td><?php echo $row['role'] ?></td>
 							<td align="center">
 								 <button type="button" class="btn btn-flat p-1 btn-default btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
 				                  		Action

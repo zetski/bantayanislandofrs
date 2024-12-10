@@ -135,7 +135,7 @@ session_start();
       <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
       Bantayan Fire Station
     </a>
-    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px;">
+    <button class="navbar-toggler btn btn-sm" type="button" id="sidebarToggle" style="background-color: transparent !important; margin-left: 10px; border: none; padding-right: 10px; padding-top: 11px;">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -153,8 +153,8 @@ session_start();
             <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a href="./citizencharter.php" class="nav-link text-white">Citizen Charter</a></li>
-        <li class="nav-item"><a href="./safetytips.php" class="nav-link text-white">Safety Tips</a></li>
+        <li class="nav-item"><a href="./citizen_chart.html" class="nav-link text-white">Citizen Charter</a></li>
+        <li class="nav-item"><a href="./safetips.html" class="nav-link text-white">Safety Tips</a></li>
       </ul>
       <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -183,8 +183,8 @@ session_start();
         <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
-    <li><a href="./?p=citizencharter">Citizen Charter</a></li>
-    <li><a href="./?p=safetytips">Safety Tips</a></li>
+    <li><a href="./citizen_chart.html">Citizen Charter</a></li>
+    <li><a href="./safetips.html">Safety Tips</a></li>
     <!-- <li><a href="./admin">Login</a></li> -->
   </ul>
 </div>
