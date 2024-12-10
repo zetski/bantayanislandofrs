@@ -4302,7 +4302,7 @@ fieldset:disabled .btn {
 
 .navbar-nav {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
