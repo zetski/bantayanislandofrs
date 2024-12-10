@@ -4269,7 +4269,7 @@ fieldset:disabled .btn {
 }
 
 .navbar {
-    position: fixed;
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -4320,7 +4320,6 @@ fieldset:disabled .btn {
 .navbar-text {
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
-    align-items: center;
 }
 
 .navbar-collapse {
