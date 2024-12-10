@@ -1,3 +1,53 @@
+<?php
+// Start a session with secure configuration
+ini_set('session.cookie_secure', '1'); // Send cookies over HTTPS only
+ini_set('session.cookie_httponly', '1'); // Prevent JavaScript access to cookies
+ini_set('session.cookie_samesite', 'Strict'); // CSRF protection
+session_set_cookie_params([
+    'lifetime' => 3600, // 1-hour session duration
+    'path' => '/',
+    'domain' => '', // Specify domain if needed
+    'secure' => true, // Ensure cookie is sent over HTTPS
+    'httponly' => true, // Prevent access via JavaScript
+    'samesite' => 'Strict', // CSRF protection
+]);
+
+session_start();
+
+// Handle session expiration
+if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 3600)) {
+    // Session expired after 1 hour
+    session_unset(); // Clear session data
+    session_destroy(); // Destroy the session
+    header("Location: ./index"); // Redirect to the entry point
+    exit;
+}
+$_SESSION['last_activity'] = time(); // Update last activity time
+
+// Role-based redirection
+if (isset($_SESSION['role'])) {
+    if ($_SESSION['role'] === 'guest') {
+        header("Location: ./index");
+        exit;
+    } elseif ($_SESSION['role'] === 'admin') {
+        header("Location: ./admin");
+        exit;
+    }
+}
+
+// Block certain User-Agents
+$disallowedUserAgents = [
+    "BurpSuite", 
+    "Cyberfox", 
+    "OWASP ZAP", 
+    "PostmanRuntime"
+];
+
+if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTTP_USER_AGENT'])) {
+    http_response_code(403);
+    exit("Unauthorized access");
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,26 +66,17 @@
             background-color: #f5f5f5;
             /* Background image settings */
             background-image: url('../img/bgfront.jpg'); 
-            background-size: cover; /* Ensures the background covers the screen */
-            background-position: center center; /* Keeps the image centered */
-            background-repeat: no-repeat; /* Prevents the background from repeating */
+            background-size: cover; 
+            background-position: center center; 
+            background-attachment: fixed; 
+            background-repeat: no-repeat; 
         }
-
-        /* Ensure the background adjusts correctly on smaller screens */
-        @media (max-width: 768px) {
-            body {
-                background-attachment: scroll; /* Disable fixed background on smaller screens for better performance */
-            }
-        }
-
         .container {
             text-align: center;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the container */
-            width: 100%;
-            max-width: 400px;
+            background-color: #fff;
         }
         .btn {
             margin: 10px;
