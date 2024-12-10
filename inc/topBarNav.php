@@ -51,7 +51,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-            <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
+            <!-- <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li> -->
             <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
             <li class="nav-item"><a class="nav-link text-white" id="search_report" href="javascript:void(0)">View Status</a></li>
             <li class="nav-item dropdown">
