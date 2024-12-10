@@ -364,13 +364,13 @@ Class Master extends DBConnection {
 		// Perform the permanent delete from the request_list table
 		$delete = $this->conn->query("DELETE FROM request_list WHERE id = '{$id}'");
 	
-		// if ($delete) {
-		// 	$resp['status'] = 'success';
-		// 	$this->settings->set_flashdata('success', "Request permanently deleted.");
-		// } else {
-		// 	$resp['status'] = 'failed';
-		// 	$resp['error'] = $this->conn->error; // Capture any database error
-		// }
+		if ($delete) {
+			$resp['status'] = 'success';
+			$this->settings->set_flashdata('success', "Request permanently deleted.");
+		} else {
+			$resp['status'] = 'failed';
+			$resp['error'] = $this->conn->error; // Capture any database error
+		}
 	
 		echo json_encode($resp);
 	}
