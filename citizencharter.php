@@ -102,23 +102,26 @@ if (strpos($request, '.php') !== false) {
         .certificate img {
             width: 50px;
             height: 50px;
-            margin-right: 15px;
+            margin-bottom: 10px; /* Add spacing between image and text */
             border-radius: 5px;
         }
 
-        h2 {
-            color: #333;
-            font-size: 20px;
+        .certificate h2,
+        .certificate p {
             margin: 0;
-            font-weight: bold;
+            text-align: center;
+            word-wrap: break-word; /* Break words to avoid overflow */
         }
 
-        p {
-            margin: 0;
-            font-size: 16px;
-            color: #777;
+        .certificate p.description {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limit to 3 lines */
+            -webkit-box-orient: vertical;
+            color: #777; /* Adjust color if necessary */
+            font-size: 14px; /* Adjust font size as needed */
         }
-
         /* Modal styles */
         .modal {
         display: none; /* Ensure modal is hidden by default */
