@@ -1,6 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 <style>
+    html, body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    padding: 0; /* Remove any extra padding that could cause overflow */
+    margin: 0; /* Remove any extra margin that could cause overflow */
+    width: 100%; /* Ensure no unintended horizontal overflow */
+    }
     body {
-        overflow-x: hidden;
         padding-top: 10px;
         margin-top: 40px;
     }
@@ -73,3 +86,5 @@
         </div>
     </div>
 </section>
+</body>
+</html>
