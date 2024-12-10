@@ -30,7 +30,7 @@ if (strpos($request, '.php') !== false) {
             align-items: center;
             justify-content: center;
             position: relative;
-            padding: 20px;
+            padding: auto;
         }
 
         .back-button {
