@@ -184,7 +184,7 @@ session_start();
       </ul>
     </li>
     <li><a href="./citizen_chart.html">Citizen Charter</a></li>
-    <li><a href="./safety_tips">Safety Tips</a></li>
+    <li><a href="./?p=safety_tips">Safety Tips</a></li>
     <!-- <li><a href="./admin">Login</a></li> -->
   </ul>
 </div>
