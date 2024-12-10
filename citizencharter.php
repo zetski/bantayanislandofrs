@@ -82,7 +82,7 @@ if (strpos($request, '.php') !== false) {
             margin: 10px auto;
             padding: 15px;
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             display: flex;
             flex-direction: column; /* Ensure elements are stacked */
             align-items: center;
