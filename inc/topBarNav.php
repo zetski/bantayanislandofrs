@@ -64,7 +64,6 @@
 
   .navbar-brand,
   .navbar-nav {
-    align-items: center;
     margin-left: -70px; /* Adjust this value to move more or less */
   }
 
