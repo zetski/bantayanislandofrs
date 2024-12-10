@@ -18,173 +18,157 @@ if (strpos($request, '.php') !== false) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to right, #ff7e5f, #feb47b);
-    color: #333;
-    margin: 0;
-    padding: 0;
-}
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.6);
-    color: #fff;
-}
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: auto;
+        }
 
-.back-button {
-    background-color: #ff4500;
-    color: #fff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 50%;
-    font-size: 20px;
-    cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #ff4500; /* Fire orange-red background */
+            color: #fff; /* White icon */
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            font-size: 18px; /* Icon size */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
 
-.back-button:hover {
-    background-color: #ff6347;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
+        .back-button i {
+            pointer-events: none; /* Prevents the icon from affecting the button's hover */
+        }
 
-h3 {
-    margin: 0;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 700;
-}
+        .back-button:hover {
+            background-color: #ff6347; /* Slightly lighter red-orange on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
 
-.content {
-    padding: 20px;
-    max-width: 1200px;
-    margin: auto;
-}
+        .back-button:focus {
+            outline: none; /* Remove outline when focused */
+        }
 
-.certificate {
-    background-color: #fff;
-    border-radius: 8px;
-    margin: 15px 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-}
+        h1 {
+            font-size: 36px;
+            margin: 0;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-.certificate:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-}
+        .content {
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+        }
 
-.certificate img {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 15px;
-    border-radius: 50%;
-}
+        .certificate {
+            background-color: #fff;
+            border-radius: 8px;
+            margin: 10px auto;
+            padding: 15px;
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column; /* Ensure elements are stacked */
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            overflow: hidden; /* Hide content that overflows */
+            height: 200px; /* Set a fixed height */
+        }
+        
+        .certificate:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
 
-h2 {
-    margin: 10px 0;
-    font-size: 24px;
-    color: #333;
-    text-align: center;
-}
+        .certificate img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px; /* Add spacing between image and text */
+            border-radius: 5px;
+        }
 
-p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #555;
-    text-align: center;
-}
+        h2 {
+            color: #333;
+            font-size: 20px;
+            margin: 0;
+            font-weight: bold;
+        }
 
-/* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+        p {
+            margin: 0;
+            font-size: 16px;
+            color: #777;
+        }
 
-.modal-content {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    max-width: 90%;
-    max-height: 90%;
-    overflow-y: auto;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.close {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.close:hover {
-    color: #333;
-}
-
-/* Responsive Design */
-@media (min-width: 768px) {
-    .certificate {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
+        /* Modal styles */
+        .modal {
+        display: none; /* Ensure modal is hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
     }
 
-    .certificate img {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 0;
-        margin-right: 20px;
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90%; /* Limit modal height to 90% of the viewport */
+        overflow-y: auto; /* Enable vertical scrolling for long content */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        position: relative;
     }
 
-    h2 {
-        font-size: 28px;
+    /* Close button styles */
+    .close {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    .close:hover {
+        color: #333;
     }
 
-    p {
-        font-size: 18px;
+    /* Prevent body scrolling when modal is open */
+    body.modal-open {
+        overflow: hidden;
     }
-}
-
-@media (min-width: 1024px) {
-    .header {
-        padding: 30px;
-    }
-
-    .certificate {
-        padding: 25px;
-        margin: 20px 0;
-    }
-
-    h2 {
-        font-size: 32px;
-    }
-
-    p {
-        font-size: 20px;
-    }
-}
+    ol {
+            padding-left: 20px;
+            text-align: left;
+            color: #000;
+        }
     </style>
 </head>
 <body>
