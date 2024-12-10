@@ -32,6 +32,13 @@
       color: white;
       background-color: #ff4600;
     }
+
+    .welcome-message {
+      text-align: center;
+      margin-top: 100px;
+      font-size: 24px;
+      color: #333;
+    }
   </style>
 </head>
 <body>
@@ -51,6 +58,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+            <li class="nav-item"><a class="nav-link text-white" href="./">Home</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="./?p=report">Report</a></li>
             <li class="nav-item"><a class="nav-link text-white" id="search_report" href="javascript:void(0)">View Status</a></li>
             <li class="nav-item dropdown">
@@ -69,6 +77,12 @@
         </div>
       </div>
     </nav>
+  </div>
+
+  <!-- Welcome Message Section -->
+  <div class="welcome-message">
+    <h1>Welcome to the Bantayan Fire Station</h1>
+    <p>We are here to provide the best services and information. Please explore our pages for more details.</p>
   </div>
 
   <div id="modal-container" class="modal fade" tabindex="-1" role="dialog">
