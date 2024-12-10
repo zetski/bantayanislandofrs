@@ -68,7 +68,7 @@
         }
 
         .certificate {
-            background-color: #fff;
+            background-color: #808080;
             border-radius: 8px;
             margin: 10px auto;
             padding: 15px;
