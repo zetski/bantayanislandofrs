@@ -4523,7 +4523,7 @@ fieldset:disabled .btn {
 }
 
 .navbar-expand .navbar-nav-scroll {
-    overflow: -moz-hidden-unscrollable;
+    overflow: hidden;
 }
 
 .navbar-expand .navbar-collapse {
