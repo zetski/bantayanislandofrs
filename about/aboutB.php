@@ -229,17 +229,32 @@ if (strpos($request, '.php') !== false) {
 
         /* Responsive Styles */
         @media (max-width: 768px) {
-            .officer img {
-                width: 200px;
-                height: 200px;
+            .header {
+                padding: 10px 15px;
             }
 
-            .officer h3 {
-                font-size: 1.2rem;
+            .header h1 {
+                font-size: 1.2rem; /* Reduce font size */
             }
 
-            .officer h6 {
-                font-size: 0.9rem;
+            .back-button {
+                padding: 8px; /* Reduce padding */
+                font-size: 14px; /* Reduce icon size */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header {
+                padding: 8px 10px;
+            }
+
+            .header h1 {
+                font-size: 1rem; /* Further reduce font size */
+            }
+
+            .back-button {
+                padding: 6px; /* Further reduce padding */
+                font-size: 12px; /* Further reduce icon size */
             }
         }
     </style>
@@ -251,7 +266,7 @@ if (strpos($request, '.php') !== false) {
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-            <h3>Online Fire Reporting System</h3>
+            <h1>Online Fire Reporting System</h1>
         </header>
 
         <!-- Content Section -->
