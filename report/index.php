@@ -92,7 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <section class="py-3">
     <div class="container">
         <div class="content py-3 px-3" style="background-color: #FF4600">
-            <h2 style="color: #fff">Fire Reporting</h2>
+            <center><h2 style="color: #fff">Fire Reporting</h2></center>
         </div>
         <div class="row justify-content-center mt-n3">
             <div class="col-lg-8 col-md-10 col-sm-12 col-sm-12">
