@@ -59,12 +59,12 @@
   })
 </script>
 <!-- Footer-->
-<footer class="py-3 lg-expand bg-gradient-danger">
+<!--<footer class="py-3 bg-gradient-danger">
             <div class="container">
               <p class="m-0 text-center text-white"></?php echo $_settings->info('short_name') ?> 2024</p>
                <p class="m-0 text-center text-white">Developed By: <a href="mailto:oretnom23@gmail.com">oretnom23</a></p>
           </div>
-        </footer>
+        </footer>-->
 
    
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
