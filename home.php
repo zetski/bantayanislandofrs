@@ -7,7 +7,6 @@
 <body>
 <style>
     html, body {
-    overflow-x: hidden; /* Prevent horizontal scrolling */
     overflow-y: hidden; /* Prevent vertical scrolling */
     padding: 0; /* Remove any extra padding that could cause overflow */
     margin: 0; /* Remove any extra margin that could cause overflow */
