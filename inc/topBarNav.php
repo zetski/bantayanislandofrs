@@ -64,8 +64,8 @@
                 <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
               </ul>
             </li>
-            <li class="nav-item"><a href="./citizen_chart.html" class="nav-link text-white">Citizen Charter</a></li>
-            <li class="nav-item"><a href="./safetips.html" class="nav-link text-white">Safety Tips</a></li>
+            <li class="nav-item"><a href="./citizencharter" class="nav-link text-white">Citizen Charter</a></li>
+            <li class="nav-item"><a href="./safetytips" class="nav-link text-white">Safety Tips</a></li>
           </ul>
         </div>
       </div>
