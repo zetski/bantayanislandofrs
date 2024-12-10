@@ -86,19 +86,19 @@ session_start();
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function() {
-      // Initialize dropdown for "About Us"
-      $('#aboutDropdown').on('click', function(e) {
-        var $el = $(this).next('.dropdown-menu');
-        var isVisible = $el.is(':visible');
-        // Slide up all dropdowns
-        $('.dropdown-menu').slideUp('400');
-        // If this wasn't already visible, slide it down
-        if (!isVisible) {
-          $el.stop(true, true).slideDown('400');
-        }
-      });
+    // Initialize the navbar dropdown for "About Us"
+    $('#aboutDropdown').on('click', function (e) {
+      var $el = $(this).next('.dropdown-menu');
+      var isVisible = $el.is(':visible');
+      // Slide up all dropdowns
+      $('.dropdown-menu').slideUp('400');
+      // If this wasn't already visible, slide it down
+      if (!isVisible) {
+        $el.stop(true, true).slideDown('400');
+      }
+    });
 
-      // Modal for search report
+    // Modal for search report
     $('#search_report, #search_report_sidebar').click(function() {
       uni_modal("Search Request Report", "report/search.php");
     });
