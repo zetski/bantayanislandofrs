@@ -153,7 +153,7 @@ session_start();
             <li><a class="dropdown-item" href="./about/aboutM.php">Madridejos</a></li>
           </ul>
         </li>
-        <li class="nav-item"><a href="./citizen_chart.html" class="nav-link text-white">Citizen Charter</a></li>
+        <li class="nav-item"><a href="./citizencharter" class="nav-link text-white">Citizen Charter</a></li>
         <li class="nav-item"><a href="./safetytips" class="nav-link text-white">Safety Tips</a></li>
       </ul>
       <div class="d-flex align-items-center">
@@ -183,7 +183,7 @@ session_start();
         <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
-    <li><a href="./citizen_chart.html">Citizen Charter</a></li>
+    <li><a href="./citizencharter">Citizen Charter</a></li>
     <li><a href="./safetytips">Safety Tips</a></li>
     <!-- <li><a href="./admin">Login</a></li> -->
   </ul>
