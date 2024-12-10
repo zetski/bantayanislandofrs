@@ -27,7 +27,7 @@ $_SESSION['last_activity'] = time(); // Update last activity time
 // Role-based redirection
 if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] === 'guest') {
-        header("Location: ./index");
+        header("Location: ./report");
         exit;
     } elseif ($_SESSION['role'] === 'admin') {
         header("Location: ./admin");
