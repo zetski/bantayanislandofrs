@@ -15,6 +15,7 @@ if (strpos($request, '.php') !== false) {
     <link rel="icon" href="img/r7logo.png" type="image/png">
     <title>Online Fire Reporting System</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -33,22 +34,24 @@ if (strpos($request, '.php') !== false) {
         }
 
         .back-button {
-            position: absolute;
-            left: 20px;
-            font-size: 24px;
-            padding: 10px;
-            text-decoration: none;
-            color: #fff;
-            background-color: #dc3545;
-            border-radius: 50%;
             display: flex;
-            align-items: center;
             justify-content: center;
-            transition: background 0.3s;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background-color: #00aaff;
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            font-size: 24px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, background-color 0.3s;
         }
         .back-button:hover {
-            background-color: #c82333;
+            background-color: #007acc;
+            transform: scale(1.1);
         }
+
 
         h1 {
             font-size: 36px;
@@ -167,7 +170,9 @@ if (strpos($request, '.php') !== false) {
 </head>
 <body>
     <div class="header">
-        <a href="javascript:history.back()" class="back-button">&larr;</a>
+    <a href="javascript:history.back()" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+    </a>
         <h1>Safety Tips</h1>
     </div>
 
