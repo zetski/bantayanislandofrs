@@ -1,4 +1,4 @@
-@charset "UTF-8";
+/* @charset "UTF-8"; */
 
 /*!
 * Start Bootstrap - Shop Homepage v5.0.1 (https://startbootstrap.com/template/shop-homepage)
@@ -12,7 +12,7 @@
  * Copyright 2011-2021 The Bootstrap Authors
  * Copyright 2011-2021 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
- */
+
 
 :root {
     --bs-blue: #0d6efd;
@@ -10727,4 +10727,4 @@ input.cart-qty[type=number] {
     .row {
         display: block !important;
     }
-}
+} */
