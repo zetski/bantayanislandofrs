@@ -35,31 +35,19 @@ if (strpos($request, '.php') !== false) {
         .back-button {
             position: absolute;
             left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: #ff4500; /* Fire orange-red background */
-            color: #fff; /* White icon */
-            border: none;
-            padding: 12px;
+            font-size: 24px;
+            padding: 10px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #dc3545;
             border-radius: 50%;
-            font-size: 18px; /* Icon size */
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s;
         }
-
-        .back-button i {
-            pointer-events: none; /* Prevents the icon from affecting the button's hover */
-        }
-
         .back-button:hover {
-            background-color: #ff6347; /* Slightly lighter red-orange on hover */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .back-button:focus {
-            outline: none; /* Remove outline when focused */
+            background-color: #c82333;
         }
 
         h1 {
@@ -179,10 +167,8 @@ if (strpos($request, '.php') !== false) {
 </head>
 <body>
     <div class="header">
-    <button class="back-button" onclick="history.back()">
-            <i class="fas fa-arrow-left"></i>
-        </button>
-        <h3>Safety Tips</h3>
+        <a href="javascript:history.back()" class="back-button">&larr;</a>
+        <h1>Safety Tips</h1>
     </div>
 
     <div class="content">
