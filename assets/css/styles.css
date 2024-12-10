@@ -4160,7 +4160,7 @@ fieldset:disabled .btn {
     border-top-right-radius: 0;
 }
 
-/* .nav {
+.nav {
     display: flex;
     flex-wrap: wrap;
     padding-left: 0;
@@ -4625,7 +4625,7 @@ fieldset:disabled .btn {
 .navbar-dark .navbar-text a:hover,
 .navbar-dark .navbar-text a:focus {
     color: #fff;
-} */
+}
 
 .card {
     position: relative;
