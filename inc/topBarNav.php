@@ -1,75 +1,80 @@
 <style>
-  /* General Body Styling */
-  body {
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
+  button[type="button"] {
+    background-color: transparent !important;
+    margin-left: 15px;
+    margin: -10px;
   }
 
-  /* Topbar Adjustment */
-  nav.navbar {
-    z-index: 1050;
-    position: sticky;
-    top: 0;
-    width: 100%;
-    background-color: #ff4600;
-  }
-
-  /* Ensure topbar doesn't overlap the carousel */
-  body {
-    padding-top: 60px; /* Adjust for fixed navbar height */
-  }
-
-  /* Carousel Styling */
-  .carousel-item > img {
-    object-fit: cover !important;
-    height: 20em; /* Desktop height */
-    width: 100%;
-  }
-
-  #carouselExampleControls .carousel-inner {
-    height: 20em; /* Match carousel image height */
-  }
-
-  /* Button Styling */
-  .btn {
-    color: #fff;
-    margin-top: 15px;
-    background-color: #f46000;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    transition: all 0.3s ease;
-  }
-
-  .btn:focus,
-  .btn:hover {
-    outline: none;
-    box-shadow: 0 12px 16px rgba(0, 0, 0, 0.24), 0 17px 50px rgba(0, 0, 0, 0.19);
-    background-color: #e35000;
-  }
-
-  /* Card Section Styling */
-  .card {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border: none;
-  }
-
-  .card-body {
-    padding: 1.5rem;
-  }
-
-  /* Sidebar Styling */
+  /* Sidebar styling with formal hover effect */
   .sidebar {
     position: fixed;
-    top: 60px; /* Matches the navbar height */
     left: -250px;
+    top: 0;
     width: 250px;
     height: 100%;
-    background-color: #333333;
+    background-color: #333333; /* Darker sidebar background */
+    transition: left 0.3s ease;
     z-index: 1000;
-    transition: left 0.3s ease-in-out;
+  }
+
+  /* Navbar Dropdown - Show on Hover */
+  .nav-item .dropdown-menu {
+    display: none; /* Initially hide the dropdown */
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #333333; /* Dark background to match the sidebar */
+    border: none;
+    min-width: 160px;
+  }
+
+  .nav-item:hover .dropdown-menu {
+    display: block; /* Show the dropdown when hovering over the parent item */
+  }
+
+  .nav-item .dropdown-menu .dropdown-item {
+    color: white; /* White text */
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #ff4600; /* Highlight color on hover */
+  }
+
+  /* Sidebar dropdown styling */
+  #sidebarAboutDropdown {
+    padding-top: 5px;
+    list-style: none;
+    padding-left: 20px; /* Indent the dropdown items */
+  }
+
+  #sidebarAboutDropdown li a {
+    color: #fff; /* White text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #sidebarAboutDropdown li a:hover {
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff;
+  }
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: -70px; /* Adjust this value to move more or less */
+  }
+
+  .navbar-brand img {
+    border-radius: 50%;
+  }
+
+  #navbarNav a:hover {
+    background-color: #ff4600;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .sidebar.show {
@@ -82,88 +87,40 @@
     margin: 0;
   }
 
+  .sidebar ul li {
+    padding: 0;
+  }
+
   .sidebar ul li a {
-    color: white;
+    color: #fff; /* White text */
     text-decoration: none;
-    padding: 10px 20px;
     display: block;
+    padding: 0.75rem 1.5rem; /* Adjusted padding for better spacing */
     font-size: 16px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Hover effect for sidebar items */
   .sidebar ul li a:hover {
-    background-color: #ff4600;
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
   }
 
-  /* Media Queries */
-  @media (max-width: 992px) {
-    .carousel-item > img {
-      height: 15em; /* Tablet height */
-    }
-
-    #carouselExampleControls .carousel-inner {
-      height: 15em; /* Match carousel image height */
-    }
-
-    .btn {
-      font-size: 14px;
-      padding: 8px 15px;
-    }
+  /* Active state styling */
+  .sidebar ul li a.active {
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
   }
 
+  /* Responsive for smaller devices */
   @media (max-width: 768px) {
-    .carousel-item > img {
-      height: 12em; /* Mobile height */
-    }
-
-    #carouselExampleControls .carousel-inner {
-      height: 12em; /* Match carousel image height */
-    }
-
-    .btn {
-      font-size: 12px;
-      padding: 6px 10px;
-      margin-left: 10px;
-    }
-
-    .card-body {
-      padding: 1rem;
-    }
-
-    .sidebar {
-      width: 200px;
-    }
-
-    nav.navbar .navbar-toggler {
-      margin-left: auto;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .carousel-item > img {
-      height: 10em; /* Smaller mobile height */
-    }
-
-    #carouselExampleControls .carousel-inner {
-      height: 10em; /* Match carousel image height */
-    }
-
-    .btn {
-      font-size: 10px;
-      padding: 5px 8px;
-      margin-left: 5px;
-    }
-
-    nav.navbar .navbar-brand {
-      font-size: 14px;
-    }
-
-    .sidebar {
-      width: 180px;
+    .sidebar ul {
+      padding-top: 4rem;
     }
   }
 </style>
-
 <?php
 session_start();
 // Example roles for testing
