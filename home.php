@@ -21,7 +21,7 @@
     }
 </style>
 <section class="py-3">
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
                 <div id="carouselExampleControls" class="carousel slide bg-dark" data-ride="carousel">
