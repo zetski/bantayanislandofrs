@@ -88,36 +88,31 @@ if (strpos($request, '.php') !== false) {
             border-radius: 5px;
         }
 
-        h2 {
-            color: #333;
-            font-size: 20px;
-            margin: 0;
-            font-weight: bold;
-        }
-
-        p {
-            margin: 0;
-            font-size: 14px;
-            color: #dc3545;
+        .certificate h2,
+        .certificate p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap; /* Prevent wrapping for uniform height */
         }
 
         /* Modal styles */
         .modal {
             display: none; /* Ensure modal is hidden by default */
-            /* position: fixed; */
+            position: fixed; /* Ensure modal stays fixed */
             z-index: 1;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            /* background-color: rgba(0, 0, 0, 0.5); */
+            background-color: rgba(0, 0, 0, 0.5); /* Dim the background */
+            overflow-y: auto; /* Allow scrolling */
             align-items: center;
             justify-content: center;
         }
 
         .modal-content {
             background-color: #fff;
-            margin: 20px;
+            margin: 40px auto; /* Add margin for spacing */
             padding: 20px;
             border-radius: 8px;
             width: 90%;
@@ -125,12 +120,15 @@ if (strpos($request, '.php') !== false) {
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             position: relative;
             text-align: left;
+            overflow-y: auto; /* Scrollable content */
+            max-height: 80vh; /* Ensure it doesn't exceed screen height */
         }
 
         .modal-content img {
             max-width: 100%;
-            height: auto;
-            margin: 10px 0;
+            height: auto; /* Maintain aspect ratio */
+            display: block;
+            margin: 10px auto; /* Center the image */
         }
 
         .close {
@@ -152,13 +150,26 @@ if (strpos($request, '.php') !== false) {
             margin-top: 20px;
             color: #000;
         }
+        @media (max-width: 768px) {
+            .certificate {
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: center;
+            }
+
+            .certificate img {
+                width: 100%;
+                height: auto;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- <div class="header">
+    <div class="header">
         <a href="javascript:history.back()" class="back-button">&larr;</a>
         <h1>Safety Tips</h1>
-    </div> -->
+    </div>
 
     <div class="content">
         <?php
@@ -347,29 +358,38 @@ if (strpos($request, '.php') !== false) {
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            <?php foreach ($certificates as $index => $certificate): ?>
-                var modal<?php echo $index; ?> = document.getElementById("modal-<?php echo $index; ?>");
-                var certificate<?php echo $index; ?> = document.getElementById("certificate-<?php echo $index; ?>");
-                var close<?php echo $index; ?> = document.getElementById("close-<?php echo $index; ?>");
+        const maxDescriptionLength = 120; // Adjust as needed
 
-                // Show modal on certificate click
-                certificate<?php echo $index; ?>.onclick = function() {
-                    modal<?php echo $index; ?>.style.display = "flex";
-                }
+        // Ensure consistent description length
+        document.querySelectorAll('.certificate p').forEach((description) => {
+            if (description.textContent.length > maxDescriptionLength) {
+                description.textContent = description.textContent.slice(0, maxDescriptionLength) + '...';
+            }
+        });
 
-                // Close modal on 'x' button click
-                close<?php echo $index; ?>.onclick = function() {
+        <?php foreach ($certificates as $index => $certificate): ?>
+            var modal<?php echo $index; ?> = document.getElementById("modal-<?php echo $index; ?>");
+            var certificate<?php echo $index; ?> = document.getElementById("certificate-<?php echo $index; ?>");
+            var close<?php echo $index; ?> = document.getElementById("close-<?php echo $index; ?>");
+
+            // Show modal on certificate click
+            certificate<?php echo $index; ?>.onclick = function() {
+                modal<?php echo $index; ?>.style.display = "flex";
+            }
+
+            // Close modal on 'x' button click
+            close<?php echo $index; ?>.onclick = function() {
+                modal<?php echo $index; ?>.style.display = "none";
+            }
+
+            // Close modal on outside click
+            window.onclick = function(event) {
+                if (event.target == modal<?php echo $index; ?>) {
                     modal<?php echo $index; ?>.style.display = "none";
                 }
-
-                // Close modal on outside click
-                window.onclick = function(event) {
-                    if (event.target == modal<?php echo $index; ?>) {
-                        modal<?php echo $index; ?>.style.display = "none";
-                    }
-                }
-            <?php endforeach; ?>
-        });
+            }
+        <?php endforeach; ?>
+    });
     </script>
 
 </body>

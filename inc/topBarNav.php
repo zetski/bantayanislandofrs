@@ -154,7 +154,7 @@ session_start();
           </ul>
         </li>
         <li class="nav-item"><a href="./citizen_chart.html" class="nav-link text-white">Citizen Charter</a></li>
-        <li class="nav-item"><a href="./safetips.html" class="nav-link text-white">Safety Tips</a></li>
+        <li class="nav-item"><a href="./safety_tips" class="nav-link text-white">Safety Tips</a></li>
       </ul>
       <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
@@ -184,7 +184,7 @@ session_start();
       </ul>
     </li>
     <li><a href="./citizen_chart.html">Citizen Charter</a></li>
-    <li><a href="./safetips.html">Safety Tips</a></li>
+    <li><a href="./safety_tips">Safety Tips</a></li>
     <!-- <li><a href="./admin">Login</a></li> -->
   </ul>
 </div>
