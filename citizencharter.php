@@ -116,48 +116,49 @@ if (strpos($request, '.php') !== false) {
 
         /* Modal styles */
         .modal {
-            display: none; /* Ensure modal is hidden by default */
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
-        }
+        display: none; /* Ensure modal is hidden by default */
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        align-items: center;
+        justify-content: center;
+    }
 
-        .modal-content {
-            background-color: #fff;
-            margin: 10px;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 600px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            position: relative;
-        }
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 600px;
+        max-height: 90%; /* Limit modal height to 90% of the viewport */
+        overflow-y: auto; /* Enable vertical scrolling for long content */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
 
-        .close {
-            color: #aaa;
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .close:hover {
-            color: #333;
-        }
+    /* Close button styles */
+    .close {
+        color: #aaa;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.3s;
+    }
+    .close:hover {
+        color: #333;
+    }
 
-        ol {
-            padding-left: 20px;
-            text-align: left;
-            color: #000;
-        }
+    /* Prevent body scrolling when modal is open */
+    body.modal-open {
+        overflow: hidden;
+    }
     </style>
 </head>
 <body>
@@ -331,17 +332,20 @@ if (strpos($request, '.php') !== false) {
                 // Show modal on certificate click
                 certificate<?php echo $index; ?>.onclick = function() {
                     modal<?php echo $index; ?>.style.display = "flex";
+                    document.body.classList.add('modal-open'); // Prevent background scrolling
                 }
 
                 // Close modal on 'x' button click
                 close<?php echo $index; ?>.onclick = function() {
                     modal<?php echo $index; ?>.style.display = "none";
+                    document.body.classList.remove('modal-open'); // Restore background scrolling
                 }
 
                 // Close modal on outside click
                 window.onclick = function(event) {
                     if (event.target == modal<?php echo $index; ?>) {
                         modal<?php echo $index; ?>.style.display = "none";
+                        document.body.classList.remove('modal-open'); // Restore background scrolling
                     }
                 }
             <?php endforeach; ?>
