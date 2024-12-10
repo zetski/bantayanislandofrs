@@ -251,7 +251,7 @@ if (strpos($request, '.php') !== false) {
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-            <h1>Online Fire Reporting System</h1>
+            <h3>Online Fire Reporting System</h3>
         </header>
 
         <!-- Content Section -->
