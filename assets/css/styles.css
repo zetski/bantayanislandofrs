@@ -4278,6 +4278,7 @@ fieldset:disabled .btn {
     padding-bottom: 0.5rem;
 }
 
+.navbar>.container,
 .navbar>.container-fluid,
 .navbar>.container-sm,
 .navbar>.container-md,
