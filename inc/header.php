@@ -52,7 +52,9 @@ session_start();
     <!-- JQVMap -->
     <link rel="stylesheet" href="<?php echo base_url ?>plugins/jqvmap/jqvmap.min.css">
     <!-- Theme style -->
-    
+    <link rel="stylesheet" href="<?php echo base_url ?>dist/css/adminlte.css">
+    <link rel="stylesheet" href="<?php echo base_url ?>dist/css/custom.css">
+    <link rel="stylesheet" href="<?php echo base_url ?>assets/css/styles.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?php echo base_url ?>plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
     <!-- Daterange picker -->
