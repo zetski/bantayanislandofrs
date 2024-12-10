@@ -4278,7 +4278,7 @@ fieldset:disabled .btn {
     padding-bottom: 0.5rem;
 }
 
-/* .navbar>.container,
+.navbar>.container,
 .navbar>.container-fluid,
 .navbar>.container-sm,
 .navbar>.container-md,
@@ -4289,7 +4289,7 @@ fieldset:disabled .btn {
     flex-wrap: inherit;
     align-items: center;
     justify-content: space-between;
-} */
+}
 
 .navbar-brand {
     padding-top: 0.3125rem;
