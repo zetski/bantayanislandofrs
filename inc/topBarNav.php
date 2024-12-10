@@ -42,7 +42,7 @@
   <div class="pos-f-t">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand" href="./">
+        <a class="navbar-brand">
           <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
           Bantayan Fire Station
         </a>
