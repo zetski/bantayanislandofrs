@@ -183,7 +183,7 @@ session_start();
         <li><a class="nav-link text-white" href="./about/aboutS.php">Santa Fe</a></li>
       </ul>
     </li>
-    <li><a href="./citizen_chart.html">Citizen Charter</a></li>
+    <li><a href="./citizen_chart">Citizen Charter</a></li>
     <li><a href="./safetytips">Safety Tips</a></li>
     <!-- <li><a href="./admin">Login</a></li> -->
   </ul>
