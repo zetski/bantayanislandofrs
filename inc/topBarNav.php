@@ -99,8 +99,8 @@ session_start();
       });
 
       // Modal for search report
-      $('#search_report').click(function() {
-        alert('Search Report functionality coming soon!');
-      });
+    $('#search_report, #search_report_sidebar').click(function() {
+      uni_modal("Search Request Report", "report/search.php");
     });
+  });
   </script>
