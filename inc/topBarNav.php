@@ -119,6 +119,9 @@
     .sidebar ul {
       padding-top: 4rem;
     }
+    .navbar{
+      padding-top: 0.5rem;
+    }
   }
 </style>
 <?php
