@@ -1,12 +1,11 @@
 <style>
-  /* General Button Styling */
   button[type="button"] {
     background-color: transparent !important;
     margin-left: 15px;
     margin: -10px;
   }
 
-  /* Sidebar Styling */
+  /* Sidebar styling with formal hover effect */
   .sidebar {
     position: fixed;
     left: -250px;
@@ -16,6 +15,66 @@
     background-color: #333333; /* Darker sidebar background */
     transition: left 0.3s ease;
     z-index: 1000;
+  }
+
+  /* Navbar Dropdown - Show on Hover */
+  .nav-item .dropdown-menu {
+    display: none; /* Initially hide the dropdown */
+    position: absolute;
+    left: 0;
+    top: 100%;
+    background-color: #333333; /* Dark background to match the sidebar */
+    border: none;
+    min-width: 160px;
+  }
+
+  .nav-item:hover .dropdown-menu {
+    display: block; /* Show the dropdown when hovering over the parent item */
+  }
+
+  .nav-item .dropdown-menu .dropdown-item {
+    color: white; /* White text */
+    padding: 0.5rem 1rem;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-item .dropdown-menu .dropdown-item:hover {
+    background-color: #ff4600; /* Highlight color on hover */
+  }
+
+  /* Sidebar dropdown styling */
+  #sidebarAboutDropdown {
+    padding-top: 5px;
+    list-style: none;
+    padding-left: 20px; /* Indent the dropdown items */
+  }
+
+  #sidebarAboutDropdown li a {
+    color: #fff; /* White text */
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    display: block;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  #sidebarAboutDropdown li a:hover {
+    background-color: #ff4600; /* Formal orange hover background */
+    color: #fff;
+  }
+
+  .navbar-brand,
+  .navbar-nav {
+    margin-left: -70px; /* Adjust this value to move more or less */
+  }
+
+  .navbar-brand img {
+    border-radius: 50%;
+  }
+
+  #navbarNav a:hover {
+    background-color: #ff4600;
+    color: #fff;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
 
   .sidebar.show {
@@ -41,164 +100,27 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Hover effect for sidebar items */
   .sidebar ul li a:hover {
     background-color: #ff4600; /* Formal orange hover background */
-    color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for depth */
+    color: #fff; /* Ensure text stays white */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Slight shadow for more depth */
   }
 
+  /* Active state styling */
   .sidebar ul li a.active {
-    background-color: #ff4600; /* Active state similar to hover */
-    color: #fff;
-    font-weight: bold;
+    background-color: #ff4600; /* Keep the active state similar to hover */
+    color: #fff; /* Ensure text stays white */
+    font-weight: bold; /* Make the active link bold */
   }
 
-  /* Sidebar Dropdown Styling */
-  #sidebarAboutDropdown {
-    padding-top: 5px;
-    list-style: none;
-    padding-left: 20px;
-  }
-
-  #sidebarAboutDropdown li a {
-    color: #fff;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    display: block;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  #sidebarAboutDropdown li a:hover {
-    background-color: #ff4600;
-    color: #fff;
-  }
-
-  /* Navbar Styling */
-  .navbar {
-    background-color: #ff4600;
-    flex-wrap: nowrap;
-    overflow: hidden;
-  }
-
-  .navbar-brand img {
-    border-radius: 50%;
-    max-width: 30px;
-    max-height: 30px;
-  }
-
-  .navbar-nav {
-    flex-wrap: wrap;
-  }
-
-  .navbar-nav .nav-item {
-    margin-right: 5px;
-  }
-
-  .nav-item .dropdown-menu {
-    display: none; /* Initially hide the dropdown */
-    position: absolute;
-    left: 0;
-    top: 100%;
-    background-color: #333333;
-    border: none;
-    min-width: 160px;
-  }
-
-  .nav-item:hover .dropdown-menu {
-    display: block; /* Show dropdown on hover */
-  }
-
-  .nav-item .dropdown-menu .dropdown-item {
-    color: white;
-    padding: 0.5rem 1rem;
-    transition: background-color 0.3s ease;
-  }
-
-  .nav-item .dropdown-menu .dropdown-item:hover {
-    background-color: #ff4600;
-  }
-
-  /* Navbar Responsiveness */
-  .navbar-toggler {
-    padding: 0.25rem 0.5rem;
-    margin: 0 10px;
-    border: none;
-    outline: none;
-  }
-
-  .navbar-toggler-icon {
-    background-image: none;
-  }
-
-  .navbar-brand {
-    font-size: 16px;
-    white-space: nowrap;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 16px;
-    padding: 0.5rem;
-  }
-
-  .navbar-collapse {
-    max-height: calc(100vh - 56px);
-    overflow-y: auto; /* Add scrolling for overflow */
-  }
-
-  #navbarNav a:hover {
-    background-color: #ff4600;
-    color: #fff;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  /* Responsive Adjustments */
+  /* Responsive for smaller devices */
   @media (max-width: 768px) {
-    .navbar-brand {
-      font-size: 14px; /* Smaller font for smaller screens */
-    }
-
-    .navbar-nav {
-      flex-direction: column;
-    }
-
-    .navbar-nav .nav-link {
-      font-size: 14px;
-      padding: 0.25rem 0.5rem;
-    }
-
-    .sidebar {
-      width: 100%; /* Full width for smaller screens */
-      max-height: calc(100vh - 56px);
-      overflow-y: auto;
-    }
-
     .sidebar ul {
-      padding-top: 1rem;
-    }
-
-    .sidebar ul li a {
-      font-size: 14px; /* Smaller font for sidebar */
-    }
-  }
-
-  @media (max-width: 576px) {
-    .navbar-nav {
-      overflow-x: auto; /* Allow horizontal scrolling for very small screens */
-      white-space: nowrap;
-    }
-
-    .navbar-nav .nav-link {
-      font-size: 12px;
-      padding: 0.2rem 0.4rem;
-    }
-
-    .sidebar ul li a {
-      font-size: 12px;
-      padding: 0.5rem 1rem;
+      padding-top: 4rem;
     }
   }
 </style>
-
 <?php
 session_start();
 // Example roles for testing
