@@ -91,9 +91,9 @@ if (strpos($request, '.php') !== false) {
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             overflow: hidden; /* Hide content that overflows */
-            height: 200px; /* Set a fixed height */
+            height: 100px; /* Set a fixed height */
         }
-        
+
         .certificate:hover {
             transform: scale(1.02);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
