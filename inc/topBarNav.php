@@ -6,15 +6,8 @@
   <title>Bantayan Fire Station</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    .navbar-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
     .navbar-brand img {
       border-radius: 50%;
-      margin-right: 10px; /* Space between the logo and text */
     }
 
     #navbarNav a:hover {
@@ -49,9 +42,9 @@
   <div class="pos-f-t">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: #ff4600;">
       <div class="container px-4 px-lg-5">
-        <a class="navbar-brand mx-auto" href="./"> <!-- Centered the brand -->
-          <img src="../img/r7logo.png" width="40" height="40" alt="Brand Logo" loading="lazy">
-          <span>Bantayan Fire Station</span>
+        <a class="navbar-brand" href="./">
+          <img src="../img/r7logo.png" width="30" height="30" alt="Brand Logo" loading="lazy">
+          Bantayan Fire Station
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
