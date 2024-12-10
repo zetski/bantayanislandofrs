@@ -66,17 +66,27 @@ if (preg_match("/(" . implode("|", $disallowedUserAgents) . ")/i", $_SERVER['HTT
             background-color: #f5f5f5;
             /* Background image settings */
             background-image: url('../img/bgfront.jpg'); 
-            background-size: cover; 
-            background-position: center center; 
-            background-attachment: fixed; 
-            background-repeat: no-repeat; 
+            background-size: cover; /* Ensures the background covers the screen */
+            background-position: center center; /* Keeps the image centered */
+            background-attachment: fixed; /* Keeps the background fixed when scrolling */
+            background-repeat: no-repeat; /* Prevents the background from repeating */
         }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll; /* Disable fixed background on smaller screens for better performance */
+            }
+        }
+
         .container {
             text-align: center;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            background-color: #fff;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background for the container */
+            width: 100%;
+            max-width: 400px;
         }
         .btn {
             margin: 10px;
