@@ -264,7 +264,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-<style>
+<!-- <style>
     body {
         padding-top: 10px;
         margin-top: 40px;
@@ -272,7 +272,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     .position-relative {
         position: relative;
     }
-</style>
+</style> -->
 
 <script>
      // Get the checkbox and submit button elements
