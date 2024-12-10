@@ -106,11 +106,17 @@ if (strpos($request, '.php') !== false) {
             border-radius: 5px;
         }
 
-        .certificate h2,
-        .certificate p {
+        h2 {
+            color: #333;
+            font-size: 20px;
             margin: 0;
-            text-align: center;
-            word-wrap: break-word; /* Break words to avoid overflow */
+            font-weight: bold;
+        }
+
+        p {
+            margin: 0;
+            font-size: 16px;
+            color: #777;
         }
 
         /* Modal styles */
