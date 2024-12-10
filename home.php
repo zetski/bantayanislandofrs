@@ -3,30 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fire Station</title>
+    <style>
+        /* General Body Reset */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Carousel Styling */
+        .carousel-item > img {
+            object-fit: cover;
+            height: 300px; /* Adjust to the desired carousel height */
+            width: 100%;
+        }
+
+        .carousel-inner {
+            height: 300px; /* Matches the carousel image height */
+        }
+
+        /* Styling for the button */
+        .btn {
+            color: #fff;
+            margin-top: 20px;
+            background-color: #f46000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .btn:focus, .btn:hover {
+            outline: none;
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        /* Horizontal Rule Styling */
+        hr {
+            width: 8em;
+            height: 3px;
+            background-color: navy;
+            opacity: 1;
+            border: none;
+            margin: 20px auto;
+        }
+
+        /* Welcome Section Styling */
+        .welcome-container {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            line-height: 1.5;
+            padding: 20px; /* Adds padding around the content */
+        }
+
+        /* Adjust spacing for the card */
+        .card {
+            margin-top: 20px;
+        }
+
+    </style>
 </head>
 <body>
-<style>
-    body {
-        padding-top: 10px;
-        margin-top: 40px;
-    }
-    .carousel-item>img {
-        object-fit: cover !important;
-        height: 20em; /* Adjust the height to your desired value */
-    }
-    #carouselExampleControls .carousel-inner {
-        height: 20em !important; /* Ensure this matches the image height */
-    }
-    .btn{
-        color: #fff;
-        margin-left: 30px;
-        background-color: #f46000;
-    }
-    .btn:focus, .btn:hover{
-        outline: none;
-        box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
-    }
-</style>
 <section class="py-3">
     <div class="container">
         <div class="row">
@@ -44,7 +84,7 @@
                                     $_i++;
                         ?>
                         <div class="carousel-item <?php echo $_i == 1 ? "active" : '' ?>">
-                            <img src="<?php echo validate_image($upload_path . '/' . $img) ?>" class="d-block w-100" alt="<?php echo $img ?>">
+                            <img src="<?php echo validate_image($upload_path . '/' . $img) ?>" alt="<?php echo $img ?>">
                         </div>
                         <?php endforeach; ?>
                         <?php endif; ?>
@@ -60,15 +100,19 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-center mt-n3">
+        <div class="row justify-content-center mt-4">
             <div class="col-lg-10 col-md-11 col-sm-11">
                 <div class="card card-outline rounded-0">
                     <div class="card-body">
                         <div class="container-fluid">
                             <center>
-                                <hr class="bg-navy opacity-100" style="width:8em;height:3px;opacity:1">
+                                <hr>
                             </center>
-                            <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
+                            <!-- Dynamic Content -->
+                            <div class="welcome-container">
+                                <?= htmlspecialchars_decode(file_get_contents('./welcome.html')) ?>
+                            </div>
+                            <!-- Button -->
                             <div>
                                 <button class="btn" onclick="window.location.href='./upcoming_events.php';">Upcoming Events</button>
                             </div>
