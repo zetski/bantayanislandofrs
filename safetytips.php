@@ -15,7 +15,6 @@ if (strpos($request, '.php') !== false) {
     <link rel="icon" href="img/r7logo.png" type="image/png">
     <title>Online Fire Reporting System</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -32,26 +31,6 @@ if (strpos($request, '.php') !== false) {
             position: relative;
             padding: 20px;
         }
-
-        .back-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 50px;
-            height: 50px;
-            background-color: #00aaff;
-            color: white;
-            border-radius: 50%;
-            text-decoration: none;
-            font-size: 24px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s, background-color 0.3s;
-        }
-        .back-button:hover {
-            background-color: #007acc;
-            transform: scale(1.1);
-        }
-
 
         h1 {
             font-size: 36px;
@@ -170,9 +149,6 @@ if (strpos($request, '.php') !== false) {
 </head>
 <body>
     <div class="header">
-    <a href="javascript:history.back()" class="back-button">
-    <i class="fas fa-arrow-left"></i>
-    </a>
         <h1>Safety Tips</h1>
     </div>
 
