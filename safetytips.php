@@ -94,6 +94,14 @@ if (strpos($request, '.php') !== false) {
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
 
+        .certificate h2, .certificate p {
+            color: #333; /* Gray or black color for text */
+        }
+
+        .certificate:hover h2, .certificate:hover p {
+            color: #333; /* Maintain the same text color on hover */
+        }
+        
         .certificate img {
             width: 50px;
             height: 50px;
