@@ -42,6 +42,12 @@ function sanitizeInput($data) {
     return $data;
 }
 
+$existing_reports = [
+    ['municipality' => 'Bantayan', 'barangay' => 'Atop-Atop', 'sitio_street' => 'Barangay Hall'],
+    ['municipality' => 'Madridejos', 'barangay' => 'Bunakan', 'sitio_street' => 'Purok 1'],
+    // Add more existing reports here...
+];
+
 // Process Form Submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $lastname = sanitizeInput($_POST['lastname']);
@@ -53,39 +59,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $municipality = sanitizeInput($_POST['municipality']);
     $barangay = sanitizeInput($_POST['barangay']);
     $sitio_street = sanitizeInput($_POST['sitio_street']);
-    
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileTmpPath = $_FILES['image']['tmp_name'];
-            $fileName = $_FILES['image']['name'];
-            $fileSize = $_FILES['image']['size'];
-            $fileType = mime_content_type($fileTmpPath);
-            $allowedMimeTypes = ['image/jpeg'];
-    
-            // Validate MIME type
-            if (!in_array($fileType, $allowedMimeTypes)) {
-                die('Invalid file type. Only JPEG/JPG images are allowed.');
-            }
-    
-            // Validate file extension
-            $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            if (!in_array($fileExtension, ['jpg', 'jpeg'])) {
-                die('Invalid file extension. Only .jpg and .jpeg are allowed.');
-            }
-    
-            // Process the image (e.g., move to a specific folder)
-            $uploadFileDir = './uploads/';
-            $destPath = $uploadFileDir . $fileName;
-            if (move_uploaded_file($fileTmpPath, $destPath)) {
-                echo 'File successfully uploaded.';
-            } else {
-                die('File upload failed.');
-            }
-        } else {
-            die('No file uploaded or upload error occurred.');
+
+    // Check for duplicate report based on municipality, barangay, and sitio_street
+    $duplicate_found = false;
+    foreach ($existing_reports as $report) {
+        if ($report['municipality'] == $municipality && $report['barangay'] == $barangay && $report['sitio_street'] == $sitio_street) {
+            $duplicate_found = true;
+            break;
         }
     }
-    // Process the sanitized data (e.g., insert into database)
+
+    // If duplicate is found, alert the user and prevent submission
+    if ($duplicate_found) {
+        echo '<script>';
+        echo 'Swal.fire({
+            icon: "error",
+            title: "Incident Already Reported",
+            text: "An incident has already been reported for this location. Please check the details or contact the authorities.",
+            showConfirmButton: true
+        });';
+        echo '</script>';
+    } else {
+        // Continue with the report processing (insert into database or further logic)
+        // Here, you would typically save the new report to your database or in-memory storage
+        // For now, just adding to the "existing_reports" array for demonstration
+        $existing_reports[] = [
+            'municipality' => $municipality,
+            'barangay' => $barangay,
+            'sitio_street' => $sitio_street
+        ];
+
+        // Optionally, you could display a success message (like you already do for successful submissions)
+        echo '<script>';
+        echo 'Swal.fire({
+            icon: "success",
+            title: "Success!",
+            text: "Your report has been submitted successfully.",
+            showConfirmButton: true
+        });';
+        echo '</script>';
+    }
 }
 ?>
 
