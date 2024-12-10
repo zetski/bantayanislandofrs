@@ -53,6 +53,36 @@ if (strpos($request, '.php') !== false) {
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        .back-button {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #ff4500; /* Fire orange-red background */
+            color: #fff; /* White icon */
+            border: none;
+            padding: 12px;
+            border-radius: 50%;
+            font-size: 18px; /* Icon size */
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+        }
+
+        .back-button i {
+            pointer-events: none; /* Prevents the icon from affecting the button's hover */
+        }
+
+        .back-button:hover {
+            background-color: #ff6347; /* Slightly lighter red-orange on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .back-button:focus {
+            outline: none; /* Remove outline when focused */
+        }
+
         .header h1 {
             flex: 1;
             text-align: center;
@@ -218,6 +248,9 @@ if (strpos($request, '.php') !== false) {
     <div class="container">
         <!-- Header -->
         <header class="header">
+        <button class="back-button" onclick="history.back()">
+            <i class="fas fa-arrow-left"></i>
+        </button>
             <h1>Online Fire Reporting System</h1>
         </header>
 
