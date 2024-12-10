@@ -206,7 +206,31 @@ if ($admin_district) {
     }
 
     // Delete permanently function
-   
+    function delete_permanently(id) {
+        $.ajax({
+            url: _base_url_ + 'classes/Master.php?f=delete_permanently',
+            method: 'POST',
+            data: { id: id },
+            dataType: 'json',
+            beforeSend: function() {
+                start_loader();
+            },
+            success: function(resp) {
+                end_loader();
+                if (resp.status === 'success') {
+                    Swal.fire('Deleted!', 'The request has been permanently deleted.', 'success').then(() => {
+                        location.reload(); // Refresh the page to reflect deletion
+                    });
+                } else {
+                    Swal.fire('Failed!', 'An error occurred while deleting.', 'error');
+                }
+            },
+            error: function() {
+                Swal.fire('Failed!', 'An error occurred while deleting.', 'error');
+                end_loader();
+            }
+        });
+    }
 </script>
 </body>
 </html>
