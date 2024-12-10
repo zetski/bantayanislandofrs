@@ -25,7 +25,7 @@
     top: 100%;
     background-color: #333333; /* Dark background to match the sidebar */
     border: none;
-    min-width: 320px;
+    min-width: 160px;
   }
 
   .nav-item:hover .dropdown-menu {
