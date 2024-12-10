@@ -4297,12 +4297,12 @@ fieldset:disabled .btn {
     margin-right: 1rem;
     font-size: 1.25rem;
     text-decoration: none;
-    white-space: normal;
+    white-space: nowrap;
 }
 
 .navbar-nav {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
     padding-left: 0;
     margin-bottom: 0;
     list-style: none;
