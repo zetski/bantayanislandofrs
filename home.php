@@ -1,5 +1,6 @@
 <style>
     body {
+        overflow: hidden;
         padding-top: 10px;
         margin-top: 40px;
     }
