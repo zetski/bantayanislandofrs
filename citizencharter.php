@@ -102,6 +102,7 @@ if (strpos($request, '.php') !== false) {
         .certificate img {
             width: 50px;
             height: 50px;
+            margin-bottom: 10px; /* Add spacing between image and text */
             border-radius: 5px;
         }
 
