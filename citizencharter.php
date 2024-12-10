@@ -84,11 +84,16 @@ if (strpos($request, '.php') !== false) {
             width: 90%;
             max-width: 600px;
             display: flex;
+            flex-direction: column; /* Ensure elements are stacked */
             align-items: center;
+            justify-content: space-between;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
+            overflow: hidden; /* Hide content that overflows */
+            height: 200px; /* Set a fixed height */
         }
+        
         .certificate:hover {
             transform: scale(1.02);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
