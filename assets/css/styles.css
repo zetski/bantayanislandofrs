@@ -48,8 +48,8 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    :root {
-        scroll-behavior: auto !important;
+     :root {
+        scroll-behavior: smooth;
     }
 }
 
