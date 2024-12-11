@@ -124,7 +124,7 @@ if (strpos($request, '.php') !== false) {
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        Citizen Charter
+        Citizen Chart
     </div>
 
     <div class="content">
