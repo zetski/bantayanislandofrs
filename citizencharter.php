@@ -27,7 +27,7 @@ if (strpos($request, '.php') !== false) {
         .header {
             background-color: #ff4500;
             color: #fff;
-            padding: 20px;
+            padding: 30px;
             text-align: center;
             position: relative;
             font-size: 24px;
