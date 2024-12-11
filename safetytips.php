@@ -191,7 +191,7 @@ if (strpos($request, '.php') !== false) {
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <h3>Safety Tips</h3>
+        <h2>Safety Tips</h2>
     </div>
 
     <div class="content">
