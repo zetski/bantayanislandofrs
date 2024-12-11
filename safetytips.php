@@ -17,6 +17,12 @@ if (strpos($request, '.php') !== false) {
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        html, body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding: 0; /* Remove any extra padding that could cause overflow */
+    margin: 0; /* Remove any extra margin that could cause overflow */
+    width: 100%; /* Ensure no unintended horizontal overflow */
+    }
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(to right, #ff7e5f, #feb47b);
