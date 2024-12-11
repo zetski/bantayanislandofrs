@@ -133,7 +133,7 @@ if (strpos($request, '.php') !== false) {
             <?php
             $certificates = [
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '1. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'New Business Permit WITH Valid FSIC During Occupancy Permit Stage',
                     'details' => '
                     <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(New Business Permit WITH Valid FSIC During Occupancy Permit Stage)</br></p>
@@ -155,7 +155,7 @@ if (strpos($request, '.php') !== false) {
                     <p>Source: New BFP Citizen\'s Charter 2017</p>'
                 ],
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '2. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'New Business Permit WITHOUT Valid FSIC During Occupancy Permit Stage',
                     'details' => '
                     <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(New Business Permit WITHOUT Valid FSIC During Occupancy Permit Stage)</br></p>
@@ -177,7 +177,7 @@ if (strpos($request, '.php') !== false) {
                     <p>Source: New BFP Citizen\'s Charter 2017</p>'
                 ],
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '3. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'Renewal of FSIC for Business Permit WITHOUT Valid FSIC or expired FSIC/with Existing Violations of the Fire Code/included in the Negative list',
                     'details' => '
                     <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(Renewal of FSIC for Business Permit WITHOUT Valid FSIC or expired FSIC/with Existing Violations of the Fire Code/included in the Negative list)</br></p>
@@ -198,7 +198,7 @@ if (strpos($request, '.php') !== false) {
                     <p>Source: New BFP Citizen\'s Charter 2017</p>'
             ],
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '4. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'FSIC for Renewal of Business Permit',
                     'details' => '
                   <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(FSIC for Renewal of Business Permit)</br></p>
@@ -219,7 +219,7 @@ if (strpos($request, '.php') !== false) {
                   <p>Source: New BFP Citizen\'s Charter 2017</p>'
                 ],
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '5. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'FSIC for Occupancy Permit',
                     'details' => '
                 <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(FSIC for Occupancy Permit)</br></p>
@@ -239,7 +239,7 @@ if (strpos($request, '.php') !== false) {
                 <p>Source: New BFP Citizen\'s Charter 2017</p>'
                 ],
                 [
-                    'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
+                    'title' => '6. FIRE SAFETY INSPECTION CERTIFICATE',
                     'description' => 'FSEC for Building Permit',
                     'details' => '
               <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(FSIC for Building Permit)</br></p>
