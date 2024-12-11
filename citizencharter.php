@@ -270,7 +270,7 @@ if (strpos($request, '.php') !== false) {
 
         <div class="video-container">
             <video controls>
-                <source src="video/sample.mp4" type="video/mp4">
+                <img src="img/firebg.jpg">
                 Your browser does not support the video tag.
             </video>
         </div>
