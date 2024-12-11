@@ -269,10 +269,7 @@ if (strpos($request, '.php') !== false) {
         </div>
 
         <div class="video-container">
-            <video controls>
-            <source src="img/vid.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <img src="img/logof.jpg" alt="img">
         </div>
     </div>
 </body>
