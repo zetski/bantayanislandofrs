@@ -20,8 +20,7 @@ if (strpos($request, '.php') !== false) {
         html, body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
     padding: 0; /* Remove any extra padding that could cause overflow */
-    margin: 0; /* Remove any extra margin that could cause overflow */
-    width: 100%; /* Ensure no unintended horizontal overflow */
+    margin: 0; /* Remove any extra margin that could cause overflow
     }
         body {
             font-family: 'Roboto', sans-serif;
