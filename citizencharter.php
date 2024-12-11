@@ -93,7 +93,6 @@ if (strpos($request, '.php') !== false) {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding-top: 10px;
         }
 
         .video-container video {
@@ -134,7 +133,25 @@ if (strpos($request, '.php') !== false) {
             $certificates = [
                 [
                     'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
-                    'description' => 'New Business Permit WITH Valid FSIC During Occupancy Permit Stage'
+                    'description' => 'New Business Permit WITH Valid FSIC During Occupancy Permit Stage',
+                    'details' => '
+                    <p><b>FIRE SAFETY INSPECTION CERTIFICATE</b><br>(New Business Permit WITH Valid FSIC During Occupancy Permit Stage)</br></p>
+                    <ol>
+                      <li>Apply for FSIC using the Unified Form with complete documentary requirements.</li>
+                      <li>Wait for the release of Order of Payment (OP).</li>
+                      <li>Pay the assessed amount and submit copy of receipt of payment to CRO.</li>
+                      <li>Receive Claim Stub. (FSIC shall be issued within the day)</li>
+                      <li>Owner/Authorized representative present Claim Stub to claim FSIC.</li>
+                    </ol>
+                    <p><b>REQUIREMENTS:</b></p>
+                    <ol>
+                      <li>Certified True Copy of valid Occupancy Permit.</li>
+                      <li>Photocopy of FSIC for Occupancy.</li>
+                      <li>Assessment of Business Permit fee/Tax Assessment Bill from BPLO.</li>
+                      <li>Copy of Fire Insurance Policy (if any).</li>
+                    </ol>
+                    <p>1 DAY MAXIMUM</p>
+                    <p>Source: New BFP Citizen\'s Charter 2017</p>'
                 ],
                 [
                     'title' => 'FIRE SAFETY INSPECTION CERTIFICATE',
@@ -161,7 +178,7 @@ if (strpos($request, '.php') !== false) {
             foreach ($certificates as $certificate) {
                 echo '<div class="certificate" onclick="toggleDetails(event)">';
                 echo '<h2>' . $certificate['title'] . '</h2>';
-                echo '<div class="details">' . $certificate['description'] . '</div>';
+                echo '<div class="details">' . ($certificate['details'] ?? $certificate['description']) . '</div>';
                 echo '</div>';
             }
             ?>
