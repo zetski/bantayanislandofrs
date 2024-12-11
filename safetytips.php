@@ -29,13 +29,11 @@ if (strpos($request, '.php') !== false) {
         }
 
         .header {
-            background-color: #ff4500;
-            color: #fff;
-            padding: 5px;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            font-size: 18px;
-            font-weight: bold;
+            padding: auto;
         }
 
         .back-button {
@@ -43,7 +41,7 @@ if (strpos($request, '.php') !== false) {
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: transparent !important; /* Fire orange-red background */
+            background-color: #ff4500; /* Fire orange-red background */
             color: #fff; /* White icon */
             border: none;
             padding: 12px;
