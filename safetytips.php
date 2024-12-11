@@ -29,11 +29,13 @@ if (strpos($request, '.php') !== false) {
         }
 
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #ff4500;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
             position: relative;
-            padding: auto;
+            font-size: 24px;
+            font-weight: bold;
         }
 
         .back-button {
@@ -41,29 +43,11 @@ if (strpos($request, '.php') !== false) {
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: #ff4500; /* Fire orange-red background */
-            color: #fff; /* White icon */
+            background: none;
             border: none;
-            padding: 12px;
-            border-radius: 50%;
-            font-size: 18px; /* Icon size */
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
-
-        .back-button i {
-            pointer-events: none; /* Prevents the icon from affecting the button's hover */
-        }
-
-        .back-button:hover {
-            background-color: #ff6347; /* Slightly lighter red-orange on hover */
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .back-button:focus {
-            outline: none; /* Remove outline when focused */
+            color: #fff;
+            font-size: 24px;
         }
 
         h1 {
@@ -194,7 +178,7 @@ if (strpos($request, '.php') !== false) {
         <button class="back-button" onclick="history.back()">
             <i class="fas fa-arrow-left"></i>
         </button>
-        <h2>SAFETY TIPS</h2>
+        Safety Tips
     </div>
 
     <div class="content">
