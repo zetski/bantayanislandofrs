@@ -29,11 +29,13 @@ if (strpos($request, '.php') !== false) {
         }
 
         .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-color: #ff4500;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
             position: relative;
-            padding: auto;
+            font-size: 24px;
+            font-weight: bold;
         }
 
         .back-button {
