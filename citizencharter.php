@@ -15,6 +15,7 @@ if (strpos($request, '.php') !== false) {
     <link rel="icon" href="img/r7logo.png" type="image/png">
     <title>Online Fire Reporting System</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -41,11 +42,8 @@ if (strpos($request, '.php') !== false) {
             background: none;
             border: none;
             cursor: pointer;
-        }
-
-        .back-button img {
-            width: 24px;
-            height: 24px;
+            color: #fff;
+            font-size: 24px;
         }
 
         .content {
@@ -110,7 +108,7 @@ if (strpos($request, '.php') !== false) {
 <body>
     <div class="header">
         <button class="back-button" onclick="history.back()">
-            <img src="img/back-icon.png" alt="Back">
+            <i class="fas fa-arrow-left"></i>
         </button>
         Citizen Charter
     </div>
