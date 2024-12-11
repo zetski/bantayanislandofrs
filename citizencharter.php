@@ -88,6 +88,7 @@ if (strpos($request, '.php') !== false) {
         }
 
         .video-container {
+            padding-top: 10px;
             flex: 1;
             min-width: 300px;
             display: flex;
