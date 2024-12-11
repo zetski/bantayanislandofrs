@@ -50,11 +50,13 @@ if (strpos($request, '.php') !== false) {
             max-width: 1200px;
             margin: 20px auto;
             display: flex;
+            flex-wrap: wrap;
             gap: 20px;
         }
 
         .certificate-list {
             flex: 1;
+            min-width: 300px;
         }
 
         .certificate {
@@ -87,6 +89,7 @@ if (strpos($request, '.php') !== false) {
 
         .video-container {
             flex: 1;
+            min-width: 300px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -96,6 +99,17 @@ if (strpos($request, '.php') !== false) {
             width: 100%;
             height: auto;
             border-radius: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .video-container {
+                order: -1;
+                margin-bottom: 20px;
+            }
         }
     </style>
     <script>
